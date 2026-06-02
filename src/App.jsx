@@ -2,7 +2,6 @@ import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
-import { OrbitControls as OrbitControlsImpl } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import logo from '../assets/chudo-logo-new.png';
 import cameraModelUrl from '../assets/red_camera_web.glb?url';
@@ -1777,15 +1776,26 @@ function WorkflowSection() {
   );
 }
 
-function CinemaCameraModel({ rotationRef }) {
+function CinemaCameraModel({ mouseX, mouseY }) {
   const rig = useRef(null);
   const gltf = useLoader(GLTFLoader, cameraModelUrl);
 
   const { scene, scale } = useMemo(() => {
     const clonedScene = gltf.scene.clone(true);
 
+    // Находим и скрываем меш стола по имени / геометрии
     clonedScene.traverse((object) => {
       if (!object.isMesh) return;
+
+      // Скрываем стол — он обычно внизу, плоский, большой по X/Z
+      const box = new THREE.Box3().setFromObject(object);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      const isTable = size.x > size.y * 3 || size.z > size.y * 3;
+      if (isTable) {
+        object.visible = false;
+        return;
+      }
 
       object.castShadow = true;
       object.receiveShadow = false;
@@ -1795,7 +1805,6 @@ function CinemaCameraModel({ rotationRef }) {
         object.material.roughness = Math.min(object.material.roughness ?? 0.3, 0.28);
         object.material.metalness = Math.max(object.material.metalness ?? 0.6, 0.55);
         object.material.envMapIntensity = 1.4;
-        // Убираем тёмные части — поднимаем базовый цвет
         if (object.material.color) {
           object.material.color.multiplyScalar(1.35);
         }
@@ -1809,24 +1818,29 @@ function CinemaCameraModel({ rotationRef }) {
     box.getSize(size);
     box.getCenter(center);
 
-    // Поднимаем камеру вверх — стол уходит за нижний край
-    clonedScene.position.set(-center.x, -center.y + size.y * 0.32, -center.z);
+    clonedScene.position.set(-center.x, -center.y, -center.z);
 
     const maxDimension = Math.max(size.x, size.y, size.z) || 1;
-    return {
-      scene: clonedScene,
-      scale: 6.2 / maxDimension,
-    };
+    return { scene: clonedScene, scale: 5.6 / maxDimension };
   }, [gltf]);
 
   useFrame(() => {
-    if (rig.current) {
-      rig.current.rotation.y = THREE.MathUtils.lerp(rig.current.rotation.y, rotationRef.current, 0.12);
-    }
+    if (!rig.current) return;
+    // Плавный поворот по курсору — Y горизонталь, X вертикаль
+    rig.current.rotation.y = THREE.MathUtils.lerp(
+      rig.current.rotation.y,
+      mouseX.current * 0.9,
+      0.06
+    );
+    rig.current.rotation.x = THREE.MathUtils.lerp(
+      rig.current.rotation.x,
+      mouseY.current * 0.35,
+      0.06
+    );
   });
 
   return (
-    <group ref={rig} position={[0, -0.18, 0]} rotation={[0.02, rotationRef.current, 0]} scale={scale}>
+    <group ref={rig} scale={scale}>
       <primitive object={scene} />
     </group>
   );
@@ -1847,45 +1861,11 @@ function CameraLoadingFallback() {
   );
 }
 
-function OrbitCameraControls() {
-  const { camera, gl } = useThree();
-  const controlsRef = useRef(null);
-
-  useEffect(() => {
-    const controls = new OrbitControlsImpl(camera, gl.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.08;
-    controls.enablePan = false;
-    controls.enableZoom = true;
-    controls.enableRotate = true;
-    controls.minDistance = 3.3;
-    controls.maxDistance = 8.2;
-    controls.rotateSpeed = 0.72;
-    controls.zoomSpeed = 0.75;
-    controls.minPolarAngle = 0.12;
-    controls.maxPolarAngle = Math.PI - 0.16;
-    controls.target.set(0, -0.05, 0);
-    controls.update();
-    controlsRef.current = controls;
-
-    return () => {
-      controls.dispose();
-      controlsRef.current = null;
-    };
-  }, [camera, gl]);
-
-  useFrame(() => {
-    controlsRef.current?.update();
-  });
-
-  return null;
-}
-
-function CameraScene({ rotationRef }) {
+function CameraScene({ mouseX, mouseY }) {
   return (
     <Canvas
       aria-hidden="true"
-      camera={{ position: [3.25, 1.8, 5.2], fov: 28 }}
+      camera={{ position: [0, 0.3, 5.8], fov: 30 }}
       dpr={[1, 1.7]}
       gl={{
         antialias: true,
@@ -1907,20 +1887,46 @@ function CameraScene({ rotationRef }) {
       <pointLight position={[-2.8, 1.5, 2.6]} intensity={3.2} color="#ffffff" />
       <pointLight position={[0, -1, 2]} intensity={1.8} color="#ffcfb0" />
       <Suspense fallback={<CameraLoadingFallback />}>
-        <CinemaCameraModel rotationRef={rotationRef} />
+        <CinemaCameraModel mouseX={mouseX} mouseY={mouseY} />
       </Suspense>
-      <OrbitCameraControls />
     </Canvas>
   );
 }
 
 function HeroVisual() {
-  const rotationRef = useRef(0);
+  const mouseX = useRef(0);
+  const mouseY = useRef(0);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      // Нормализуем от -1 до 1 относительно центра экрана
+      mouseX.current = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY.current = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
+
+    // На мобиле — плавная автo-анимация
+    let autoAnim;
+    const handleTouchMove = (e) => {
+      const t = e.touches[0];
+      mouseX.current = (t.clientX / window.innerWidth - 0.5) * 2;
+      mouseY.current = (t.clientY / window.innerHeight - 0.5) * 2;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
 
   return (
     <div
+      ref={containerRef}
       className="hero-visual"
-      aria-label="Реалистичная 3D-камера. Вращайте модель мышью или пальцем и приближайте колесом."
+      aria-label="3D-камера RED. Двигайте мышью — камера следует за курсором."
     >
       <motion.div
         className="camera-stage"
@@ -1930,7 +1936,7 @@ function HeroVisual() {
         transition={{ duration: 1, delay: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
       >
         <div className="camera-canvas">
-          <CameraScene rotationRef={rotationRef} />
+          <CameraScene mouseX={mouseX} mouseY={mouseY} />
         </div>
       </motion.div>
     </div>
