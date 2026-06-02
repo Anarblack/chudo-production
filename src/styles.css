@@ -100,15 +100,15 @@ a {
 .logo-link {
   display: inline-flex;
   align-items: center;
-  width: 112px;
-  height: 48px;
+  width: 140px;
+  height: 56px;
 }
 
 .logo-link img {
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 0 16px rgba(255, 74, 10, 0.12));
+  filter: drop-shadow(0 0 20px rgba(255, 74, 10, 0.15));
 }
 
 .anchor-nav {
@@ -183,19 +183,20 @@ a {
   align-items: center;
   gap: 12px;
   margin: 0 0 22px;
-  color: rgba(244, 245, 242, 0.56);
-  font-size: clamp(11px, 1vw, 13px);
+  color: rgba(244, 245, 242, 0.48);
+  font-size: clamp(10px, 0.9vw, 12px);
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
 .eyebrow::before {
   display: block;
-  width: 42px;
+  width: 32px;
   height: 1px;
   content: "";
   background: var(--orange);
+  opacity: 0.8;
 }
 
 h1 {
@@ -203,24 +204,26 @@ h1 {
   margin: 0;
   color: var(--text);
   font-family: var(--display);
-  font-size: clamp(42px, 4.6vw, 88px);
-  font-weight: 760;
-  letter-spacing: 0;
-  line-height: 0.98;
+  font-size: clamp(44px, 5vw, 92px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.96;
 }
 
 h1 span {
   display: block;
   color: var(--orange);
-  text-shadow: 0 0 36px rgba(255, 74, 10, 0.18);
+  text-shadow: 0 0 48px rgba(255, 74, 10, 0.22);
+  letter-spacing: -0.025em;
 }
 
 .lead {
-  max-width: 650px;
+  max-width: 600px;
   margin: clamp(20px, 2.6vw, 34px) 0 0;
-  color: rgba(244, 245, 242, 0.68);
-  font-size: clamp(16px, 1.5vw, 21px);
-  line-height: 1.58;
+  color: rgba(244, 245, 242, 0.62);
+  font-size: clamp(15px, 1.35vw, 19px);
+  line-height: 1.65;
+  letter-spacing: 0.01em;
 }
 
 .hero-actions {
@@ -299,35 +302,13 @@ h1 span {
   transform-style: preserve-3d;
 }
 
-.camera-stage::before {
-  position: absolute;
-  inset: 8%;
-  content: "";
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 50% 50%;
-  opacity: 0.42;
-}
-
-.camera-stage::after {
-  position: absolute;
-  inset: 0;
-  content: "";
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow:
-    inset 0 0 90px rgba(143, 184, 255, 0.05),
-    0 0 90px rgba(0, 0, 0, 0.34);
-}
-
 .camera-canvas {
   position: absolute;
-  inset: 0 0 3%;
+  inset: 0;
   z-index: 2;
   filter:
-    drop-shadow(0 34px 60px rgba(0, 0, 0, 0.68))
-    drop-shadow(0 0 42px rgba(143, 184, 255, 0.08));
+    drop-shadow(0 40px 80px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 60px rgba(255, 74, 10, 0.08));
 }
 
 .camera-canvas canvas {

@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'fra
 import * as THREE from 'three';
 import { OrbitControls as OrbitControlsImpl } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import logo from '../assets/chudo-logo-transparent.png';
+import logo from '../assets/chudo-logo-new.png';
 import cameraModelUrl from '../assets/red_camera_web.glb?url';
 import CustomCursor from './components/CustomCursor.jsx';
 import BlurText from './components/BlurText.jsx';
@@ -1785,18 +1785,20 @@ function CinemaCameraModel({ rotationRef }) {
     const clonedScene = gltf.scene.clone(true);
 
     clonedScene.traverse((object) => {
-      if (!object.isMesh) {
-        return;
-      }
+      if (!object.isMesh) return;
 
       object.castShadow = true;
-      object.receiveShadow = true;
+      object.receiveShadow = false;
 
       if (object.material) {
         object.material = object.material.clone();
-        object.material.roughness = Math.max(object.material.roughness ?? 0.45, 0.28);
-        object.material.metalness = object.material.metalness ?? 0.35;
-        object.material.envMapIntensity = Math.max(object.material.envMapIntensity ?? 0, 0.65);
+        object.material.roughness = Math.min(object.material.roughness ?? 0.3, 0.28);
+        object.material.metalness = Math.max(object.material.metalness ?? 0.6, 0.55);
+        object.material.envMapIntensity = 1.4;
+        // Убираем тёмные части — поднимаем базовый цвет
+        if (object.material.color) {
+          object.material.color.multiplyScalar(1.35);
+        }
         object.material.needsUpdate = true;
       }
     });
@@ -1807,12 +1809,13 @@ function CinemaCameraModel({ rotationRef }) {
     box.getSize(size);
     box.getCenter(center);
 
-    clonedScene.position.sub(center);
+    // Поднимаем камеру вверх — убираем «стол» из кадра
+    clonedScene.position.set(-center.x, -center.y + size.y * 0.18, -center.z);
 
     const maxDimension = Math.max(size.x, size.y, size.z) || 1;
     return {
       scene: clonedScene,
-      scale: 5.55 / maxDimension,
+      scale: 5.8 / maxDimension,
     };
   }, [gltf]);
 
@@ -1882,7 +1885,7 @@ function CameraScene({ rotationRef }) {
   return (
     <Canvas
       aria-hidden="true"
-      camera={{ position: [3.25, 1.05, 5.2], fov: 31 }}
+      camera={{ position: [3.25, 0.6, 5.2], fov: 30 }}
       dpr={[1, 1.7]}
       gl={{
         antialias: true,
@@ -1892,16 +1895,17 @@ function CameraScene({ rotationRef }) {
       }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
-        gl.toneMappingExposure = 1.35;
+        gl.toneMappingExposure = 1.65;
       }}
-      shadows
     >
-      <hemisphereLight args={['#dfe8ff', '#110907', 1.05]} />
-      <ambientLight intensity={0.95} />
-      <directionalLight position={[3.8, 5.2, 5.6]} intensity={4.4} color="#f3f6ff" castShadow />
-      <spotLight position={[-4.6, 3.2, 4.2]} intensity={3.6} angle={0.5} penumbra={0.74} color="#ff6a2a" />
-      <pointLight position={[2.6, -0.3, 3.2]} intensity={3.2} color="#86b5ff" />
-      <pointLight position={[-3.2, 0.8, 2.6]} intensity={2.4} color="#ffffff" />
+      <hemisphereLight args={['#ffffff', '#1a0a05', 1.4]} />
+      <ambientLight intensity={1.6} />
+      <directionalLight position={[4, 6, 6]} intensity={5.5} color="#f5f8ff" />
+      <directionalLight position={[-3, 4, 2]} intensity={2.8} color="#ffffff" />
+      <spotLight position={[-4.6, 3.2, 4.2]} intensity={4.5} angle={0.45} penumbra={0.6} color="#ff6a2a" />
+      <pointLight position={[2.6, 1.2, 3.2]} intensity={4.0} color="#86b5ff" />
+      <pointLight position={[-2.8, 1.5, 2.6]} intensity={3.2} color="#ffffff" />
+      <pointLight position={[0, -1, 2]} intensity={1.8} color="#ffcfb0" />
       <Suspense fallback={<CameraLoadingFallback />}>
         <CinemaCameraModel rotationRef={rotationRef} />
       </Suspense>
@@ -1925,32 +1929,8 @@ function HeroVisual() {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
       >
-        <div className="viewfinder viewfinder--top-left" />
-        <div className="viewfinder viewfinder--top-right" />
-        <div className="viewfinder viewfinder--bottom-left" />
-        <div className="viewfinder viewfinder--bottom-right" />
-
-        <div className="rec-badge">
-          <span />
-          REC
-        </div>
-        <div className="timecode">00:01:24:08</div>
-
-        <div className="focus-lines" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-          <span />
-        </div>
-
         <div className="camera-canvas">
           <CameraScene rotationRef={rotationRef} />
-        </div>
-
-        <div className="camera-tags">
-          {cameraTags.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
         </div>
       </motion.div>
     </div>
