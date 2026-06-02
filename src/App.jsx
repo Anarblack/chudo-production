@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
+import { OrbitControls as OrbitControlsImpl } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import logo from '../assets/chudo-logo-new.png';
 import cameraModelUrl from '../assets/red_camera_web.glb?url';
@@ -1776,23 +1777,21 @@ function WorkflowSection() {
   );
 }
 
-function CinemaCameraModel({ mouseX, mouseY }) {
+function CinemaCameraModel() {
   const rig = useRef(null);
   const gltf = useLoader(GLTFLoader, cameraModelUrl);
 
   const { scene, scale } = useMemo(() => {
     const clonedScene = gltf.scene.clone(true);
 
-    // Находим и скрываем меш стола по имени / геометрии
     clonedScene.traverse((object) => {
       if (!object.isMesh) return;
 
-      // Скрываем стол — он обычно внизу, плоский, большой по X/Z
+      // Скрываем стол — плоский широкий меш
       const box = new THREE.Box3().setFromObject(object);
-      const size = new THREE.Vector3();
-      box.getSize(size);
-      const isTable = size.x > size.y * 3 || size.z > size.y * 3;
-      if (isTable) {
+      const sz = new THREE.Vector3();
+      box.getSize(sz);
+      if (sz.x > sz.y * 3 || sz.z > sz.y * 3) {
         object.visible = false;
         return;
       }
@@ -1802,48 +1801,74 @@ function CinemaCameraModel({ mouseX, mouseY }) {
 
       if (object.material) {
         object.material = object.material.clone();
-        object.material.roughness = Math.min(object.material.roughness ?? 0.3, 0.28);
-        object.material.metalness = Math.max(object.material.metalness ?? 0.6, 0.55);
+        object.material.roughness   = Math.min(object.material.roughness  ?? 0.3,  0.28);
+        object.material.metalness   = Math.max(object.material.metalness  ?? 0.6,  0.55);
         object.material.envMapIntensity = 1.4;
-        if (object.material.color) {
-          object.material.color.multiplyScalar(1.35);
-        }
+        if (object.material.color) object.material.color.multiplyScalar(1.35);
         object.material.needsUpdate = true;
       }
     });
 
-    const box = new THREE.Box3().setFromObject(clonedScene);
-    const size = new THREE.Vector3();
+    const box    = new THREE.Box3().setFromObject(clonedScene);
+    const size   = new THREE.Vector3();
     const center = new THREE.Vector3();
     box.getSize(size);
     box.getCenter(center);
-
     clonedScene.position.set(-center.x, -center.y, -center.z);
 
     const maxDimension = Math.max(size.x, size.y, size.z) || 1;
     return { scene: clonedScene, scale: 5.6 / maxDimension };
   }, [gltf]);
 
-  useFrame(() => {
-    if (!rig.current) return;
-    // Плавный поворот по курсору — Y горизонталь, X вертикаль
-    rig.current.rotation.y = THREE.MathUtils.lerp(
-      rig.current.rotation.y,
-      mouseX.current * 0.9,
-      0.06
-    );
-    rig.current.rotation.x = THREE.MathUtils.lerp(
-      rig.current.rotation.x,
-      mouseY.current * 0.35,
-      0.06
-    );
-  });
-
   return (
     <group ref={rig} scale={scale}>
       <primitive object={scene} />
     </group>
   );
+}
+
+// Авто-вращение + полный OrbitControls при взаимодействии
+function SmartControls({ isInteracting }) {
+  const { camera, gl } = useThree();
+  const controls = useRef(null);
+  const autoAngle = useRef(0);
+
+  useEffect(() => {
+    const c = new OrbitControlsImpl(camera, gl.domElement);
+    c.enableDamping   = true;
+    c.dampingFactor   = 0.07;
+    c.enablePan       = false;
+    c.enableZoom      = true;
+    c.enableRotate    = true;
+    c.minDistance     = 2.5;
+    c.maxDistance     = 12;
+    c.rotateSpeed     = 0.85;
+    c.zoomSpeed       = 0.9;
+    // Без ограничений по вертикали — полный 360°
+    c.minPolarAngle   = 0;
+    c.maxPolarAngle   = Math.PI;
+    c.target.set(0, 0, 0);
+    c.update();
+    controls.current = c;
+    return () => { c.dispose(); controls.current = null; };
+  }, [camera, gl]);
+
+  useFrame((_, delta) => {
+    if (!controls.current) return;
+
+    if (isInteracting.current) {
+      // Пользователь взаимодействует — обычный OrbitControls
+      controls.current.autoRotate = false;
+      controls.current.update();
+    } else {
+      // Idle — медленное авто-вращение по орбите
+      controls.current.autoRotate      = true;
+      controls.current.autoRotateSpeed = 1.2;
+      controls.current.update();
+    }
+  });
+
+  return null;
 }
 
 function CameraLoadingFallback() {
@@ -1861,11 +1886,11 @@ function CameraLoadingFallback() {
   );
 }
 
-function CameraScene({ mouseX, mouseY }) {
+function CameraScene({ isInteracting }) {
   return (
     <Canvas
       aria-hidden="true"
-      camera={{ position: [0, 0.3, 5.8], fov: 30 }}
+      camera={{ position: [0, 0.5, 6.2], fov: 30 }}
       dpr={[1, 1.7]}
       gl={{
         antialias: true,
@@ -1880,53 +1905,44 @@ function CameraScene({ mouseX, mouseY }) {
     >
       <hemisphereLight args={['#ffffff', '#1a0a05', 1.4]} />
       <ambientLight intensity={1.6} />
-      <directionalLight position={[4, 6, 6]} intensity={5.5} color="#f5f8ff" />
-      <directionalLight position={[-3, 4, 2]} intensity={2.8} color="#ffffff" />
-      <spotLight position={[-4.6, 3.2, 4.2]} intensity={4.5} angle={0.45} penumbra={0.6} color="#ff6a2a" />
-      <pointLight position={[2.6, 1.2, 3.2]} intensity={4.0} color="#86b5ff" />
-      <pointLight position={[-2.8, 1.5, 2.6]} intensity={3.2} color="#ffffff" />
-      <pointLight position={[0, -1, 2]} intensity={1.8} color="#ffcfb0" />
+      <directionalLight position={[4, 6, 6]}   intensity={5.5} color="#f5f8ff" />
+      <directionalLight position={[-3, 4, 2]}  intensity={2.8} color="#ffffff" />
+      <spotLight       position={[-4.6, 3.2, 4.2]} intensity={4.5} angle={0.45} penumbra={0.6} color="#ff6a2a" />
+      <pointLight      position={[2.6, 1.2, 3.2]}  intensity={4.0} color="#86b5ff" />
+      <pointLight      position={[-2.8, 1.5, 2.6]} intensity={3.2} color="#ffffff" />
+      <pointLight      position={[0, -1, 2]}        intensity={1.8} color="#ffcfb0" />
       <Suspense fallback={<CameraLoadingFallback />}>
-        <CinemaCameraModel mouseX={mouseX} mouseY={mouseY} />
+        <CinemaCameraModel />
       </Suspense>
+      <SmartControls isInteracting={isInteracting} />
     </Canvas>
   );
 }
 
 function HeroVisual() {
-  const mouseX = useRef(0);
-  const mouseY = useRef(0);
-  const containerRef = useRef(null);
+  const isInteracting = useRef(false);
+  const idleTimer     = useRef(null);
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      // Нормализуем от -1 до 1 относительно центра экрана
-      mouseX.current = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseY.current = (e.clientY / window.innerHeight - 0.5) * 2;
-    };
+  // Сброс в idle через 2 сек после последнего действия
+  const resetIdle = () => {
+    isInteracting.current = true;
+    clearTimeout(idleTimer.current);
+    idleTimer.current = setTimeout(() => {
+      isInteracting.current = false;
+    }, 2000);
+  };
 
-    // На мобиле — плавная автo-анимация
-    let autoAnim;
-    const handleTouchMove = (e) => {
-      const t = e.touches[0];
-      mouseX.current = (t.clientX / window.innerWidth - 0.5) * 2;
-      mouseY.current = (t.clientY / window.innerHeight - 0.5) * 2;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchmove', handleTouchMove);
-    };
-  }, []);
+  useEffect(() => () => clearTimeout(idleTimer.current), []);
 
   return (
     <div
-      ref={containerRef}
       className="hero-visual"
-      aria-label="3D-камера RED. Двигайте мышью — камера следует за курсором."
+      aria-label="3D-камера RED. Вращайте и приближайте мышью. Без действий — медленно вращается сама."
+      onMouseDown={resetIdle}
+      onMouseMove={(e) => { if (e.buttons > 0) resetIdle(); }}
+      onWheel={resetIdle}
+      onTouchStart={resetIdle}
+      onTouchMove={resetIdle}
     >
       <motion.div
         className="camera-stage"
@@ -1936,7 +1952,7 @@ function HeroVisual() {
         transition={{ duration: 1, delay: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
       >
         <div className="camera-canvas">
-          <CameraScene mouseX={mouseX} mouseY={mouseY} />
+          <CameraScene isInteracting={isInteracting} />
         </div>
       </motion.div>
     </div>
