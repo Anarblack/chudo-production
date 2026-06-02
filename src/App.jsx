@@ -10,23 +10,23 @@ import CustomCursor from './components/CustomCursor.jsx';
 import BlurText from './components/BlurText.jsx';
 
 const navItems = [
-  { label: 'Боли рынка', href: '#market-pains' },
-  { label: 'Что предлагаем', href: '#offer' },
-  { label: 'УТП', href: '#usp' },
-  { label: 'Кейсы', href: '#cases' },
-  { label: 'Формат работы', href: '#workflow' },
-  { label: 'Связаться', href: '#contact' },
+  { label: 'Зачем видео',   href: '#market-pains' },
+  { label: 'Решения',       href: '#offer' },
+  { label: 'Наш подход',    href: '#usp' },
+  { label: 'Работы',        href: '#cases' },
+  { label: 'Как работаем',  href: '#workflow' },
+  { label: 'Обсудить',      href: '#contact' },
 ];
 
 const cameraTags = ['rotate 360°', 'zoom ready', 'client frame'];
 
 const painQuestions = [
-  'Нужен ролик, но непонятно, с какой идеи начать?',
-  'Есть продукт, но сложно объяснить его ценность за 30 секунд?',
-  'Контент выходит, но не усиливает продажи и доверие?',
-  'Портфолио есть, но оно не выглядит достаточно убедительно?',
-  'Съёмки проходят хаотично и без понятного результата?',
-  'Нужен не один ролик, а система материалов для сайта, соцсетей и продаж?',
+  'Есть продукт — но клиент не понимает его ценность до встречи?',
+  'Конкуренты выглядят убедительнее, хотя ваш продукт лучше?',
+  'Контент выходит, но не приносит заявок и не усиливает доверие?',
+  'Нужен ролик — но непонятно с какой идеи начать и сколько это стоит?',
+  'Съёмки прошли хаотично, результат не тот, деньги потрачены?',
+  'Нужна не разовая съёмка, а видеосистема для сайта, соцсетей и продаж?',
 ];
 
 const painItemVariants = {
@@ -942,8 +942,8 @@ function OfferSection() {
           viewport={{ once: true, amount: 0.44 }}
           transition={{ duration: 0.72, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          <p className="eyebrow">Что мы предлагаем</p>
-          <h2 id="offer-title">Что мы предлагаем</h2>
+          <p className="eyebrow">Наши решения</p>
+          <h2 id="offer-title">Что мы делаем</h2>
           <p>
             Создаём видеоконтент под задачи бизнеса: от одного ролика до полноценной системы
             материалов для продаж, соцсетей и презентаций.
@@ -1074,7 +1074,7 @@ function UniqueValueSection() {
         viewport={{ once: true, amount: 0.45 }}
         transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
       >
-        <p className="eyebrow">УТП</p>
+        <p className="eyebrow">Наш подход</p>
         <h2 id="usp-title">Не просто съёмка. Продакшен под задачу бизнеса</h2>
         <p>
           Мы не начинаем с вопроса «что снять?». Мы начинаем с вопроса: какую задачу должно решить
@@ -1329,7 +1329,7 @@ function CasesSection() {
         viewport={{ once: true, amount: 0.42 }}
         transition={{ duration: 0.72, ease: [0.2, 0.8, 0.2, 1] }}
       >
-        <p className="eyebrow">Кейсы</p>
+        <p className="eyebrow">Наши работы</p>
         <h2 id="cases-title">Кейсы и направления, с которыми мы работали</h2>
         <p>
           Каждый проект — это не просто ролик, а задача: показать объект, продвинуть продукт,
@@ -1727,7 +1727,7 @@ function WorkflowSection() {
         viewport={{ once: true, amount: 0.42 }}
         transition={{ duration: 0.72, ease: [0.2, 0.8, 0.2, 1] }}
       >
-        <p className="eyebrow">Формат работы</p>
+        <p className="eyebrow">Как мы работаем</p>
         <h2 id="workflow-title">От задачи до готового видеопродукта</h2>
         <p>
           Мы заранее выстраиваем процесс: понимаем задачу, формулируем идею, готовим съёмку,
@@ -1986,22 +1986,22 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.12, ease: [0.2, 0.8, 0.2, 1] }}
           >
-            <p className="eyebrow">Коммерческое предложение · 2026</p>
+            <p className="eyebrow">ChuDo Production · Бишкек · 2026</p>
             <h1 id="hero-title">
               <BlurText text="Видео," delay={180} stepDelay={55} />{' '}
-              <span><BlurText text="которое работает" delay={360} stepDelay={50} /></span>{' '}
-              <BlurText text="после просмотра." delay={660} stepDelay={50} />
+              <span><BlurText text="которое продаёт" delay={360} stepDelay={50} /></span>{' '}
+              <BlurText text="за вас." delay={620} stepDelay={50} />
             </h1>
             <p className="lead">
-              Ролики, имиджевые фильмы и контент для строительных, автомобильных и B2B-компаний —
-              чтобы продукт было проще показать, объяснить и продать.
+              Рекламные ролики, имиджевые фильмы и контент для соцсетей —
+              снимаем так, чтобы клиент понял ценность продукта с первого просмотра.
             </p>
             <div className="hero-actions">
               <a className="button button--primary button--shimmer" href="#contact">
-                Обсудить проект
+                Получить предложение
               </a>
-              <a className="button button--ghost" href="#offer">
-                Смотреть предложение
+              <a className="button button--ghost" href="#cases">
+                Смотреть работы
               </a>
             </div>
           </motion.div>
