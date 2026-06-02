@@ -3904,3 +3904,145 @@ body:has(.custom-cursor) button { cursor: none !important; }
   100%{ background-position: 200% 0; }
 }
 
+
+/* ─── Messenger buttons (hero) ───────────────────────── */
+
+.button--whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  padding: 14px 22px;
+  font-size: clamp(13px, 1.1vw, 15px);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.button--whatsapp:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.button--telegram {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #229ED9;
+  color: #fff;
+  border: none;
+  padding: 14px 22px;
+  font-size: clamp(13px, 1.1vw, 15px);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.button--telegram:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.btn-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ─── Contact Section ────────────────────────────────── */
+
+.contact-section {
+  position: relative;
+  padding: clamp(80px, 10vw, 140px) clamp(20px, 6vw, 100px);
+  background: var(--bg);
+  overflow: hidden;
+  text-align: center;
+}
+
+.contact-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(255,74,10,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.contact-inner {
+  position: relative;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.contact-inner h2 {
+  font-size: clamp(32px, 4vw, 60px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+
+.contact-lead {
+  font-size: clamp(15px, 1.3vw, 18px);
+  color: rgba(244,245,242,0.58);
+  line-height: 1.6;
+  margin: 0 0 48px;
+}
+
+.contact-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.contact-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 40px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s;
+  min-width: 200px;
+}
+.contact-btn:hover { transform: translateY(-3px); opacity: 0.92; }
+
+.contact-btn svg {
+  width: 36px;
+  height: 36px;
+}
+
+.contact-btn span:not(.contact-btn__num) {
+  font-size: 18px;
+  letter-spacing: 0.02em;
+}
+
+.contact-btn__num {
+  font-size: 13px;
+  opacity: 0.75;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.contact-btn--whatsapp {
+  background: #1DA851;
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(29,168,81,0.25);
+}
+.contact-btn--whatsapp:hover { box-shadow: 0 12px 40px rgba(29,168,81,0.35); }
+
+.contact-btn--telegram {
+  background: #229ED9;
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(34,158,217,0.25);
+}
+.contact-btn--telegram:hover { box-shadow: 0 12px 40px rgba(34,158,217,0.35); }
+
+.contact-meta {
+  font-size: 12px;
+  color: rgba(244,245,242,0.35);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
