@@ -306,6 +306,9 @@ h1 span {
   position: absolute;
   inset: 0;
   z-index: 2;
+  /* Плавное исчезновение снизу — стол растворяется */
+  mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 88%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 88%);
   filter:
     drop-shadow(0 40px 80px rgba(0, 0, 0, 0.55))
     drop-shadow(0 0 60px rgba(255, 74, 10, 0.08));

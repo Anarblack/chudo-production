@@ -1809,13 +1809,13 @@ function CinemaCameraModel({ rotationRef }) {
     box.getSize(size);
     box.getCenter(center);
 
-    // Поднимаем камеру вверх — убираем «стол» из кадра
-    clonedScene.position.set(-center.x, -center.y + size.y * 0.18, -center.z);
+    // Поднимаем камеру вверх — стол уходит за нижний край
+    clonedScene.position.set(-center.x, -center.y + size.y * 0.32, -center.z);
 
     const maxDimension = Math.max(size.x, size.y, size.z) || 1;
     return {
       scene: clonedScene,
-      scale: 5.8 / maxDimension,
+      scale: 6.2 / maxDimension,
     };
   }, [gltf]);
 
@@ -1885,7 +1885,7 @@ function CameraScene({ rotationRef }) {
   return (
     <Canvas
       aria-hidden="true"
-      camera={{ position: [3.25, 0.6, 5.2], fov: 30 }}
+      camera={{ position: [3.25, 1.8, 5.2], fov: 28 }}
       dpr={[1, 1.7]}
       gl={{
         antialias: true,
