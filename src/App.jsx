@@ -818,7 +818,7 @@ function VideoModal({ item, onClose }) {
   );
 }
 
-function PortfolioCard({ item, style, isActive, isDimmed, onSelect, onOpenVideo }) {
+function PortfolioCard({ item, style, isActive, isDimmed, onSelect }) {
   return (
     <motion.button
       type="button"
@@ -828,15 +828,7 @@ function PortfolioCard({ item, style, isActive, isDimmed, onSelect, onOpenVideo 
         isDimmed ? 'is-dimmed' : '',
       ].join(' ')}
       style={style}
-      onClick={() => {
-        if (isActive) {
-          // Карточка уже активна — открываем видео
-          onOpenVideo(item);
-        } else {
-          // Первый клик — делаем активной
-          onSelect();
-        }
-      }}
+      onClick={onSelect}
       aria-pressed={isActive}
       aria-label={`${item.title}. ${item.category}${isActive ? ' — нажмите для просмотра' : ''}`}
       initial={false}
