@@ -285,40 +285,39 @@ const portfolioItems = [
 
 const comparisonItems = [
   {
-    ordinary: 'Снять красиво',
-    chudo: 'Понять задачу бизнеса',
-    description: 'Разбираем, зачем компании видео: продажи, доверие, объяснение продукта, имидж или контент.',
-    tags: ['Strategy', 'Business task'],
+    ordinary: 'Снять и отдать файл',
+    chudo: 'Стратегия до первого кадра',
+    description: 'Начинаем с вопроса: что должен сделать зритель после просмотра? Покупка, доверие, заявка или узнаваемость — от этого выстраивается весь ролик.',
+    tags: ['Strategy', 'Goal', 'Brief'],
+    icon: '◎',
   },
   {
-    ordinary: 'Сценарий по ходу',
-    chudo: 'Идея и сценарий до производства',
-    description: 'Формулируем главный смысл, структуру ролика, визуальный стиль и ключевые сообщения до съёмки.',
-    tags: ['Idea', 'Script'],
+    ordinary: 'Сценарий по ходу съёмки',
+    chudo: 'Идея, сценарий и раскадровка',
+    description: 'До выезда на площадку прописываем каждую сцену, сообщение и визуальный стиль. Съёмка идёт по плану — без хаоса и переделок.',
+    tags: ['Script', 'Storyboard', 'Prep'],
+    icon: '⬡',
   },
   {
-    ordinary: 'Один ролик',
+    ordinary: 'Один итоговый ролик',
     chudo: 'Контент-система из одной съёмки',
-    description: 'Из одного проекта можно получить главный ролик, короткие версии, Reels, Stories, видео для WhatsApp, сайта и презентаций.',
+    description: 'Главный ролик, короткие версии, Reels, Stories, видео для WhatsApp и сайта — всё из одной производственной сессии.',
     tags: ['Content system', 'Reels', 'Stories'],
+    icon: '⬢',
   },
   {
-    ordinary: 'Видео просто публикуется',
-    chudo: 'Адаптация под площадки',
-    description: 'Готовим материалы под Instagram, TikTok, YouTube, сайт, рекламу, презентации и отдел продаж.',
-    tags: ['Instagram', 'TikTok', 'YouTube'],
-  },
-  {
-    ordinary: 'Материал остаётся в архиве',
+    ordinary: 'Видео публикуется и забывается',
     chudo: 'Видео работает в продажах',
-    description: 'Создаём материалы, которые менеджеры могут отправлять клиентам после звонка, заявки или встречи.',
+    description: 'Делаем форматы, которые менеджеры отправляют клиентам после звонка, встречи или заявки. Видео становится инструментом, а не контентом.',
     tags: ['Sales', 'CRM', 'WhatsApp'],
+    icon: '▲',
   },
   {
-    ordinary: 'Много хаоса и переделок',
-    chudo: 'Полный цикл без лишней нагрузки',
-    description: 'Берём на себя путь от брифа, идеи и сценария до съёмки, монтажа, звука, цвета и финальных версий.',
-    tags: ['Full cycle', 'Production', 'Postproduction'],
+    ordinary: 'Результат непредсказуем',
+    chudo: 'Полный цикл под ключ',
+    description: 'Бриф → идея → сценарий → съёмка → монтаж → цветокоррекция → звук → финальные версии. Один контакт, прозрачный процесс, понятный результат.',
+    tags: ['Full cycle', 'Production', 'Post'],
+    icon: '◈',
   },
 ];
 
@@ -1154,7 +1153,7 @@ function OfferSection() {
   );
 }
 
-function ComparisonRow({ item, index, isActive, onActivate, onDeactivate }) {
+function ComparisonRow({ item, index, isActive, onActivate }) {
   return (
     <motion.article
       className={isActive ? 'comparison-row is-active' : 'comparison-row'}
@@ -1163,70 +1162,56 @@ function ComparisonRow({ item, index, isActive, onActivate, onDeactivate }) {
       viewport={{ once: true, amount: 0.42 }}
       onViewportEnter={() => onActivate(index)}
       onPointerEnter={() => onActivate(index)}
-      onPointerLeave={onDeactivate}
-      onFocus={() => onActivate(index)}
-      onBlur={onDeactivate}
       onClick={() => onActivate(index)}
       tabIndex={0}
-      aria-label={`${item.ordinary}. ${item.chudo}`}
+      aria-label={`${item.ordinary} → ${item.chudo}`}
     >
+      {/* Левая карточка — обычная съёмка */}
       <motion.div
         className="comparison-card comparison-card--ordinary"
         variants={{
-          hidden: { opacity: 0, y: 22, scale: 0.985, filter: 'grayscale(1) blur(8px)' },
-          visible: {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            filter: 'grayscale(0.85) blur(0px)',
-            transition: { duration: 0.54, ease: [0.2, 0.8, 0.2, 1] },
-          },
+          hidden: { opacity: 0, y: 18, filter: 'blur(8px)' },
+          visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] } },
         }}
       >
-        <span>Обычная съёмка</span>
+        <span className="comparison-card__label">Обычная съёмка</span>
         <strong>{item.ordinary}</strong>
       </motion.div>
 
+      {/* Стрелка-трансформ */}
       <motion.div
         className="comparison-transform"
         variants={{
-          hidden: { opacity: 0, scaleX: 0.6 },
-          visible: {
-            opacity: 1,
-            scaleX: 1,
-            transition: { duration: 0.42, delay: 0.20, ease: 'easeOut' },
-          },
+          hidden: { opacity: 0, scaleX: 0.5 },
+          visible: { opacity: 1, scaleX: 1, transition: { duration: 0.38, delay: 0.18, ease: 'easeOut' } },
         }}
         aria-hidden="true"
       >
+        <span className="comparison-transform__icon">{item.icon}</span>
         <i />
-        <small>обычная съёмка → продуманный видеопродукт</small>
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
       </motion.div>
 
+      {/* Правая карточка — подход ChuDo */}
       <motion.div
         className="comparison-card comparison-card--chudo"
         variants={{
-          hidden: { opacity: 0, y: 30, x: -12, scale: 0.975, filter: 'blur(12px)' },
-          visible: {
-            opacity: 1,
-            y: 0,
-            x: 0,
-            scale: 1,
-            filter: 'blur(0px)',
-            transition: { duration: 0.64, delay: 0.30, ease: [0.2, 0.8, 0.2, 1] },
-          },
+          hidden: { opacity: 0, y: 24, x: -10, filter: 'blur(10px)' },
+          visible: { opacity: 1, y: 0, x: 0, filter: 'blur(0px)', transition: { duration: 0.58, delay: 0.26, ease: [0.2, 0.8, 0.2, 1] } },
         }}
       >
-        <span>Подход Chudo Prod</span>
+        <span className="comparison-card__label comparison-card__label--chudo">Подход ChuDo</span>
         <strong>{item.chudo}</strong>
 
         <AnimatePresence initial={false}>
           {isActive && (
             <motion.div
               className="comparison-card__detail"
-              initial={{ opacity: 0, height: 0, y: -6 }}
+              initial={{ opacity: 0, height: 0, y: -4 }}
               animate={{ opacity: 1, height: 'auto', y: 0 }}
-              exit={{ opacity: 0, height: 0, y: -6 }}
+              exit={{ opacity: 0, height: 0, y: -4 }}
               transition={{ duration: 0.26, ease: 'easeOut' }}
             >
               <p>{item.description}</p>
@@ -1267,10 +1252,10 @@ function UniqueValueSection() {
         transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
       >
         <p className="eyebrow">Наш подход</p>
-        <h2 id="usp-title">Не просто съёмка. Продакшен под задачу бизнеса</h2>
+        <h2 id="usp-title">Не просто съёмка.<br />Продакшен под задачу бизнеса.</h2>
         <p>
-          Мы не начинаем с вопроса «что снять?». Мы начинаем с вопроса: какую задачу должно решить
-          видео после публикации?
+          Мы не начинаем с вопроса «что снять?». Мы начинаем с вопроса:
+          какую задачу должно решить видео после публикации?
         </p>
       </motion.header>
 
@@ -1281,27 +1266,10 @@ function UniqueValueSection() {
             index={index}
             isActive={activeIndex === index}
             onActivate={setActiveIndex}
-            onDeactivate={() => {}}
             key={item.chudo}
           />
         ))}
       </div>
-
-      <motion.footer
-        className="usp-footer"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.45 }}
-        transition={{ duration: 0.62, ease: 'easeOut' }}
-      >
-        <p>
-          Мы снимаем не ради самого видео. Мы создаём материал, который бизнес может использовать в
-          коммуникации, продажах и продвижении.
-        </p>
-        <a className="button button--primary" href="#contact">
-          Обсудить проект
-        </a>
-      </motion.footer>
     </section>
   );
 }
