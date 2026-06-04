@@ -269,6 +269,10 @@ const portfolioItems = [
     category: 'Креатив',
     serviceType: 'AI и креативные видеоформаты',
     image: 'https://picsum.photos/seed/chudo-ai-creative/1200/750',
+    media: {
+      type: 'video',
+      src: '/videos/ai-creative.mp4',
+    },
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Смелая визуальная подача, AI-вставки и клиповая динамика.',
