@@ -1298,44 +1298,31 @@ h1 span {
   min-height: 100svh;
   padding: clamp(76px, 8vw, 124px) clamp(22px, 4vw, 54px) clamp(80px, 8vw, 120px);
   overflow: hidden;
-  /* Фон: тёмный с двумя цветовыми акцентами по диагонали */
-  background:
-    radial-gradient(ellipse 55% 40% at 8% 20%, rgba(60, 60, 60, 0.35), transparent),
-    radial-gradient(ellipse 50% 45% at 92% 80%, rgba(255, 74, 10, 0.12), transparent),
-    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(10, 10, 14, 0.9), transparent),
-    linear-gradient(160deg, #080809 0%, #0c0b0b 50%, #0a0808 100%);
+  background: #080809;
   isolation: isolate;
 }
 
-/* Тонкая сетка */
+/* Чистая сетка — единственный фоновый элемент */
 .usp-section::before {
   position: absolute;
   inset: 0;
   z-index: 0;
   content: "";
   background:
-    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-  background-size: 80px 80px;
-  mask-image: linear-gradient(to bottom, transparent 5%, #000 20%, #000 80%, transparent 95%);
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom,
+    transparent 0%,
+    #000 12%,
+    #000 88%,
+    transparent 100%);
   pointer-events: none;
 }
 
-/* Диагональная линия-разделитель */
+/* Убираем диагональную линию */
 .usp-section::after {
-  position: absolute;
-  top: 0; bottom: 0;
-  left: 50%;
-  z-index: 0;
-  content: "";
-  width: 1px;
-  background: linear-gradient(to bottom,
-    transparent 0%,
-    rgba(255, 255, 255, 0.06) 20%,
-    rgba(255, 74, 10, 0.2) 50%,
-    rgba(255, 255, 255, 0.06) 80%,
-    transparent 100%);
-  pointer-events: none;
+  display: none;
 }
 
 .usp-grain {
@@ -1343,7 +1330,7 @@ h1 span {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.18;
+  opacity: 0.12;
   background-image: repeating-radial-gradient(circle at 18% 28%, rgba(255,255,255,0.1) 0 1px, transparent 1px 4px);
   mix-blend-mode: overlay;
 }
@@ -1441,35 +1428,31 @@ h1 span {
   transition: border-color 220ms ease, box-shadow 220ms ease;
 }
 
-/* Левая — серая, приглушённая */
+/* Левая — серая, непрозрачная */
 .comparison-card--ordinary {
-  border: 1px solid rgba(255,255,255,0.07);
-  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #0f0f10;
 }
 
 .comparison-row.is-active .comparison-card--ordinary {
-  border-color: rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.12);
+  background: #111113;
 }
 
-/* Правая — оранжевая, живая */
+/* Правая — оранжевая, непрозрачная */
 .comparison-card--chudo {
   border: 1px solid rgba(255,74,10,0.2);
-  background:
-    radial-gradient(ellipse 80% 60% at 90% 10%, rgba(255,74,10,0.18), transparent 60%),
-    rgba(255,74,10,0.04);
-  box-shadow: 0 0 0 0 rgba(255,74,10,0);
-  transition: border-color 220ms ease, box-shadow 220ms ease;
+  background: #110d0b;
+  box-shadow: none;
+  transition: border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
 }
 
 .comparison-row.is-active .comparison-card--chudo {
   border-color: rgba(255,100,40,0.45);
-  background:
-    radial-gradient(ellipse 80% 60% at 90% 10%, rgba(255,74,10,0.24), transparent 60%),
-    rgba(255,74,10,0.06);
+  background: #140e0b;
   box-shadow:
-    0 0 48px rgba(255,74,10,0.12),
-    0 16px 48px rgba(0,0,0,0.4);
+    0 0 48px rgba(255,74,10,0.1),
+    0 16px 48px rgba(0,0,0,0.5);
 }
 
 /* Лейблы */
