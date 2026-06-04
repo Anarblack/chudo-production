@@ -119,17 +119,26 @@ const painItemVariants = {
 
 const services = [
   {
-    title: 'Рекламные ролики',
-    description: 'Видео для продвижения продукта, услуги, объекта или бренда в digital-среде.',
-    tags: ['Attention', 'Product', 'Campaign'],
+    title: 'Рекламные ролики для продукта и услуги',
+    description: 'Короткие промо-видео для запуска, продвижения и объяснения продукта, услуги, объекта или бренда.',
+    tags: ['Promo', 'Product', 'Launch'],
     visualTheme: {
       accent: '#f05a28',
       glow: 'rgba(240, 90, 40, 0.28)',
     },
   },
   {
-    title: 'Имиджевые видео',
-    description: 'Ролики, которые формируют образ компании, усиливают доверие и визуально раскрывают бренд.',
+    title: 'Контент-пакеты для соцсетей',
+    description: 'Из одной съёмки собираем систему материалов: Reels, Shorts, Stories, обложки и версии под разные площадки.',
+    tags: ['Reels', 'Shorts', 'Stories'],
+    visualTheme: {
+      accent: '#a78bff',
+      glow: 'rgba(167, 139, 255, 0.22)',
+    },
+  },
+  {
+    title: 'Имиджевые и бренд-ролики',
+    description: 'Видео, которое формирует образ компании: стиль, доверие, масштаб, атмосфера и сильные стороны бренда.',
     tags: ['Brand', 'Trust', 'Image'],
     visualTheme: {
       accent: '#d8dde7',
@@ -137,35 +146,17 @@ const services = [
     },
   },
   {
-    title: 'Контент для соцсетей',
-    description: 'Reels, Shorts, TikTok и короткие форматы для регулярного присутствия бренда в ленте.',
-    tags: ['Reels', 'Shorts', 'TikTok', 'Stories'],
-    visualTheme: {
-      accent: '#8fb8ff',
-      glow: 'rgba(143, 184, 255, 0.24)',
-    },
-  },
-  {
-    title: 'Презентационные видео',
-    description: 'Видео для сайта, встреч, выставок, партнёров, инвесторов и коммерческих предложений.',
-    tags: ['Presentation', 'Partners', 'Pitch'],
-    visualTheme: {
-      accent: '#c9b37e',
-      glow: 'rgba(201, 179, 126, 0.22)',
-    },
-  },
-  {
     title: 'Видео для отдела продаж',
-    description: 'Материалы, которые менеджеры могут отправлять клиентам после звонка, заявки или встречи.',
-    tags: ['Sales', 'CRM', 'WhatsApp', 'Presentation'],
+    description: 'Материалы для сайта, КП, WhatsApp, CRM, презентаций и рассылок, чтобы менеджеру было проще показать ценность клиенту.',
+    tags: ['Sales', 'CRM', 'WhatsApp'],
     visualTheme: {
       accent: '#79d7b6',
       glow: 'rgba(121, 215, 182, 0.2)',
     },
   },
   {
-    title: 'Видеообзоры продуктов и объектов',
-    description: 'Показываем автомобили, недвижимость, пространства, товары и услуги через понятную визуальную подачу.',
+    title: 'Обзоры продуктов, объектов и техники',
+    description: 'Авто, недвижимость, оборудование, пространства и товары: показываем детали, преимущества и сценарии использования.',
     tags: ['Review', 'Object', 'Details'],
     visualTheme: {
       accent: '#b9c6d9',
@@ -174,7 +165,7 @@ const services = [
   },
   {
     title: 'Event-видео',
-    description: 'Aftermovie, highlights, backstage и промо-ролики для мероприятий, запусков и событий.',
+    description: 'Aftermovie, highlights, backstage и промо события: эмоции, гости, площадка, динамика и атмосфера.',
     tags: ['Event', 'Highlights', 'Backstage'],
     visualTheme: {
       accent: '#d74b52',
@@ -182,30 +173,21 @@ const services = [
     },
   },
   {
-    title: 'Интервью и экспертный контент',
-    description: 'Видео с руководителями, специалистами и клиентами для усиления доверия и экспертности.',
-    tags: ['Trust', 'Expert', 'People'],
+    title: 'Экспертный и B2B-контент',
+    description: 'Интервью, руководители, команда, кейсы и объяснение сложных услуг простым языком.',
+    tags: ['B2B', 'Expert', 'Trust'],
     visualTheme: {
       accent: '#f1efe8',
       glow: 'rgba(241, 239, 232, 0.18)',
     },
   },
   {
-    title: 'Контент-пакеты',
-    description: 'Из одной съёмки собираем систему материалов: главный ролик, короткие версии, вертикальные видео и нарезки.',
-    tags: ['Main film', 'Reels', 'Stories'],
+    title: 'AI и креативные видеоформаты',
+    description: 'Музыкальные клипы, AI-вставки и нестандартные визуальные решения, когда ролику нужен более смелый стиль.',
+    tags: ['AI', 'Creative', 'Music clip'],
     visualTheme: {
-      accent: '#a78bff',
-      glow: 'rgba(167, 139, 255, 0.22)',
-    },
-  },
-  {
-    title: 'Продакшен-сопровождение',
-    description: 'Регулярное создание видеоматериалов для брендов, которым нужен постоянный визуальный партнёр.',
-    tags: ['Retainer', 'System', 'Partner'],
-    visualTheme: {
-      accent: '#92a0ad',
-      glow: 'rgba(146, 160, 173, 0.22)',
+      accent: '#8fb8ff',
+      glow: 'rgba(143, 184, 255, 0.24)',
     },
   },
 ];
@@ -215,41 +197,51 @@ const portfolioItems = [
     id: 'chevrolet-model',
     title: 'Chevrolet — модельный ролик',
     category: 'Авто',
-    serviceType: 'Рекламные ролики',
+    serviceType: 'Рекламные ролики для продукта и услуги',
     image: 'https://picsum.photos/seed/chudo-chevrolet/1200/750',
     videoUrl: '#',
     portfolioUrl: '#',
-    description: 'Короткий рекламный ролик для продвижения модели.',
+    description: 'Короткий промо-ролик для продвижения модели.',
   },
   {
-    id: 'kia-dealer',
-    title: 'KIA — контент для дилера',
-    category: 'Авто',
-    serviceType: 'Контент для соцсетей',
-    image: 'https://picsum.photos/seed/chudo-kia-reels/1200/750',
+    id: 'content-pack',
+    title: 'Content Pack — серия материалов',
+    category: 'Система контента',
+    serviceType: 'Контент-пакеты для соцсетей',
+    image: 'https://picsum.photos/seed/chudo-content-pack/1200/750',
     videoUrl: '#',
     portfolioUrl: '#',
-    description: 'Серия вертикальных роликов для digital-продвижения.',
+    description: 'Главный ролик, вертикальные видео, нарезки и обложки из одной съёмки.',
   },
   {
-    id: 'avangard-complex',
-    title: 'Avangard — жилой комплекс',
-    category: 'Строительство',
-    serviceType: 'Презентационные видео',
-    image: 'https://picsum.photos/seed/chudo-avangard/1200/750',
+    id: 'brand-image',
+    title: 'Brand — имиджевый ролик',
+    category: 'Бренд',
+    serviceType: 'Имиджевые и бренд-ролики',
+    image: 'https://picsum.photos/seed/chudo-brand/1200/750',
     videoUrl: '#',
     portfolioUrl: '#',
-    description: 'Видео объекта для сайта, соцсетей и отдела продаж.',
+    description: 'Визуальная история бренда, атмосфера и доверие.',
   },
   {
     id: 'ngroup-object',
     title: 'Ngroup — объект недвижимости',
-    category: 'Строительство',
+    category: 'Продажи',
     serviceType: 'Видео для отдела продаж',
     image: 'https://picsum.photos/seed/chudo-ngroup-sales/1200/750',
     videoUrl: '#',
     portfolioUrl: '#',
-    description: 'Материал для презентации объекта клиентам.',
+    description: 'Материал для сайта, КП и отправки клиентам после заявки.',
+  },
+  {
+    id: 'product-review',
+    title: 'Product — видеообзор объекта',
+    category: 'Обзор',
+    serviceType: 'Обзоры продуктов, объектов и техники',
+    image: 'https://picsum.photos/seed/chudo-product-review/1200/750',
+    videoUrl: '#',
+    portfolioUrl: '#',
+    description: 'Понятная демонстрация деталей, масштаба и преимуществ продукта.',
   },
   {
     id: 'event-aftermovie',
@@ -262,54 +254,24 @@ const portfolioItems = [
     description: 'Атмосферный ролик с мероприятия.',
   },
   {
-    id: 'brand-image',
-    title: 'Brand — имиджевый ролик',
-    category: 'Бренд',
-    serviceType: 'Имиджевые видео',
-    image: 'https://picsum.photos/seed/chudo-brand/1200/750',
-    videoUrl: '#',
-    portfolioUrl: '#',
-    description: 'Визуальная история бренда.',
-  },
-  {
-    id: 'product-review',
-    title: 'Product — видеообзор объекта',
-    category: 'Обзор',
-    serviceType: 'Видеообзоры продуктов и объектов',
-    image: 'https://picsum.photos/seed/chudo-product-review/1200/750',
-    videoUrl: '#',
-    portfolioUrl: '#',
-    description: 'Понятная демонстрация деталей, масштаба и преимуществ продукта.',
-  },
-  {
     id: 'expert-interview',
-    title: 'Expert — интервью',
+    title: 'Expert — B2B-интервью',
     category: 'Экспертность',
-    serviceType: 'Интервью и экспертный контент',
+    serviceType: 'Экспертный и B2B-контент',
     image: 'https://picsum.photos/seed/chudo-interview/1200/750',
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Контент с экспертом для доверия, объяснения и прогрева аудитории.',
   },
   {
-    id: 'content-pack',
-    title: 'Content Pack — серия материалов',
-    category: 'Система контента',
-    serviceType: 'Контент-пакеты',
-    image: 'https://picsum.photos/seed/chudo-content-pack/1200/750',
+    id: 'creative-ai',
+    title: 'AI / Music — креативный формат',
+    category: 'Креатив',
+    serviceType: 'AI и креативные видеоформаты',
+    image: 'https://picsum.photos/seed/chudo-ai-creative/1200/750',
     videoUrl: '#',
     portfolioUrl: '#',
-    description: 'Главный ролик, короткие версии, вертикальные видео и обложки из одной съёмки.',
-  },
-  {
-    id: 'production-retainer',
-    title: 'Production — сопровождение',
-    category: 'Продакшен',
-    serviceType: 'Продакшен-сопровождение',
-    image: 'https://picsum.photos/seed/chudo-production/1200/750',
-    videoUrl: '#',
-    portfolioUrl: '#',
-    description: 'Регулярный цикл планирования, съёмок и выпуска материалов для бренда.',
+    description: 'Смелая визуальная подача, AI-вставки и клиповая динамика.',
   },
 ];
 
@@ -728,6 +690,50 @@ function getFrontPortfolioItem(rotation) {
   ).item;
 }
 
+function getProjectMedia(item) {
+  const media = item.media ?? {};
+
+  if (media.type === 'video' && media.src) {
+    return {
+      type: 'video',
+      src: media.src,
+      poster: media.poster ?? item.image,
+    };
+  }
+
+  return {
+    type: 'image',
+    src: media.src ?? item.image,
+  };
+}
+
+function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = false }) {
+  const media = getProjectMedia(item);
+
+  if (media.type === 'video') {
+    const isPlayer = mode === 'player';
+
+    return (
+      <video
+        src={media.src}
+        poster={media.poster}
+        muted={!isPlayer}
+        loop={!isPlayer}
+        autoPlay={!isPlayer}
+        playsInline
+        controls={isPlayer}
+        preload={isPlayer ? 'auto' : 'metadata'}
+      />
+    );
+  }
+
+  return <img src={media.src} alt="" loading={loading} draggable={draggable} />;
+}
+
+function isDirectVideoUrl(url) {
+  return /\.(mp4|webm|ogg)(?:[?#].*)?$/i.test(url);
+}
+
 function PortfolioCard({ item, style, isActive, isDimmed, onSelect }) {
   return (
     <motion.button
@@ -745,7 +751,7 @@ function PortfolioCard({ item, style, isActive, isDimmed, onSelect }) {
       animate={{ opacity: isDimmed ? 0.24 : Number(style['--card-opacity']) }}
       transition={{ duration: 0.32, ease: 'easeOut' }}
     >
-      <img src={item.image} alt="" loading="lazy" draggable="false" />
+      <ProjectMedia item={item} draggable={false} />
       <span className="portfolio-card__shade" />
       <span className="portfolio-card__meta">
         <span>{item.category}</span>
@@ -893,7 +899,7 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem }) {
               key={item.id}
               onClick={() => onSelectItem(item)}
             >
-              <img src={item.image} alt="" loading="lazy" />
+              <ProjectMedia item={item} />
               <span>{item.category}</span>
               <strong>{item.title}</strong>
             </button>
@@ -1060,10 +1066,10 @@ function OfferSection() {
           transition={{ duration: 0.72, ease: [0.2, 0.8, 0.2, 1] }}
         >
           <p className="eyebrow">Наши решения</p>
-          <h2 id="offer-title">Что мы делаем</h2>
+          <h2 id="offer-title">Решения под задачу</h2>
           <p>
-            Создаём видеоконтент под задачи бизнеса: от одного ролика до полноценной системы
-            материалов для продаж, соцсетей и презентаций.
+            Закрываем не только съёмку, но и задачу: продвижение, продажи, соцсети, имидж
+            и регулярный контент.
           </p>
         </motion.div>
 
@@ -1286,7 +1292,7 @@ function CaseCard({ item, index, onSelect }) {
       transition={{ duration: 0.42, delay: index * 0.035, ease: [0.2, 0.8, 0.2, 1] }}
       aria-label={`Смотреть кейс ${item.title}`}
     >
-      <img src={item.image} alt="" loading="lazy" draggable="false" />
+      <ProjectMedia item={item} draggable={false} />
       <span className="case-card__wash" />
       <span className="case-card__play" aria-hidden="true" />
       <span className="case-card__content">
@@ -1321,6 +1327,13 @@ function CaseGrid({ items, onSelectCase }) {
 
 function CaseModal({ item, onClose }) {
   const hasVideo = item.videoUrl && item.videoUrl !== '#';
+  const media = getProjectMedia(item);
+  const directVideoUrl = media.type === 'video'
+    ? media.src
+    : hasVideo && isDirectVideoUrl(item.videoUrl)
+      ? item.videoUrl
+      : null;
+  const embedVideoUrl = hasVideo && !directVideoUrl ? item.videoUrl : null;
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -1366,11 +1379,13 @@ function CaseModal({ item, onClose }) {
         </button>
 
         <div className="case-modal__media">
-          {hasVideo ? (
-            <iframe src={item.videoUrl} title={item.title} allow="autoplay; fullscreen; picture-in-picture" />
+          {directVideoUrl ? (
+            <video src={directVideoUrl} poster={media.poster ?? item.image} controls playsInline preload="metadata" />
+          ) : embedVideoUrl ? (
+            <iframe src={embedVideoUrl} title={item.title} allow="autoplay; fullscreen; picture-in-picture" />
           ) : (
             <>
-              <img src={item.image} alt="" />
+              <ProjectMedia item={item} loading="eager" />
               <span>Видео будет добавлено позже.</span>
             </>
           )}

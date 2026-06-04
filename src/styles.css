@@ -1774,7 +1774,8 @@ h1 span {
   transition: opacity 240ms ease;
 }
 
-.case-card img {
+.case-card img,
+.case-card video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1926,7 +1927,9 @@ h1 span {
 }
 
 .case-card:hover img,
-.case-card:focus-visible img {
+.case-card:focus-visible img,
+.case-card:hover video,
+.case-card:focus-visible video {
   filter: saturate(1.03) contrast(1.08) brightness(0.82);
   transform: scale(1.075);
 }
@@ -2010,7 +2013,8 @@ h1 span {
 }
 
 .case-modal__media img,
-.case-modal__media iframe {
+.case-modal__media iframe,
+.case-modal__media video {
   display: block;
   width: 100%;
   height: 100%;
@@ -3085,7 +3089,8 @@ h1 span {
   filter: grayscale(0.78) brightness(0.52);
 }
 
-.portfolio-card img {
+.portfolio-card img,
+.portfolio-card video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -3166,7 +3171,8 @@ h1 span {
   border-color: color-mix(in srgb, var(--service-accent) 60%, white 20%);
 }
 
-.portfolio-mobile-card img {
+.portfolio-mobile-card img,
+.portfolio-mobile-card video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -3410,7 +3416,8 @@ h1 span {
 
   .case-modal__media,
   .case-modal__media img,
-  .case-modal__media iframe {
+  .case-modal__media iframe,
+  .case-modal__media video {
     min-height: 360px;
   }
 
@@ -3874,7 +3881,8 @@ h1 span {
 
   .case-modal__media,
   .case-modal__media img,
-  .case-modal__media iframe {
+  .case-modal__media iframe,
+  .case-modal__media video {
     min-height: 250px;
   }
 
