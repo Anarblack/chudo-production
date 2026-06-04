@@ -839,7 +839,7 @@ function PortfolioCard({ item, style, isActive, isDimmed, onSelect }) {
       aria-pressed={isActive}
       aria-label={`${item.title}. ${item.category}${isActive ? ' — нажмите для просмотра' : ''}`}
       initial={false}
-      animate={{ opacity: isDimmed ? 0.24 : Number(style['--card-opacity']) }}
+      animate={{ opacity: isDimmed ? 0.24 : 1 }}
       transition={{ duration: 0.32, ease: 'easeOut' }}
     >
       <ProjectMedia item={item} draggable={false} />
@@ -902,7 +902,7 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
       const screenX = isActive ? point.x * width * 0.16 : point.x * width;
       const screenY = isActive ? point.y * height * 0.14 : point.y * height;
       const scale = isActive ? 1.16 : 0.58 + depth * 0.34;
-      const opacity = isActive ? 1 : 0.34 + depth * 0.56;
+      const opacity = 1; // все карточки непрозрачные
       const rotateY = isActive ? 0 : point.x * -24;
       const rotateX = isActive ? 0 : point.y * 14;
       return {

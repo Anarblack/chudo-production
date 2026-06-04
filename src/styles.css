@@ -3041,7 +3041,7 @@ h1 span {
   display: grid;
   width: clamp(156px, 15vw, 230px);
   aspect-ratio: 16 / 10;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 14px;
   padding: 0;
   overflow: hidden;
@@ -3061,13 +3061,25 @@ h1 span {
   transition:
     border-color 240ms ease,
     box-shadow 240ms ease,
-    filter 240ms ease,
     transform 240ms ease;
+  /* НЕ реагирует на hover по умолчанию */
+  pointer-events: none;
 }
 
-.portfolio-card:hover,
-.portfolio-card:focus-visible {
-  border-color: color-mix(in srgb, var(--service-accent) 58%, white 20%);
+/* Только активная карточка кликабельна */
+.portfolio-card.is-active {
+  pointer-events: auto;
+  border-color: color-mix(in srgb, var(--service-accent) 64%, white 26%);
+  box-shadow:
+    0 26px 80px rgba(0, 0, 0, 0.72),
+    0 0 44px var(--service-glow),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+
+.portfolio-card.is-active:hover,
+.portfolio-card.is-active:focus-visible {
+  border-color: color-mix(in srgb, var(--service-accent) 80%, white 30%);
   outline: none;
   transform:
     translate(-50%, -50%)
@@ -3077,16 +3089,14 @@ h1 span {
     scale(calc(var(--card-scale) * 1.04));
 }
 
-.portfolio-card.is-active {
-  border-color: color-mix(in srgb, var(--service-accent) 64%, white 26%);
-  box-shadow:
-    0 26px 80px rgba(0, 0, 0, 0.72),
-    0 0 44px var(--service-glow),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+/* Неактивные тоже кликабельны — для смены активной карточки */
+.portfolio-card:not(.is-active):not(.is-dimmed) {
+  pointer-events: auto;
 }
 
 .portfolio-card.is-dimmed {
   filter: grayscale(0.78) brightness(0.52);
+  pointer-events: none;
 }
 
 .portfolio-card img,
@@ -4113,9 +4123,14 @@ h1 span {
 
 /* ─── Custom Cursor ──────────────────────────────────── */
 
-body:has(.custom-cursor) { cursor: none !important; }
-body:has(.custom-cursor) a,
-body:has(.custom-cursor) button { cursor: none !important; }
+body:has(.custom-cursor):not(:has(.video-modal-backdrop)) {
+  cursor: none !important;
+}
+
+body:has(.custom-cursor):not(:has(.video-modal-backdrop)) a,
+body:has(.custom-cursor):not(:has(.video-modal-backdrop)) button {
+  cursor: none !important;
+}
 
 .custom-cursor {
   position: fixed;
@@ -4431,6 +4446,15 @@ body:has(.custom-cursor) button { cursor: none !important; }
   align-items: center;
   justify-content: center;
   padding: 20px;
+  cursor: auto;
+}
+
+.video-modal-backdrop * {
+  cursor: auto;
+}
+
+.video-modal-close {
+  cursor: pointer !important;
 }
 
 .video-modal-box {
