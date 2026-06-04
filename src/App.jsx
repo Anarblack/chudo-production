@@ -199,6 +199,7 @@ const portfolioItems = [
     category: 'Авто',
     serviceType: 'Рекламные ролики для продукта и услуги',
     image: 'https://picsum.photos/seed/chudo-chevrolet/1200/750',
+    media: { type: 'video', src: '/videos/chevrolet.mp4' },
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Короткий промо-ролик для продвижения модели.',
@@ -209,6 +210,7 @@ const portfolioItems = [
     category: 'Система контента',
     serviceType: 'Контент-пакеты для соцсетей',
     image: 'https://picsum.photos/seed/chudo-content-pack/1200/750',
+    media: { type: 'video', src: '/videos/content-pack.mp4' },
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Главный ролик, вертикальные видео, нарезки и обложки из одной съёмки.',
@@ -219,6 +221,7 @@ const portfolioItems = [
     category: 'Бренд',
     serviceType: 'Имиджевые и бренд-ролики',
     image: 'https://picsum.photos/seed/chudo-brand/1200/750',
+    media: { type: 'video', src: '/videos/brand.mp4' },
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Визуальная история бренда, атмосфера и доверие.',
@@ -229,6 +232,7 @@ const portfolioItems = [
     category: 'Продажи',
     serviceType: 'Видео для отдела продаж',
     image: 'https://picsum.photos/seed/chudo-ngroup-sales/1200/750',
+    media: { type: 'video', src: '/videos/ngroup.mp4' },
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Материал для сайта, КП и отправки клиентам после заявки.',
@@ -239,6 +243,7 @@ const portfolioItems = [
     category: 'Обзор',
     serviceType: 'Обзоры продуктов, объектов и техники',
     image: 'https://picsum.photos/seed/chudo-product-review/1200/750',
+    media: { type: 'video', src: '/videos/product-review.mp4' },
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Понятная демонстрация деталей, масштаба и преимуществ продукта.',
@@ -249,6 +254,7 @@ const portfolioItems = [
     category: 'Event',
     serviceType: 'Event-видео',
     image: 'https://picsum.photos/seed/chudo-event/1200/750',
+    media: { type: 'video', src: '/videos/event.mp4' },
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Атмосферный ролик с мероприятия.',
@@ -259,6 +265,7 @@ const portfolioItems = [
     category: 'Экспертность',
     serviceType: 'Экспертный и B2B-контент',
     image: 'https://picsum.photos/seed/chudo-interview/1200/750',
+    media: { type: 'video', src: '/videos/expert.mp4' },
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Контент с экспертом для доверия, объяснения и прогрева аудитории.',
@@ -269,10 +276,7 @@ const portfolioItems = [
     category: 'Креатив',
     serviceType: 'AI и креативные видеоформаты',
     image: 'https://picsum.photos/seed/chudo-ai-creative/1200/750',
-    media: {
-      type: 'video',
-      src: '/videos/ai-creative.mp4',
-    },
+    media: { type: 'video', src: '/videos/ai-creative.mp4' },
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Смелая визуальная подача, AI-вставки и клиповая динамика.',
@@ -738,7 +742,83 @@ function isDirectVideoUrl(url) {
   return /\.(mp4|webm|ogg)(?:[?#].*)?$/i.test(url);
 }
 
-function PortfolioCard({ item, style, isActive, isDimmed, onSelect }) {
+function VideoModal({ item, onClose }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  const src = item?.media?.src;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="video-modal-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.22 }}
+        onClick={onClose}
+      >
+        <motion.div
+          className="video-modal-box"
+          initial={{ scale: 0.9, opacity: 0, y: 24 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.92, opacity: 0, y: 16 }}
+          transition={{ duration: 0.28, ease: [0.2, 0.8, 0.2, 1] }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            className="video-modal-close"
+            onClick={onClose}
+            aria-label="Закрыть"
+            type="button"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+          <div className="video-modal-meta">
+            <span className="video-modal-category">{item.category}</span>
+            <strong className="video-modal-title">{item.title}</strong>
+          </div>
+          <div className="video-modal-player">
+            {src ? (
+              <video
+                ref={videoRef}
+                src={src}
+                poster={item.image}
+                controls
+                autoPlay
+                playsInline
+                preload="auto"
+              />
+            ) : (
+              <div className="video-modal-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none" />
+                </svg>
+                <p>Видео появится позже</p>
+                <span>{item.description}</span>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+function PortfolioCard({ item, style, isActive, isDimmed, onSelect, onOpenVideo }) {
   return (
     <motion.button
       type="button"
@@ -748,15 +828,29 @@ function PortfolioCard({ item, style, isActive, isDimmed, onSelect }) {
         isDimmed ? 'is-dimmed' : '',
       ].join(' ')}
       style={style}
-      onClick={onSelect}
+      onClick={() => {
+        if (isActive) {
+          onOpenVideo(item);
+        } else {
+          onSelect();
+        }
+      }}
       aria-pressed={isActive}
-      aria-label={`${item.title}. ${item.category}`}
+      aria-label={`${item.title}. ${item.category}${isActive ? ' — нажмите для просмотра' : ''}`}
       initial={false}
       animate={{ opacity: isDimmed ? 0.24 : Number(style['--card-opacity']) }}
       transition={{ duration: 0.32, ease: 'easeOut' }}
     >
       <ProjectMedia item={item} draggable={false} />
       <span className="portfolio-card__shade" />
+      {isActive && (
+        <span className="portfolio-card__play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="12" fillOpacity="0.55" />
+            <path d="M10 8l6 4-6 4V8z" />
+          </svg>
+        </span>
+      )}
       <span className="portfolio-card__meta">
         <span>{item.category}</span>
         <strong>{item.title}</strong>
@@ -766,7 +860,7 @@ function PortfolioCard({ item, style, isActive, isDimmed, onSelect }) {
   );
 }
 
-function PortfolioSphere({ activeService, activeItem, onSelectItem }) {
+function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo }) {
   const isMobile = useIsMobile();
   const stageRef = useRef(null);
   const dragStart = useRef({ x: 0, y: 0, rotation: { x: -0.16, y: 0.34 } });
@@ -941,11 +1035,9 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem }) {
             isActive={isActive}
             isDimmed={isDimmed}
             key={item.id}
+            onOpenVideo={onOpenVideo}
             onSelect={() => {
-              if (dragMoved.current) {
-                return;
-              }
-
+              if (dragMoved.current) return;
               markInteraction();
               onSelectItem(item);
             }}
@@ -1015,6 +1107,7 @@ function OfferSection() {
   const [selectedService, setSelectedService] = useState(services[0]);
   const [hoveredService, setHoveredService] = useState(null);
   const [activeItemId, setActiveItemId] = useState(portfolioItems[0].id);
+  const [videoItem, setVideoItem] = useState(null);
   const activeService = hoveredService ?? selectedService;
   const activeItem = portfolioItems.find((item) => item.id === activeItemId) ?? portfolioItems[0];
 
@@ -1058,6 +1151,7 @@ function OfferSection() {
           activeService={activeService}
           activeItem={activeItem}
           onSelectItem={selectPortfolioItem}
+          onOpenVideo={setVideoItem}
         />
       </motion.div>
 
@@ -1085,6 +1179,7 @@ function OfferSection() {
           onServicePreviewEnd={() => setHoveredService(null)}
         />
       </div>
+      {videoItem && <VideoModal item={videoItem} onClose={() => setVideoItem(null)} />}
     </section>
   );
 }
