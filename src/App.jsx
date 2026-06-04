@@ -830,8 +830,10 @@ function PortfolioCard({ item, style, isActive, isDimmed, onSelect, onOpenVideo 
       style={style}
       onClick={() => {
         if (isActive) {
+          // Карточка уже активна — открываем видео
           onOpenVideo(item);
         } else {
+          // Первый клик — делаем активной
           onSelect();
         }
       }}
@@ -984,6 +986,9 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
     setIsDragging(false);
     markInteraction();
     event.currentTarget.releasePointerCapture(event.pointerId);
+
+    // Сбрасываем флаг через tick — чтобы onClick карточки ещё мог проверить его
+    setTimeout(() => { dragMoved.current = false; }, 0);
   };
 
   if (isMobile) {
@@ -995,7 +1000,13 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
               type="button"
               className={item.id === activeItem.id ? 'portfolio-mobile-card is-active' : 'portfolio-mobile-card'}
               key={item.id}
-              onClick={() => onSelectItem(item)}
+              onClick={() => {
+                if (item.id === activeItem.id) {
+                  onOpenVideo(item);
+                } else {
+                  onSelectItem(item);
+                }
+              }}
             >
               <ProjectMedia item={item} />
               <span>{item.category}</span>

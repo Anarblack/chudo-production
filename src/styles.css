@@ -4395,7 +4395,7 @@ body:has(.custom-cursor) button { cursor: none !important; }
   align-items: center;
   justify-content: center;
   z-index: 4;
-  opacity: 0;
+  opacity: 0.7;
   transition: opacity 0.2s;
 }
 
@@ -4412,7 +4412,7 @@ body:has(.custom-cursor) button { cursor: none !important; }
 }
 
 .portfolio-card.is-active:hover .portfolio-card__play svg {
-  transform: scale(1.1);
+  transform: scale(1.12);
 }
 
 /* ─── Video Modal ────────────────────────────────────── */
