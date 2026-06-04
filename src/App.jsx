@@ -828,7 +828,14 @@ function PortfolioCard({ item, style, isActive, isDimmed, onSelect }) {
         isDimmed ? 'is-dimmed' : '',
       ].join(' ')}
       style={style}
-      onClick={onSelect}
+      // Если активная — останавливаем propagation на mousedown/pointerdown
+      // чтобы stage не начинал drag при клике на активную карточку
+      onPointerDown={(e) => { if (isActive) e.stopPropagation(); }}
+      onMouseDown={(e) => { if (isActive) e.stopPropagation(); }}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect();
+      }}
       aria-pressed={isActive}
       aria-label={`${item.title}. ${item.category}${isActive ? ' — нажмите для просмотра' : ''}`}
       initial={false}
@@ -839,13 +846,13 @@ function PortfolioCard({ item, style, isActive, isDimmed, onSelect }) {
       <span className="portfolio-card__shade" />
       {isActive && (
         <span className="portfolio-card__play" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="currentColor">
+          <svg viewBox="0 0 24 24" fill="currentColor" style={{ pointerEvents: 'none' }}>
             <circle cx="12" cy="12" r="12" fillOpacity="0.55" />
             <path d="M10 8l6 4-6 4V8z" />
           </svg>
         </span>
       )}
-      <span className="portfolio-card__meta">
+      <span className="portfolio-card__meta" style={{ pointerEvents: 'none' }}>
         <span>{item.category}</span>
         <strong>{item.title}</strong>
         <small>{item.serviceType}</small>
@@ -915,11 +922,14 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
   const markInteraction = () => { lastInteraction.current = performance.now(); };
 
   const handleCardClick = (item, isActive) => {
-    if (dragMoved.current) return;
     markInteraction();
     if (isActive) {
+      // Активная карточка — всегда открываем видео
+      // (drag уже заблокирован через stopPropagation в PortfolioCard)
       onOpenVideo(item);
     } else {
+      // Неактивная — только если не было drag
+      if (dragMoved.current) return;
       onSelectItem(item);
     }
   };
