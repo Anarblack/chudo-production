@@ -867,6 +867,7 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
   const stageRef = useRef(null);
   const dragStart = useRef({ x: 0, y: 0, rotation: { x: -0.16, y: 0.34 } });
   const dragMoved = useRef(false);
+  const isDraggingRef = useRef(false);
   const lastInteraction = useRef(0);
   const [rotation, setRotation] = useState({ x: -0.16, y: 0.34 });
   const [isHovering, setIsHovering] = useState(false);
@@ -879,30 +880,21 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
   useEffect(() => {
     let frameId = 0;
     let previous = performance.now();
-
     const tick = (now) => {
       const delta = Math.min(48, now - previous);
       previous = now;
-
-      if (!isHovering && !isDragging && now - lastInteraction.current > 3600) {
-        setRotation((current) => ({
-          x: current.x,
-          y: current.y + delta * 0.00013,
-        }));
+      if (!isHovering && !isDraggingRef.current && now - lastInteraction.current > 3600) {
+        setRotation((cur) => ({ x: cur.x, y: cur.y + delta * 0.00013 }));
       }
-
       frameId = window.requestAnimationFrame(tick);
     };
-
     frameId = window.requestAnimationFrame(tick);
-
     return () => window.cancelAnimationFrame(frameId);
-  }, [isDragging, isHovering]);
+  }, [isHovering]);
 
   const cards = useMemo(() => {
     const width = isMobile ? 0 : 250;
     const height = isMobile ? 0 : 150;
-
     return portfolioItems.map((item, index) => {
       const point = rotatePoint(getSphericalPoint(index, portfolioItems.length), rotation);
       const depth = (point.z + 1) / 2;
@@ -914,18 +906,13 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
       const opacity = isActive ? 1 : 0.34 + depth * 0.56;
       const rotateY = isActive ? 0 : point.x * -24;
       const rotateX = isActive ? 0 : point.y * 14;
-
       return {
-        item,
-        isActive,
+        item, isActive,
         isDimmed: serviceHasMatches && !matchesService,
         style: {
-          '--card-x': `${screenX}px`,
-          '--card-y': `${screenY}px`,
-          '--card-z': `${Math.round(point.z * 120)}px`,
-          '--card-scale': scale,
-          '--card-opacity': opacity,
-          '--card-rotate-x': `${rotateX}deg`,
+          '--card-x': `${screenX}px`, '--card-y': `${screenY}px`,
+          '--card-z': `${Math.round(point.z * 120)}px`, '--card-scale': scale,
+          '--card-opacity': opacity, '--card-rotate-x': `${rotateX}deg`,
           '--card-rotate-y': `${rotateY}deg`,
           zIndex: isActive ? 80 : Math.round(depth * 60),
         },
@@ -933,62 +920,46 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
     });
   }, [activeItem.id, isMobile, relatedIds, rotation, serviceHasMatches]);
 
-  const markInteraction = () => {
-    lastInteraction.current = performance.now();
-  };
+  const markInteraction = () => { lastInteraction.current = performance.now(); };
 
-  const handlePointerDown = (event) => {
-    if (isMobile) {
-      return;
-    }
-
-    setIsDragging(true);
-    dragMoved.current = false;
+  const handleCardClick = (item, isActive) => {
+    if (dragMoved.current) return;
     markInteraction();
-    dragStart.current = {
-      x: event.clientX,
-      y: event.clientY,
-      rotation,
-    };
-    event.currentTarget.setPointerCapture(event.pointerId);
+    if (isActive) {
+      onOpenVideo(item);
+    } else {
+      onSelectItem(item);
+    }
   };
 
-  const handlePointerMove = (event) => {
-    if (!isDragging || isMobile) {
-      return;
-    }
+  const handlePointerDown = (e) => {
+    if (isMobile) return;
+    isDraggingRef.current = true;
+    dragMoved.current = false;
+    setIsDragging(true);
+    markInteraction();
+    dragStart.current = { x: e.clientX, y: e.clientY, rotation };
+  };
 
-    const dx = event.clientX - dragStart.current.x;
-    const dy = event.clientY - dragStart.current.y;
-
-    if (Math.abs(dx) + Math.abs(dy) > 5) {
-      dragMoved.current = true;
-    }
-
+  const handlePointerMove = (e) => {
+    if (!isDraggingRef.current || isMobile) return;
+    const dx = e.clientX - dragStart.current.x;
+    const dy = e.clientY - dragStart.current.y;
+    if (Math.abs(dx) + Math.abs(dy) > 4) dragMoved.current = true;
     const nextRotation = {
       x: Math.max(-0.72, Math.min(0.72, dragStart.current.rotation.x - dy * 0.006)),
       y: dragStart.current.rotation.y + dx * 0.008,
     };
     const frontItem = getFrontPortfolioItem(nextRotation);
-
     setRotation(nextRotation);
-
-    if (frontItem.id !== activeItem.id) {
-      onSelectItem(frontItem);
-    }
+    if (frontItem.id !== activeItem.id) onSelectItem(frontItem);
   };
 
-  const handlePointerUp = (event) => {
-    if (!isDragging) {
-      return;
-    }
-
+  const handlePointerUp = () => {
+    isDraggingRef.current = false;
     setIsDragging(false);
     markInteraction();
-    event.currentTarget.releasePointerCapture(event.pointerId);
-
-    // Сбрасываем флаг через tick — чтобы onClick карточки ещё мог проверить его
-    setTimeout(() => { dragMoved.current = false; }, 0);
+    requestAnimationFrame(() => { dragMoved.current = false; });
   };
 
   if (isMobile) {
@@ -1000,13 +971,7 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
               type="button"
               className={item.id === activeItem.id ? 'portfolio-mobile-card is-active' : 'portfolio-mobile-card'}
               key={item.id}
-              onClick={() => {
-                if (item.id === activeItem.id) {
-                  onOpenVideo(item);
-                } else {
-                  onSelectItem(item);
-                }
-              }}
+              onClick={() => handleCardClick(item, item.id === activeItem.id)}
             >
               <ProjectMedia item={item} />
               <span>{item.category}</span>
@@ -1022,14 +987,11 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
     <div
       className={isDragging ? 'portfolio-sphere is-dragging' : 'portfolio-sphere'}
       onPointerEnter={() => setIsHovering(true)}
-      onPointerLeave={() => setIsHovering(false)}
+      onPointerLeave={() => { setIsHovering(false); handlePointerUp(); }}
     >
       <div className="portfolio-orbits" aria-hidden="true">
-        <span />
-        <span />
-        <span />
+        <span /><span /><span />
       </div>
-
       <div
         className="portfolio-sphere__stage"
         ref={stageRef}
@@ -1046,12 +1008,7 @@ function PortfolioSphere({ activeService, activeItem, onSelectItem, onOpenVideo 
             isActive={isActive}
             isDimmed={isDimmed}
             key={item.id}
-            onOpenVideo={onOpenVideo}
-            onSelect={() => {
-              if (dragMoved.current) return;
-              markInteraction();
-              onSelectItem(item);
-            }}
+            onSelect={() => handleCardClick(item, isActive)}
           />
         ))}
       </div>
