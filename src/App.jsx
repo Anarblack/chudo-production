@@ -20,41 +20,100 @@ const navItems = [
 
 const cameraTags = ['rotate 360°', 'zoom ready', 'client frame'];
 
-const painQuestions = [
-  'Есть продукт — но клиент не понимает его ценность до встречи?',
-  'Конкуренты выглядят убедительнее, хотя ваш продукт лучше?',
-  'Контент выходит, но не приносит заявок и не усиливает доверие?',
-  'Нужен ролик — но непонятно с какой идеи начать и сколько это стоит?',
-  'Съёмки прошли хаотично, результат не тот, деньги потрачены?',
-  'Нужна не разовая съёмка, а видеосистема для сайта, соцсетей и продаж?',
+const painScenes = [
+  {
+    id: 'value-gap',
+    label: 'Ценность не считывается',
+    signal: 'VALUE_GAP',
+    question: 'Есть продукт — но клиент не понимает его ценность до встречи?',
+    accent: '#ff4a0a',
+  },
+  {
+    id: 'competitor-image',
+    label: 'Конкуренты выглядят сильнее',
+    signal: 'IMAGE_GAP',
+    question: 'Конкуренты выглядят убедительнее, хотя ваш продукт лучше?',
+    accent: '#8fb8ff',
+  },
+  {
+    id: 'content-without-leads',
+    label: 'Контент не продаёт',
+    signal: 'TRUST_DROP',
+    question: 'Контент выходит, но не приносит заявок и не усиливает доверие?',
+    accent: '#79d7b6',
+  },
+  {
+    id: 'idea-start',
+    label: 'Нет точки входа',
+    signal: 'BRIEF_EMPTY',
+    question: 'Нужен ролик — но непонятно с какой идеи начать и сколько это стоит?',
+    accent: '#f1efe8',
+  },
+  {
+    id: 'shoot-chaos',
+    label: 'Хаос на съёмке',
+    signal: 'SHOOT_CHAOS',
+    question: 'Съёмки прошли хаотично, результат не тот, деньги потрачены?',
+    accent: '#d74b52',
+  },
+  {
+    id: 'content-system',
+    label: 'Нет системы материалов',
+    signal: 'SYSTEM_NEEDED',
+    question: 'Нужна не разовая съёмка, а видеосистема для сайта, соцсетей и продаж?',
+    accent: '#a78bff',
+  },
+];
+
+const painMotionProfiles = [
+  { x: 0, y: 64, rotate: 0, scale: 0.94, exitX: 0, exitY: -46, exitRotate: 0 },
+  { x: -76, y: 0, rotate: -1.4, scale: 0.96, exitX: 70, exitY: 0, exitRotate: 1.4 },
+  { x: 62, y: 30, rotate: 1, scale: 0.94, exitX: -42, exitY: -38, exitRotate: -1 },
+  { x: 0, y: -38, rotate: 0.7, scale: 1.04, exitX: 0, exitY: 42, exitRotate: -0.7 },
+  { x: -36, y: 54, rotate: -2, scale: 0.9, exitX: 30, exitY: -52, exitRotate: 2 },
+  { x: 0, y: 24, rotate: 0, scale: 0.88, exitX: 0, exitY: -28, exitRotate: 0 },
 ];
 
 const painItemVariants = {
-  hidden: {
-    opacity: 0,
-    y: 48,
-    scale: 0.94,
-    filter: 'blur(18px)',
+  hidden: (index) => {
+    const profile = painMotionProfiles[index % painMotionProfiles.length];
+
+    return {
+      opacity: 0,
+      x: profile.x,
+      y: profile.y,
+      rotate: profile.rotate,
+      scale: profile.scale,
+      filter: 'blur(20px)',
+    };
   },
-  visible: {
+  visible: (index) => ({
     opacity: 1,
+    x: 0,
     y: 0,
+    rotate: 0,
     scale: 1,
     filter: 'blur(0px)',
     transition: {
-      duration: 0.68,
+      duration: index === 5 ? 0.8 : 0.68,
       ease: [0.2, 0.8, 0.2, 1],
     },
-  },
-  exit: {
-    opacity: 0,
-    y: -42,
-    scale: 1.035,
-    filter: 'blur(16px)',
-    transition: {
-      duration: 0.38,
-      ease: [0.5, 0, 0.2, 1],
-    },
+  }),
+  exit: (index) => {
+    const profile = painMotionProfiles[index % painMotionProfiles.length];
+
+    return {
+      opacity: 0,
+      x: profile.exitX,
+      y: profile.exitY,
+      rotate: profile.exitRotate,
+      scale: index === 4 ? 0.88 : 1.03,
+      filter: 'blur(17px)',
+      transition: {
+        duration: 0.38,
+        ease: [0.5, 0, 0.2, 1],
+      },
+    };
   },
 };
 
@@ -477,6 +536,10 @@ function AnchorNav({ compact = false }) {
 function MarketPainsSection() {
   const sectionRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const activePain = painScenes[activeIndex] ?? painScenes[0];
+  const progress = `${((activeIndex + 1) / painScenes.length) * 100}%`;
+  const questionWords = activePain.question.split(' ');
+  const isLongQuestion = questionWords.length > 10;
 
   useEffect(() => {
     let frame = 0;
@@ -490,8 +553,8 @@ function MarketPainsSection() {
 
       const rect = section.getBoundingClientRect();
       const viewportHeight = window.innerHeight || 1;
-      const nextStep = Math.min(Math.max(-rect.top / viewportHeight, 0), painQuestions.length);
-      const nextIndex = Math.min(painQuestions.length - 1, Math.floor(nextStep + 0.08));
+      const nextStep = Math.min(Math.max(-rect.top / viewportHeight, 0), painScenes.length);
+      const nextIndex = Math.min(painScenes.length - 1, Math.floor(nextStep + 0.08));
 
       setActiveIndex(nextIndex);
     };
@@ -519,24 +582,78 @@ function MarketPainsSection() {
       className="pains-section"
       aria-label="Боли целевой аудитории"
       style={{
-        '--pains-scroll-height': `${painQuestions.length * 100}svh`,
+        '--pains-scroll-height': `${painScenes.length * 100}svh`,
+        '--pains-progress': progress,
+        '--pains-accent': activePain.accent,
       }}
     >
       <div className="pains-sticky">
+        <div className="pains-noise" aria-hidden="true" />
+        <div className="pains-viewfinder" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+        <div className="pains-rec" aria-hidden="true">
+          <i />
+          Market scan
+        </div>
+        <header className="pains-heading">
+          <p>02 / Проблемы рынка</p>
+        </header>
+
         <div className="pain-stage" aria-live="polite">
           <AnimatePresence mode="wait">
-            <motion.p
-              className="pain-question"
+            <motion.article
+              className={isLongQuestion ? 'pain-question is-long' : 'pain-question'}
               variants={painItemVariants}
+              custom={activeIndex}
               initial="hidden"
               animate="visible"
               exit="exit"
-              key={activeIndex}
+              key={activePain.id}
+              aria-label={activePain.question}
             >
-              {painQuestions[activeIndex]}
-            </motion.p>
+              <div className="pain-question__meta">
+                <span>{String(activeIndex + 1).padStart(2, '0')}</span>
+                <em>{activePain.label}</em>
+              </div>
+              <h3 className="pain-question__text">
+                {questionWords.map((word, index) => (
+                  <motion.span
+                    className="pain-question__word"
+                    key={`${activePain.id}-${word}-${index}`}
+                    initial={{ opacity: 0, y: 18, filter: 'blur(14px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    transition={{
+                      duration: 0.34,
+                      delay: 0.04 + index * 0.028,
+                      ease: [0.2, 0.8, 0.2, 1],
+                    }}
+                  >
+                    {word}{index < questionWords.length - 1 ? '\u00a0' : ''}
+                  </motion.span>
+                ))}
+              </h3>
+              <div className="pain-question__signal" aria-hidden="true">
+                <span>{activePain.signal}</span>
+                <i />
+              </div>
+            </motion.article>
           </AnimatePresence>
         </div>
+
+        <footer className="pains-footer">
+          <div className="pains-progress" aria-hidden="true">
+            <span />
+          </div>
+          <div className="pains-steps" aria-label={`Проблема ${activeIndex + 1} из ${painScenes.length}`}>
+            {painScenes.map((scene, index) => (
+              <span className={index === activeIndex ? 'is-active' : ''} key={scene.id} />
+            ))}
+          </div>
+        </footer>
       </div>
     </section>
   );
