@@ -321,7 +321,7 @@ const comparisonItems = [
   },
 ];
 
-const caseFilters = ['Все', 'Авто', 'Строительство', 'Бренды', 'Event', 'Соцсети', 'Продажи'];
+const caseFilters = ['Все', 'Авто', 'Недвижимость', 'Бренды', 'Event'];
 
 const cases = [
   {
@@ -330,11 +330,10 @@ const cases = [
     category: 'Авто',
     type: 'Рекламный ролик',
     task: 'Показать модель через динамику, детали и ощущение владения.',
-    solution: 'Создали визуальный ролик с акцентом на движение, экстерьер, интерьер и эмоциональное восприятие автомобиля.',
+    solution: 'Визуальный ролик с акцентом на движение, экстерьер, интерьер и эмоциональное восприятие.',
     formats: ['Hero video', 'Short version', 'Social cuts'],
     tags: ['Авто', 'Реклама', 'Digital'],
-    image: '/portfolio/chevrolet-01.svg',
-    videoUrl: '#',
+    video: '/videos/chevrolet.mp4',
     featured: true,
   },
   {
@@ -342,85 +341,56 @@ const cases = [
     title: 'KIA',
     category: 'Авто',
     type: 'Контент для дилера',
-    task: 'Создать видеоконтент для продвижения автомобилей в digital и соцсетях.',
-    solution: 'Собрали серию роликов с акцентом на внешний вид, салон, детали и сценарии использования автомобиля.',
+    task: 'Серия роликов для продвижения автомобилей в digital и соцсетях.',
+    solution: 'Контент с акцентом на внешний вид, салон, детали и сценарии использования.',
     formats: ['Reels', 'Shorts', 'Model video'],
     tags: ['Авто', 'Соцсети', 'Контент'],
-    image: '/portfolio/kia-01.svg',
-    videoUrl: '#',
+    video: '/videos/kia.mp4',
   },
   {
     id: 3,
     title: 'Avangard',
-    category: 'Строительство',
+    category: 'Недвижимость',
     type: 'Видео жилого комплекса',
-    task: 'Показать объект недвижимости, инфраструктуру и атмосферу будущей жизни.',
-    solution: 'Создали презентационный видеоматериал, который можно использовать на сайте, в соцсетях и отделе продаж.',
+    task: 'Показать объект, инфраструктуру и атмосферу будущей жизни.',
+    solution: 'Презентационный видеоматериал для сайта, соцсетей и отдела продаж.',
     formats: ['Main video', 'Sales version', 'Social cuts'],
     tags: ['ЖК', 'Недвижимость', 'Продажи'],
-    image: '/portfolio/avangard-01.svg',
-    videoUrl: '#',
+    video: '/videos/avangard.mp4',
     featured: true,
   },
   {
     id: 4,
     title: 'Ngroup',
-    category: 'Строительство',
-    type: 'Презентационное видео объекта',
+    category: 'Недвижимость',
+    type: 'Презентационное видео',
     task: 'Визуально упаковать строительный объект для клиентов и презентаций.',
-    solution: 'Сделали видео с акцентом на архитектуру, пространство, детали объекта и коммерческую подачу.',
+    solution: 'Видео с акцентом на архитектуру, пространство и детали объекта.',
     formats: ['Presentation video', 'Short version', 'Sales material'],
     tags: ['Строительство', 'Презентация', 'Объект'],
-    image: '/portfolio/ngroup-01.svg',
-    videoUrl: '#',
+    video: '/videos/ngroup.mp4',
   },
   {
     id: 5,
-    title: 'Event / Aftermovie',
+    title: 'Event Aftermovie',
     category: 'Event',
     type: 'Aftermovie',
-    task: 'Передать атмосферу события и создать материал для дальнейшего продвижения.',
-    solution: 'Собрали динамичный ролик с ключевыми моментами, эмоциями гостей, деталями площадки и общим настроением события.',
+    task: 'Передать атмосферу события и создать материал для продвижения.',
+    solution: 'Динамичный ролик с ключевыми моментами, гостями и настроением площадки.',
     formats: ['Aftermovie', 'Highlights', 'Stories'],
     tags: ['Event', 'Atmosphere', 'Promo'],
-    image: '/portfolio/event-01.svg',
-    videoUrl: '#',
+    video: '/videos/event.mp4',
   },
   {
     id: 6,
-    title: 'Brand Commercial',
+    title: 'Brand Film',
     category: 'Бренды',
     type: 'Имиджевый ролик',
-    task: 'Показать бренд через визуальную историю, атмосферу и ценность продукта.',
-    solution: 'Создали ролик с фокусом на образ, детали, настроение и узнаваемость бренда.',
+    task: 'Показать бренд через визуальную историю и атмосферу.',
+    solution: 'Ролик с фокусом на образ, детали, настроение и узнаваемость бренда.',
     formats: ['Brand film', 'Social cuts', 'Short version'],
     tags: ['Brand', 'Image', 'Commercial'],
-    image: '/portfolio/brand-01.svg',
-    videoUrl: '#',
-  },
-  {
-    id: 7,
-    title: 'Видео для отдела продаж',
-    category: 'Продажи',
-    type: 'Sales video',
-    task: 'Создать материал, который менеджеры смогут отправлять клиентам после звонка или встречи.',
-    solution: 'Упаковали ключевые преимущества продукта в короткое видео, понятное для клиента без длинных объяснений.',
-    formats: ['WhatsApp video', 'Presentation cut', 'Short video'],
-    tags: ['Sales', 'CRM', 'WhatsApp'],
-    image: '/portfolio/production-01.svg',
-    videoUrl: '#',
-  },
-  {
-    id: 8,
-    title: 'Social Content Pack',
-    category: 'Соцсети',
-    type: 'Контент-пакет',
-    task: 'Получить серию коротких материалов для регулярного присутствия бренда в соцсетях.',
-    solution: 'Из одной съёмки собрали набор вертикальных видео, коротких нарезок и материалов для stories.',
-    formats: ['Reels', 'Shorts', 'Stories', 'Teasers'],
-    tags: ['Reels', 'TikTok', 'Content'],
-    image: '/portfolio/content-pack-01.svg',
-    videoUrl: '#',
+    video: '/videos/brand.mp4',
   },
 ];
 
@@ -1306,157 +1276,129 @@ function CaseFilters({ activeFilter, onFilterChange }) {
 }
 
 function CaseCard({ item, index, onSelect }) {
-  const sizeClass = [
-    index === 0 ? 'case-card--hero' : '',
-    index === 1 || index === 2 ? 'case-card--side' : '',
-    index === 3 || index === 6 ? 'case-card--wide' : '',
-    item.featured ? 'is-featured' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const videoRef = useRef(null);
 
   return (
     <motion.button
-      layout
       type="button"
-      className={`case-card ${sizeClass}`}
+      className="case-card"
       onClick={() => onSelect(item)}
-      initial={{ opacity: 0, y: 28, scale: 0.965, filter: 'blur(12px)' }}
-      animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-      exit={{ opacity: 0, y: 16, scale: 0.94, filter: 'blur(10px)' }}
-      whileHover={{ y: -6 }}
-      whileFocus={{ y: -6 }}
-      transition={{ duration: 0.42, delay: index * 0.035, ease: [0.2, 0.8, 0.2, 1] }}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.2, 0.8, 0.2, 1] }}
+      onMouseEnter={() => videoRef.current?.play()}
+      onMouseLeave={() => { if (videoRef.current) { videoRef.current.pause(); videoRef.current.currentTime = 0; } }}
       aria-label={`Смотреть кейс ${item.title}`}
     >
-      <ProjectMedia item={item} draggable={false} />
-      <span className="case-card__wash" />
-      <span className="case-card__play" aria-hidden="true" />
-      <span className="case-card__content">
-        <span className="case-card__meta">
-          <span>{item.category}</span>
-          <span>{item.type}</span>
-        </span>
-        <strong>{item.title}</strong>
-        <span className="case-card__task">{item.task}</span>
-        <span className="case-card__tags">
-          {item.tags.slice(0, 3).map((tag) => (
-            <em key={tag}>{tag}</em>
-          ))}
-        </span>
-        <span className="case-card__cta">Смотреть кейс</span>
-      </span>
+      {/* Превью */}
+      <div className="case-card__thumb">
+        {item.video ? (
+          <video
+            ref={videoRef}
+            src={item.video}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
+        ) : (
+          <div className="case-card__thumb-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+        )}
+        <div className="case-card__thumb-overlay">
+          <svg className="case-card__play-icon" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="12" fillOpacity="0.5"/>
+            <path d="M10 8l6 4-6 4V8z"/>
+          </svg>
+        </div>
+      </div>
+
+      {/* Контент */}
+      <div className="case-card__body">
+        <div className="case-card__header">
+          <span className="case-card__category">{item.category}</span>
+          <span className="case-card__type">{item.type}</span>
+        </div>
+        <strong className="case-card__title">{item.title}</strong>
+        <p className="case-card__task">{item.task}</p>
+        <div className="case-card__tags">
+          {item.formats.slice(0, 3).map((f) => <em key={f}>{f}</em>)}
+        </div>
+      </div>
+
+      {/* Стрелка */}
+      <div className="case-card__arrow">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M4 10h12M12 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
     </motion.button>
   );
 }
 
-function CaseGrid({ items, onSelectCase }) {
-  return (
-    <motion.div className="case-grid" layout>
-      <AnimatePresence>
-        {items.map((item, index) => (
-          <CaseCard item={item} index={index} onSelect={onSelectCase} key={item.id} />
-        ))}
-      </AnimatePresence>
-    </motion.div>
-  );
-}
-
 function CaseModal({ item, onClose }) {
-  const hasVideo = item.videoUrl && item.videoUrl !== '#';
-  const media = getProjectMedia(item);
-  const directVideoUrl = media.type === 'video'
-    ? media.src
-    : hasVideo && isDirectVideoUrl(item.videoUrl)
-      ? item.videoUrl
-      : null;
-  const embedVideoUrl = hasVideo && !directVideoUrl ? item.videoUrl : null;
-
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', onKey); };
   }, [onClose]);
 
   return (
     <motion.div
       className="case-modal-backdrop"
-      role="presentation"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.24, ease: 'easeOut' }}
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      transition={{ duration: 0.22 }}
       onClick={onClose}
+      style={{ cursor: 'auto' }}
     >
       <motion.article
         className="case-modal"
-        role="dialog"
-        aria-modal="true"
+        role="dialog" aria-modal="true"
         aria-labelledby={`case-modal-title-${item.id}`}
-        initial={{ opacity: 0, y: 34, scale: 0.96, filter: 'blur(12px)' }}
-        animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-        exit={{ opacity: 0, y: 24, scale: 0.96, filter: 'blur(10px)' }}
-        transition={{ duration: 0.34, ease: [0.2, 0.8, 0.2, 1] }}
-        onClick={(event) => event.stopPropagation()}
+        initial={{ opacity: 0, y: 32, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 20, scale: 0.97 }}
+        transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
+        onClick={(e) => e.stopPropagation()}
       >
-        <button type="button" className="case-modal__close" onClick={onClose} aria-label="Закрыть кейс">
-          ×
+        <button type="button" className="case-modal__close" onClick={onClose} aria-label="Закрыть">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
         </button>
 
+        {/* Видеоплеер */}
         <div className="case-modal__media">
-          {directVideoUrl ? (
-            <video src={directVideoUrl} poster={media.poster ?? item.image} controls playsInline preload="metadata" />
-          ) : embedVideoUrl ? (
-            <iframe src={embedVideoUrl} title={item.title} allow="autoplay; fullscreen; picture-in-picture" />
+          {item.video ? (
+            <video src={item.video} controls autoPlay playsInline preload="auto" />
           ) : (
-            <>
-              <ProjectMedia item={item} loading="eager" />
-              <span>Видео будет добавлено позже.</span>
-            </>
+            <div className="case-modal__placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/>
+              </svg>
+              <p>Видео появится позже</p>
+            </div>
           )}
         </div>
 
         <div className="case-modal__body">
           <p className="case-modal__kicker">{item.category} · {item.type}</p>
           <h3 id={`case-modal-title-${item.id}`}>{item.title}</h3>
-
-          <div className="case-modal__section">
-            <span>Задача</span>
-            <p>{item.task}</p>
-          </div>
-
-          <div className="case-modal__section">
-            <span>Решение</span>
-            <p>{item.solution}</p>
-          </div>
-
+          <div className="case-modal__section"><span>Задача</span><p>{item.task}</p></div>
+          <div className="case-modal__section"><span>Решение</span><p>{item.solution}</p></div>
           <div className="case-modal__section">
             <span>Форматы</span>
             <div className="case-modal__formats">
-              {item.formats.map((format) => (
-                <em key={format}>{format}</em>
-              ))}
+              {item.formats.map((f) => <em key={f}>{f}</em>)}
             </div>
           </div>
-
-          <div className="case-modal__tags">
-            {item.tags.map((tag) => (
-              <span key={tag}>{tag}</span>
-            ))}
-          </div>
-
           <a className="button button--primary" href="#contact" onClick={onClose}>
             Обсудить похожий проект
           </a>
@@ -1468,24 +1410,12 @@ function CaseModal({ item, onClose }) {
 
 function CasesSection() {
   const [activeFilter, setActiveFilter] = useState('Все');
-  const [visibleCount, setVisibleCount] = useState(8);
   const [selectedCase, setSelectedCase] = useState(null);
 
-  const filteredCases = useMemo(() => {
-    if (activeFilter === 'Все') {
-      return cases;
-    }
-
-    return cases.filter((item) => item.category === activeFilter || item.tags.includes(activeFilter));
+  const filtered = useMemo(() => {
+    if (activeFilter === 'Все') return cases;
+    return cases.filter((c) => c.category === activeFilter || c.tags.includes(activeFilter));
   }, [activeFilter]);
-
-  const visibleCases = filteredCases.slice(0, visibleCount);
-  const hasMore = visibleCount < filteredCases.length;
-
-  const handleFilterChange = (filter) => {
-    setActiveFilter(filter);
-    setVisibleCount(8);
-  };
 
   return (
     <section id="cases" className="cases-section" aria-labelledby="cases-title">
@@ -1493,30 +1423,40 @@ function CasesSection() {
 
       <motion.header
         className="cases-heading"
-        initial={{ opacity: 0, y: 30, filter: 'blur(14px)' }}
+        initial={{ opacity: 0, y: 24, filter: 'blur(12px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-        viewport={{ once: true, amount: 0.42 }}
-        transition={{ duration: 0.72, ease: [0.2, 0.8, 0.2, 1] }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
       >
-        <p className="eyebrow">Наши работы</p>
-        <h2 id="cases-title">Кейсы и направления, с которыми мы работали</h2>
-        <p>
-          Каждый проект — это не просто ролик, а задача: показать объект, продвинуть продукт,
-          усилить доверие или создать контент для продаж.
-        </p>
+        <div className="cases-heading__text">
+          <p className="eyebrow">Наши работы</p>
+          <h2 id="cases-title">Проекты, которые мы сделали</h2>
+        </div>
+        {/* Фильтры */}
+        <div className="case-filters" role="group" aria-label="Фильтр по категории">
+          {caseFilters.map((f) => (
+            <button
+              key={f}
+              type="button"
+              className={f === activeFilter ? 'case-filter is-active' : 'case-filter'}
+              onClick={() => setActiveFilter(f)}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
       </motion.header>
 
-      <CaseFilters activeFilter={activeFilter} onFilterChange={handleFilterChange} />
-      <CaseGrid items={visibleCases} onSelectCase={setSelectedCase} />
+      {/* Список кейсов */}
+      <div className="cases-list">
+        <AnimatePresence mode="wait">
+          {filtered.map((item, index) => (
+            <CaseCard key={item.id} item={item} index={index} onSelect={setSelectedCase} />
+          ))}
+        </AnimatePresence>
+      </div>
 
-      {hasMore && (
-        <div className="cases-more">
-          <button type="button" className="button button--ghost" onClick={() => setVisibleCount((count) => count + 4)}>
-            Показать ещё
-          </button>
-        </div>
-      )}
-
+      {/* Модал */}
       <AnimatePresence>
         {selectedCase && <CaseModal item={selectedCase} onClose={() => setSelectedCase(null)} />}
       </AnimatePresence>
