@@ -2191,8 +2191,7 @@ h1 span {
 }
 
 .workflow-heading,
-.workflow-layout,
-.workflow-result {
+.workflow-layout {
   position: relative;
   z-index: 1;
   width: min(1240px, 100%);
@@ -2379,7 +2378,148 @@ h1 span {
   position: absolute;
   inset: 58px 28px 28px;
   display: grid;
-  place-items: center;
+  place-items: stretch;
+}
+
+.workflow-dossier {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+.workflow-dossier__top,
+.workflow-dossier__flow div,
+.workflow-dossier__column {
+  border: 1px solid rgba(255, 255, 255, 0.105);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.068), rgba(255, 255, 255, 0.018)),
+    rgba(7, 8, 11, 0.68);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.workflow-dossier__top {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.workflow-dossier__top span,
+.workflow-dossier__flow span,
+.workflow-dossier__column > span {
+  color: rgba(255, 122, 66, 0.92);
+  font-size: 9px;
+  font-weight: 860;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.workflow-dossier__top strong {
+  color: #f7f7f2;
+  font-family: var(--display);
+  font-size: clamp(24px, 2.2vw, 34px);
+  font-weight: 720;
+  letter-spacing: 0;
+  line-height: 1.02;
+}
+
+.workflow-dossier__top p {
+  max-width: 28rem;
+  margin: 0;
+  color: rgba(244, 245, 242, 0.64);
+  font-size: 13px;
+  font-weight: 560;
+  line-height: 1.42;
+}
+
+.workflow-dossier__flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.workflow-dossier__flow div {
+  display: grid;
+  gap: 7px;
+  align-content: start;
+  min-width: 0;
+  padding: 12px;
+}
+
+.workflow-dossier__flow strong {
+  color: rgba(244, 245, 242, 0.82);
+  font-size: 12px;
+  font-weight: 680;
+  line-height: 1.32;
+}
+
+.workflow-dossier__flow i {
+  position: relative;
+  align-self: center;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 122, 66, 0.15), rgba(255, 122, 66, 0.82));
+}
+
+.workflow-dossier__flow i::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid rgba(255, 122, 66, 0.9);
+  border-right: 1px solid rgba(255, 122, 66, 0.9);
+  content: "";
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.workflow-dossier__columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workflow-dossier__column {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  padding: 12px;
+}
+
+.workflow-dossier__column em {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 8px;
+  padding: 8px 9px;
+  color: rgba(244, 245, 242, 0.78);
+  background: rgba(255, 255, 255, 0.035);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 690;
+  line-height: 1.25;
+}
+
+.workflow-dossier__column--checks em::before {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #ff6b35;
+  box-shadow: 0 0 14px rgba(255, 74, 10, 0.72);
+  content: "";
 }
 
 .workflow-request,
@@ -3027,60 +3167,6 @@ h1 span {
   line-height: 1.6;
 }
 
-.workflow-result {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: clamp(18px, 3vw, 34px);
-  align-items: center;
-  margin-top: clamp(40px, 6vw, 86px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  padding: clamp(22px, 3vw, 36px);
-  background:
-    radial-gradient(circle at 84% 18%, rgba(255, 74, 10, 0.13), transparent 32%),
-    rgba(255, 255, 255, 0.04);
-  box-shadow: 0 24px 86px rgba(0, 0, 0, 0.36);
-}
-
-.workflow-sticky__result {
-  display: grid;
-  gap: 6px;
-  border: 1px solid rgba(255, 122, 66, 0.18);
-  border-radius: 8px;
-  padding: 14px;
-  background:
-    linear-gradient(135deg, rgba(255, 74, 10, 0.09), rgba(255,255,255,0.02)),
-    rgba(255,255,255,0.026);
-}
-
-.workflow-sticky__result span {
-  color: rgba(244,245,242,0.42);
-  font-size: 9px;
-  font-weight: 840;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.workflow-sticky__result strong {
-  color: rgba(244,245,242,0.88);
-  font-family: var(--display);
-  font-size: clamp(18px, 1.5vw, 26px);
-  font-weight: 680;
-  line-height: 1.06;
-}
-
-.workflow-result p {
-  max-width: 880px;
-  margin: 0;
-  color: rgba(244, 245, 242, 0.8);
-  font-family: var(--display);
-  font-size: clamp(22px, 2.42vw, 38px);
-  font-weight: 650;
-  letter-spacing: 0;
-  line-height: 1.16;
-  text-wrap: balance;
-}
-
 @keyframes workflowFloat {
   0%,
   100% {
@@ -3527,13 +3613,6 @@ h1 span {
     min-height: 94px;
   }
 
-  .workflow-result {
-    grid-template-columns: 1fr;
-  }
-
-  .workflow-result .button {
-    justify-self: start;
-  }
 }
 
 @media (max-width: 760px) {
@@ -4073,7 +4152,7 @@ h1 span {
   }
 
   .workflow-visual--compact {
-    min-height: 220px;
+    min-height: 430px;
   }
 
   .workflow-visual__chrome {
@@ -4083,6 +4162,43 @@ h1 span {
 
   .workflow-visual__inner {
     inset: 42px 14px 14px;
+  }
+
+  .workflow-visual--compact .workflow-dossier {
+    gap: 9px;
+  }
+
+  .workflow-visual--compact .workflow-dossier__top,
+  .workflow-visual--compact .workflow-dossier__flow div,
+  .workflow-visual--compact .workflow-dossier__column {
+    padding: 10px;
+  }
+
+  .workflow-visual--compact .workflow-dossier__top {
+    gap: 6px;
+  }
+
+  .workflow-visual--compact .workflow-dossier__top strong {
+    font-size: 22px;
+  }
+
+  .workflow-visual--compact .workflow-dossier__top p,
+  .workflow-visual--compact .workflow-dossier__flow strong,
+  .workflow-visual--compact .workflow-dossier__column em {
+    font-size: 11px;
+  }
+
+  .workflow-visual--compact .workflow-dossier__flow,
+  .workflow-visual--compact .workflow-dossier__columns {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-visual--compact .workflow-dossier__flow i {
+    display: none;
+  }
+
+  .workflow-visual--compact .workflow-dossier__column em:nth-of-type(3) {
+    display: none;
   }
 
   .workflow-step__header {
@@ -4102,20 +4218,6 @@ h1 span {
     flex: 1 1 150px;
     padding: 9px 8px;
     font-size: 8px;
-  }
-
-  .workflow-result {
-    margin-top: 28px;
-    border-radius: 16px;
-    padding: 18px;
-  }
-
-  .workflow-result p {
-    font-size: clamp(24px, 7.2vw, 38px);
-  }
-
-  .workflow-result .button {
-    justify-self: stretch;
   }
 
   .workflow-message,

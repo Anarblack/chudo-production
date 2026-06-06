@@ -830,6 +830,9 @@ const workflowSteps = [
     weDo: 'Выясняем цель, аудиторию, точки контакта и бизнес-смысл ролика, чтобы не снимать просто красивое видео без функции.',
     clientDoes: 'Кратко описать проект, цель, сроки, продукт и показать примеры, которые нравятся или точно не подходят.',
     result: 'Понятная задача и роль видео в продажах',
+    input: 'Запрос, продукт, сроки, желаемый эффект',
+    artifacts: ['Карта задачи', 'Список площадок', 'Критерии результата'],
+    checks: ['цель видео ясна', 'формат не выбран вслепую', 'понятна точка применения'],
     tags: ['Goal', 'Product', 'Audience', 'Channel'],
     visualType: 'request',
   },
@@ -840,6 +843,9 @@ const workflowSteps = [
     weDo: 'Собираем вводные в рабочий бриф, выделяем ключевые сообщения, тон коммуникации и ограничения по съёмке.',
     clientDoes: 'Подтвердить факты, приоритеты, ограничения, важные преимущества и ответственного за согласование.',
     result: 'Бриф, от которого можно строить идею',
+    input: 'Факты о продукте, аудитория, ограничения',
+    artifacts: ['Рабочий бриф', 'Ключевые сообщения', 'Карта возражений'],
+    checks: ['сильные стороны выделены', 'аудитория описана', 'тон коммуникации согласован'],
     tags: ['Brief', 'Message', 'USP', 'Platform'],
     visualType: 'brief',
   },
@@ -850,6 +856,9 @@ const workflowSteps = [
     weDo: 'Собираем концепцию, референсы, moodboard, ключевой посыл и форматную логику будущего ролика.',
     clientDoes: 'Выбрать направление, дать комментарии по настроению, стилю и точности сообщения.',
     result: 'Утверждённая идея и визуальное направление',
+    input: 'Бриф, референсы, ограничения бренда',
+    artifacts: ['Moodboard', 'Креативный ход', 'Визуальный тон'],
+    checks: ['есть главный hook', 'идея считывается быстро', 'подача подходит бренду'],
     tags: ['Concept', 'Moodboard', 'Tone', 'Hook'],
     visualType: 'concept',
   },
@@ -860,6 +869,9 @@ const workflowSteps = [
     weDo: 'Готовим сценарную основу, shot list, порядок сцен, акценты продукта и план материалов на выходе.',
     clientDoes: 'Согласовать смысл, формулировки, важные детали продукта и юридически чувствительные моменты.',
     result: 'Сценарная структура и список кадров',
+    input: 'Концепция, сообщение, нужные версии',
+    artifacts: ['Сценарная логика', 'Shot list', 'Хронометраж'],
+    checks: ['сцены работают на задачу', 'CTA на месте', 'понятны версии ролика'],
     tags: ['Script', 'Shot list', 'Timing', 'CTA'],
     visualType: 'storyboard',
   },
@@ -870,6 +882,9 @@ const workflowSteps = [
     weDo: 'Организуем production: тайминг, crew, технику, логистику, список кадров и контрольные точки съёмочного дня.',
     clientDoes: 'Подтвердить дату, локацию, доступы, людей в кадре и контакт ответственного на площадке.',
     result: 'Готовый call sheet и понятный съёмочный день',
+    input: 'Сценарий, локации, люди, доступы',
+    artifacts: ['Call sheet', 'График съёмки', 'Список техники'],
+    checks: ['команда собрана', 'локации подтверждены', 'тайминг реалистичен'],
     tags: ['Call sheet', 'Location', 'Crew', 'Gear'],
     visualType: 'preproduction',
   },
@@ -880,6 +895,9 @@ const workflowSteps = [
     weDo: 'Ведём площадку, следим за кадрами, таймингом, качеством звука/света и соответствием сценарному плану.',
     clientDoes: 'Быть на связи для быстрых решений, помочь с доступами и подтвердить важные детали на месте.',
     result: 'Отснятый материал без хаоса на площадке',
+    input: 'Call sheet, площадка, команда, герои',
+    artifacts: ['Основные кадры', 'Детали продукта', 'Бэкап материала'],
+    checks: ['кадры по списку сняты', 'звук и свет проверены', 'есть запасные дубли'],
     tags: ['REC', 'Camera', 'Light', 'Sound'],
     visualType: 'shooting',
   },
@@ -890,6 +908,9 @@ const workflowSteps = [
     weDo: 'Собираем монтаж, цвет, звук, титры, графику, вертикальные/горизонтальные версии и экспорт под нужные площадки.',
     clientDoes: 'Дать правки в согласованные сроки и подтвердить финальные файлы перед передачей.',
     result: 'Готовый набор видео, который можно сразу использовать',
+    input: 'Отснятый материал, сценарий, комментарии',
+    artifacts: ['Main video', 'Short cuts', 'Версии под площадки'],
+    checks: ['звук собран', 'цвет выровнен', 'экспорт готов к размещению'],
     tags: ['Edit', 'Color', 'Sound', 'Export'],
     visualType: 'postproduction',
   },
@@ -2076,6 +2097,48 @@ function CasesSection() {
   );
 }
 
+function WorkflowDossier({ step }) {
+  const artifacts = step.artifacts ?? [];
+  const checks = step.checks ?? [];
+
+  return (
+    <div className="workflow-dossier">
+      <div className="workflow-dossier__top">
+        <span>Stage {String(step.id).padStart(2, '0')}</span>
+        <strong>{step.title}</strong>
+        <p>{step.result}</p>
+      </div>
+
+      <div className="workflow-dossier__flow" aria-label="Вход и выход этапа">
+        <div>
+          <span>Вход</span>
+          <strong>{step.input}</strong>
+        </div>
+        <i aria-hidden="true" />
+        <div>
+          <span>Выход</span>
+          <strong>{step.result}</strong>
+        </div>
+      </div>
+
+      <div className="workflow-dossier__columns">
+        <div className="workflow-dossier__column">
+          <span>Артефакты</span>
+          {artifacts.map((item) => (
+            <em key={item}>{item}</em>
+          ))}
+        </div>
+        <div className="workflow-dossier__column workflow-dossier__column--checks">
+          <span>Контроль</span>
+          {checks.map((item) => (
+            <em key={item}>{item}</em>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function WorkflowVisual({ step, compact = false }) {
   const baseClassName = compact ? 'workflow-visual workflow-visual--compact' : 'workflow-visual';
 
@@ -2230,7 +2293,9 @@ function WorkflowVisual({ step, compact = false }) {
         <span />
       </div>
       <div className="workflow-visual__grid" aria-hidden="true" />
-      <div className="workflow-visual__inner">{renderVisual()}</div>
+      <div className="workflow-visual__inner">
+        <WorkflowDossier step={step} />
+      </div>
     </motion.div>
   );
 }
@@ -2477,10 +2542,6 @@ function WorkflowSection() {
             <AnimatePresence mode="wait">
               <WorkflowVisual step={activeStep} key={activeStep.id} />
             </AnimatePresence>
-            <div className="workflow-sticky__result">
-              <span>Результат этапа</span>
-              <strong>{activeStep.result}</strong>
-            </div>
           </div>
         </aside>
 
@@ -2494,21 +2555,6 @@ function WorkflowSection() {
         />
       </div>
 
-      <motion.footer
-        className="workflow-result"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.42 }}
-        transition={{ duration: 0.58, ease: 'easeOut' }}
-      >
-        <p>
-          В результате вы получаете не просто видеофайл, а готовый набор материалов, который можно
-          сразу использовать в коммуникации, рекламе и продажах.
-        </p>
-        <a className="button button--primary" href="#contact">
-          Обсудить проект
-        </a>
-      </motion.footer>
     </section>
   );
 }
