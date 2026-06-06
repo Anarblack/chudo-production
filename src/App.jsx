@@ -192,14 +192,175 @@ const services = [
   },
 ];
 
+function driveVideo(fileId) {
+  return `https://drive.google.com/file/d/${fileId}/preview`;
+}
+
+function driveView(fileId) {
+  return `https://drive.google.com/file/d/${fileId}/view`;
+}
+
+function driveThumbnail(fileId) {
+  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`;
+}
+
+function makeDriveVideo(fileId, options = {}) {
+  return {
+    provider: 'drive',
+    fileId,
+    full: driveVideo(fileId),
+    external: driveView(fileId),
+    thumbnail: driveThumbnail(fileId),
+    ...options,
+  };
+}
+
+function makeVideoSet(videos, options = {}) {
+  const firstVideo = videos[0] ?? {};
+
+  return {
+    ...firstVideo,
+    ...options,
+    playlist: videos.map((video) => ({
+      ...video,
+      poster: video.poster ?? options.poster,
+    })),
+  };
+}
+
+function makeDriveVideos(entries) {
+  return entries.map(([fileId, label]) => makeDriveVideo(fileId, { label }));
+}
+
+const projectVideos = {
+  adidas: makeDriveVideos([
+    ['1VHPK5R_tjqYV61yBrvn1L1Go6pLLLwW1', '1.mov'],
+    ['1DfLaZxEqBkjDvxs2eldOzwjWTIkitRUJ', '2.mp4'],
+    ['1IkDde365JsdioIaCFuoe8LpUcQB_jBLc', '3.mov'],
+  ]),
+  alatoo: makeDriveVideos([
+    ['1J_1bCDrQHQPgla-EsAMPz_wslnR8W1Cu', '1.mp4'],
+    ['1JcK83IHsCvLwwac8JYhHqL3eTcFWMyyn', '2.mp4'],
+    ['1a4ohYEt_bI-UIcBfJWx3pR9MV1AYHE88', '3.mov'],
+    ['1uEua-LEuB9jQ73kF2FNL_HLk_ypV4tHd', '4.mp4'],
+  ]),
+  asab: makeDriveVideos([
+    ['17liSyYVtImTeRojjEnUOURA30gm9yJo2', '1.mp4'],
+  ]),
+  asylsu: makeDriveVideos([
+    ['16g90albOpWyllqvlOHUBru6sKe9sOcDm', '1.mov'],
+  ]),
+  avangard: makeDriveVideos([
+    ['1ASTGu7_Q28dHthkKEsg_B21PrX49W2iU', '1.mp4'],
+    ['1ASwYfsCnRHpdcYwQho8hs62GU9Yxma2T', '2.mp4'],
+    ['1HghZ06c22ZiKHSJcaYfg9Y4EKJklzSBt', '3.mp4'],
+    ['19qootdkvuQkGaYzLSqQ5fN_pVjTAgCZu', '4.mp4'],
+  ]),
+  aviasales: makeDriveVideos([
+    ['1pSVcpygr3FpGd9JWu6pgRuBEGI7itork', '1.mp4'],
+    ['147RmNkWmHdmEnXn-dy_amcwtrNkg3A3y', '2.mp4'],
+  ]),
+  chevrolet: makeDriveVideos([
+    ['1izhQXJhOHNYUylhEw6gvSAh4q_2Lsild', '1.mp4'],
+    ['1iaWus22Vv9su1yIpDWuFDvhc3FYZkKLz', '2.mp4'],
+    ['1b98iRV-n-wRzjkthPjeKJnpmomAfefX5', '3.mp4'],
+    ['1DyaJaYK2nN0WmD0bu65wJuQgcddy6C9V', '4.mov'],
+    ['1QKp9mrvVC80x3J_eWuNa6W3u0zvw_GLD', '5.mp4'],
+    ['1DO3mGYA6Zp6qlVSurher-mJJKPGVQYOT', '6.mp4'],
+    ['1uWBA7OHcG6Wpv_w8d9TD9p6PCLPCFCGQ', '7.mp4'],
+    ['1C9TmQGkuvBOE9reJaLjcms3RmEJas_je', '8.mp4'],
+    ['1NGyiGAZKwF1v0fjqFmukzoMAX3Jba6py', 'AI 1'],
+    ['1UNFjAdiD-VF4hUmSVPu6AjCjfen4F0Ew', 'AI 2'],
+    ['19YBRVQ4cPy03Zzg8Tm-OhTU_5IRrUIJ2', 'AI 3'],
+  ]),
+  contentPack: makeDriveVideos([
+    ['1mBZISGnU1RpH7j1KBImQPd-JMC2rK94p', 'Juice 1'],
+    ['1LX7SSZjsT4xFC3IV4MlZtHkvaYhzUNi4', 'Juice 2'],
+  ]),
+  kia: makeDriveVideos([
+    ['1b4AuFxVdcNEn9yOxKauANt1of7vuZ6gY', '1.mp4'],
+    ['1hyzszKbngFvWVngtPB9Hg984tOMuf4Ax', '2.mp4'],
+    ['1aIUl5Y0rtFvb2_VZjmXAT0T11el693kQ', '3.mp4'],
+    ['1qXz7AyltiXHsGwd4LG_IPiNgji0itmLc', '4.mp4'],
+    ['1QW0b7zr9L83J5DGVCg4hPBVyLfk0JNXh', '5.mp4'],
+  ]),
+  letsgo: makeDriveVideos([
+    ['1fW0DlF9QWwOUbzDSGn4HGdanyx6IaQKb', '1.mp4'],
+  ]),
+  mrbbq: makeDriveVideos([
+    ['1ZahuAYFgQX-aRFCBaOrXHNN6Ds5oVvwb', '1.mp4'],
+  ]),
+  ngroup: makeDriveVideos([
+    ['1l8JtkgvnBxqsIAHod1wYMBNai8LBui9e', '1.mp4'],
+    ['1MIXKTTJupViDYPzcdzNDU9OZEhLStJZH', '2.mov'],
+    ['1lcc1b6Z1UdjQqE66XmrECwkbkSajHqEt', '3.mp4'],
+    ['1O5xtQ-H4OkbDh8qdPPCHqQ8m-AipdhD8', 'AI 1'],
+  ]),
+  roxy: makeDriveVideos([
+    ['1PeEoxijPSQBizFImlHV1nLNdnCGaofWv', '1.mp4'],
+    ['10WqjceGrWR-wAsjUKVjh1j2g9hiuydo6', '2.mp4'],
+    ['1cL4yco8aIwuHqS7CT0xPa3mkczE8bVXZ', '3.mp4'],
+  ]),
+  vibe: makeDriveVideos([
+    ['1bI4fWsdOUi65WPyGiy9mSr7EAS8GbQpY', '1.mov'],
+    ['1fvYuc3dr4pIRaTBQcTZmMwDHMDPlSSgG', '2.mov'],
+  ]),
+  event: makeDriveVideos([
+    ['1_F1jA1gR8-Y1O3sQTxLPSa6LEmM6y9ns', 'WHITE NIGHT'],
+    ['1UfBrdYyvs0FWvjkvfFEfWcMwZPmUlZWC', 'Стервятник 2'],
+    ['1tQ7l03n6itgAMrS0QvczjFxiFDfGebpq', 'Стервятник'],
+  ]),
+  xcomp: makeDriveVideos([
+    ['1AfFereLiQuP4Ja85FHW9E9rpe1kxZXdj', '1.mp4'],
+  ]),
+  expert: makeDriveVideos([
+    ['1CvBIa_mHLXesQWD0OpNV_VxppEohCtf-', '1.mp4'],
+    ['13XV_IjQRzg5oTvMapqtwumstce6QQ1-c', '2.mp4'],
+    ['1LaPz_qc1uuN631QqPIDYRSQ1CDQXh57x', '3.mp4'],
+    ['13UVr_Qmm5O_vEPQk5pX0QcJg9q0TyA66', '4.mp4'],
+    ['1f_mp1D-9aopG9crZFqBmQQkR5Weq33rs', '5.mp4'],
+    ['1jvUDkj7F0U7tkRJbtjNI1Ch7AFjYagTA', '6.mp4'],
+  ]),
+  creative: makeDriveVideos([
+    ['19YBRVQ4cPy03Zzg8Tm-OhTU_5IRrUIJ2', 'AI 3'],
+    ['1NGyiGAZKwF1v0fjqFmukzoMAX3Jba6py', 'AI 1'],
+    ['1UNFjAdiD-VF4hUmSVPu6AjCjfen4F0Ew', 'AI 2'],
+    ['1as1kbkeIrkT83hBa7ur3NhwcqywPqo8d', '7gen Freeman'],
+    ['1RJEfIG_Y0TGrBp1br2PPUqAXyhwajZ9O', 'AITU Bounce'],
+    ['1mhHUhHPz5cU-5fXX4LHmlZCZJD2BVM8n', 'BAKR Freeman'],
+    ['1G85WxpkhhdzcNeXBHiid-0Uq0TZHLycl', 'Freeman x Aihan'],
+    ['1xsb533RfySe--0aJXqV9jo1IkyeAZuHS', 'ISAEW'],
+    ['1MZogED6aEM73E1hauhLkMqdaJ0XFOe25', 'Qanysh Bayas'],
+    ['1D2s4VEH2M2KqW6aJdvxiTelj3oVRIewE', 'Ulukmanap & BAPAY'],
+  ]),
+  shortFilm: makeDriveVideos([
+    ['1CyixkwzKfaDZ__KqcPvtMYZH09wJGE-3', 'Жылдыздын Кыялы'],
+  ]),
+  fashionBrand: makeDriveVideos([
+    ['1U_FgmO8sVNV7qW0d_mPLkyUbRWL8dMAO', 'Бренд одежды'],
+  ]),
+  upsm: makeDriveVideos([
+    ['1Ryrd3NxRyyOctihArlHIcLd5vRLGwJO-', '1.mp4'],
+  ]),
+  product: makeDriveVideos([
+    ['1vgKug9XElsmd5mzmgvQcXrdsdBeY4Ird', 'ЦУМ GOLD'],
+  ]),
+  shtuchki: makeDriveVideos([
+    ['1Mg_HDqw1VGxPlQEw4Hlio-rX8tZ7ZEwE', '1.mp4'],
+    ['1LcLy_jlcP0nOf0cGSjG8DvGaClSZ6h37', '2.mp4'],
+  ]),
+};
+
 const portfolioItems = [
   {
     id: 'chevrolet-model',
     title: 'Chevrolet — модельный ролик',
     category: 'Авто',
     serviceType: 'Рекламные ролики для продукта и услуги',
-    image: 'https://picsum.photos/seed/chudo-chevrolet/1200/750',
-    media: { type: 'video', src: '/videos/chevrolet.mp4' },
+    image: '/portfolio/chevrolet-01.svg',
+    media: makeVideoSet(projectVideos.chevrolet, {
+      poster: '/portfolio/chevrolet-01.svg',
+    }),
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Короткий промо-ролик для продвижения модели.',
@@ -209,8 +370,10 @@ const portfolioItems = [
     title: 'Content Pack — серия материалов',
     category: 'Система контента',
     serviceType: 'Контент-пакеты для соцсетей',
-    image: 'https://picsum.photos/seed/chudo-content-pack/1200/750',
-    media: { type: 'video', src: '/videos/content-pack.mp4' },
+    image: '/portfolio/content-pack-01.svg',
+    media: makeVideoSet(projectVideos.contentPack, {
+      poster: '/portfolio/content-pack-01.svg',
+    }),
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Главный ролик, вертикальные видео, нарезки и обложки из одной съёмки.',
@@ -220,8 +383,10 @@ const portfolioItems = [
     title: 'Brand — имиджевый ролик',
     category: 'Бренд',
     serviceType: 'Имиджевые и бренд-ролики',
-    image: 'https://picsum.photos/seed/chudo-brand/1200/750',
-    media: { type: 'video', src: '/videos/brand.mp4' },
+    image: '/portfolio/brand-01.svg',
+    media: makeVideoSet(projectVideos.vibe, {
+      poster: '/portfolio/brand-01.svg',
+    }),
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Визуальная история бренда, атмосфера и доверие.',
@@ -231,8 +396,10 @@ const portfolioItems = [
     title: 'Ngroup — объект недвижимости',
     category: 'Продажи',
     serviceType: 'Видео для отдела продаж',
-    image: 'https://picsum.photos/seed/chudo-ngroup-sales/1200/750',
-    media: { type: 'video', src: '/videos/ngroup.mp4' },
+    image: '/portfolio/ngroup-01.svg',
+    media: makeVideoSet(projectVideos.ngroup, {
+      poster: '/portfolio/ngroup-01.svg',
+    }),
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Материал для сайта, КП и отправки клиентам после заявки.',
@@ -242,8 +409,10 @@ const portfolioItems = [
     title: 'Product — видеообзор объекта',
     category: 'Обзор',
     serviceType: 'Обзоры продуктов, объектов и техники',
-    image: 'https://picsum.photos/seed/chudo-product-review/1200/750',
-    media: { type: 'video', src: '/videos/product-review.mp4' },
+    image: '/portfolio/product-01.svg',
+    media: makeVideoSet(projectVideos.product, {
+      poster: '/portfolio/product-01.svg',
+    }),
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Понятная демонстрация деталей, масштаба и преимуществ продукта.',
@@ -253,8 +422,10 @@ const portfolioItems = [
     title: 'Event — aftermovie',
     category: 'Event',
     serviceType: 'Event-видео',
-    image: 'https://picsum.photos/seed/chudo-event/1200/750',
-    media: { type: 'video', src: '/videos/event.mp4' },
+    image: '/portfolio/event-01.svg',
+    media: makeVideoSet(projectVideos.event, {
+      poster: '/portfolio/event-01.svg',
+    }),
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Атмосферный ролик с мероприятия.',
@@ -264,8 +435,10 @@ const portfolioItems = [
     title: 'Expert — B2B-интервью',
     category: 'Экспертность',
     serviceType: 'Экспертный и B2B-контент',
-    image: 'https://picsum.photos/seed/chudo-interview/1200/750',
-    media: { type: 'video', src: '/videos/expert.mp4' },
+    image: '/portfolio/interview-01.svg',
+    media: makeVideoSet(projectVideos.expert, {
+      poster: '/portfolio/interview-01.svg',
+    }),
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Контент с экспертом для доверия, объяснения и прогрева аудитории.',
@@ -275,8 +448,11 @@ const portfolioItems = [
     title: 'AI / Music — креативный формат',
     category: 'Креатив',
     serviceType: 'AI и креативные видеоформаты',
-    image: 'https://picsum.photos/seed/chudo-ai-creative/1200/750',
-    media: { type: 'video', src: '/videos/ai-creative.mp4' },
+    image: '/portfolio/production-01.svg',
+    media: makeVideoSet(projectVideos.creative, {
+      preview: '/videos/ai-creative.mp4',
+      poster: '/portfolio/production-01.svg',
+    }),
     videoUrl: '#',
     portfolioUrl: '#',
     description: 'Смелая визуальная подача, AI-вставки и клиповая динамика.',
@@ -321,77 +497,329 @@ const comparisonItems = [
   },
 ];
 
-const caseFilters = ['Все', 'Авто', 'Недвижимость', 'Бренды', 'Event'];
+const caseFilters = ['Все', 'Авто', 'Недвижимость', 'Бренды', 'FMCG', 'Event', 'Музыка', 'B2B'];
+
+function makeCase({
+  id,
+  title,
+  category,
+  type,
+  task,
+  solution,
+  formats,
+  tags,
+  image,
+  videos,
+  featured = false,
+}) {
+  return {
+    id,
+    title,
+    category,
+    type,
+    task,
+    solution,
+    formats,
+    tags,
+    image,
+    videos,
+    video: makeVideoSet(videos, { poster: image }),
+    featured,
+  };
+}
 
 const cases = [
-  {
-    id: 1,
+  makeCase({
+    id: 'chevrolet',
     title: 'Chevrolet',
     category: 'Авто',
-    type: 'Рекламный ролик',
-    task: 'Показать модель через динамику, детали и ощущение владения.',
-    solution: 'Визуальный ролик с акцентом на движение, экстерьер, интерьер и эмоциональное восприятие.',
-    formats: ['Hero video', 'Short version', 'Social cuts'],
+    type: 'Рекламные ролики',
+    task: 'Показать модельный ряд через динамику, детали автомобиля и ощущение владения.',
+    solution: 'Серия промо-роликов с акцентом на движение, экстерьер, интерьер и эмоциональное восприятие.',
+    formats: ['Hero video', 'AI cut', 'Social cuts'],
     tags: ['Авто', 'Реклама', 'Digital'],
-    video: '/videos/chevrolet.mp4',
+    image: '/portfolio/chevrolet-01.svg',
+    videos: projectVideos.chevrolet,
     featured: true,
-  },
-  {
-    id: 2,
+  }),
+  makeCase({
+    id: 'kia',
     title: 'KIA',
     category: 'Авто',
     type: 'Контент для дилера',
-    task: 'Серия роликов для продвижения автомобилей в digital и соцсетях.',
-    solution: 'Контент с акцентом на внешний вид, салон, детали и сценарии использования.',
+    task: 'Собрать серию роликов для продвижения автомобилей в digital и соцсетях.',
+    solution: 'Видео с акцентом на внешний вид, салон, детали и сценарии использования машины.',
     formats: ['Reels', 'Shorts', 'Model video'],
     tags: ['Авто', 'Соцсети', 'Контент'],
-    video: '/videos/kia.mp4',
-  },
-  {
-    id: 3,
+    image: '/portfolio/kia-01.svg',
+    videos: projectVideos.kia,
+  }),
+  makeCase({
+    id: 'avangard',
     title: 'Avangard',
     category: 'Недвижимость',
     type: 'Видео жилого комплекса',
     task: 'Показать объект, инфраструктуру и атмосферу будущей жизни.',
-    solution: 'Презентационный видеоматериал для сайта, соцсетей и отдела продаж.',
+    solution: 'Презентационные видеоматериалы для сайта, соцсетей, отдела продаж и точек контакта с клиентами.',
     formats: ['Main video', 'Sales version', 'Social cuts'],
     tags: ['ЖК', 'Недвижимость', 'Продажи'],
-    video: '/videos/avangard.mp4',
+    image: '/portfolio/avangard-01.svg',
+    videos: projectVideos.avangard,
     featured: true,
-  },
-  {
-    id: 4,
-    title: 'Ngroup',
+  }),
+  makeCase({
+    id: 'ngroup',
+    title: 'NGROUP',
     category: 'Недвижимость',
     type: 'Презентационное видео',
-    task: 'Визуально упаковать строительный объект для клиентов и презентаций.',
-    solution: 'Видео с акцентом на архитектуру, пространство и детали объекта.',
-    formats: ['Presentation video', 'Short version', 'Sales material'],
+    task: 'Визуально упаковать строительный объект для клиентов, сайта и презентаций.',
+    solution: 'Видео с акцентом на архитектуру, пространство, детали объекта и доверие к девелоперу.',
+    formats: ['Presentation video', 'AI cut', 'Sales material'],
     tags: ['Строительство', 'Презентация', 'Объект'],
-    video: '/videos/ngroup.mp4',
-  },
-  {
-    id: 5,
-    title: 'Event Aftermovie',
+    image: '/portfolio/ngroup-01.svg',
+    videos: projectVideos.ngroup,
+  }),
+  makeCase({
+    id: 'adidas',
+    title: 'ADIDAS',
+    category: 'Бренды',
+    type: 'Fashion / sport promo',
+    task: 'Передать энергию бренда через движение, стиль и динамичный монтаж.',
+    solution: 'Серия визуальных роликов с фокусом на ритм, продукт, образ и узнаваемость.',
+    formats: ['Brand film', 'Short cuts', 'Lifestyle'],
+    tags: ['Бренды', 'Fashion', 'Sport'],
+    image: '/portfolio/brand-01.svg',
+    videos: projectVideos.adidas,
+  }),
+  makeCase({
+    id: 'alatoo',
+    title: 'Ala-Too',
+    category: 'Бренды',
+    type: 'Имиджевый контент',
+    task: 'Собрать визуальный материал, который показывает среду, людей и атмосферу проекта.',
+    solution: 'Серия роликов с живой подачей, деталями пространства и понятной визуальной структурой.',
+    formats: ['Image video', 'Social cuts', 'Promo'],
+    tags: ['Образование', 'Имидж', 'Digital'],
+    image: '/portfolio/interview-01.svg',
+    videos: projectVideos.alatoo,
+  }),
+  makeCase({
+    id: 'asab',
+    title: 'ASAB',
+    category: 'Бренды',
+    type: 'Бренд-ролик',
+    task: 'Показать продукт или бренд в чистой визуальной подаче для digital-размещения.',
+    solution: 'Короткий ролик с акцентом на детали, настроение и аккуратную рекламную упаковку.',
+    formats: ['Commercial', 'Short version', 'Digital'],
+    tags: ['Бренды', 'Реклама', 'Digital'],
+    image: '/portfolio/brand-01.svg',
+    videos: projectVideos.asab,
+  }),
+  makeCase({
+    id: 'asylsu',
+    title: 'Asylsu',
+    category: 'FMCG',
+    type: 'Product promo',
+    task: 'Сделать продукт заметным и визуально чистым для рекламной коммуникации.',
+    solution: 'Предметная и lifestyle-подача с фокусом на свежесть, качество и узнаваемость упаковки.',
+    formats: ['Product video', 'Social cut', 'Promo'],
+    tags: ['FMCG', 'Продукт', 'Реклама'],
+    image: '/portfolio/product-01.svg',
+    videos: projectVideos.asylsu,
+  }),
+  makeCase({
+    id: 'aviasales',
+    title: 'Aviasales',
+    category: 'Бренды',
+    type: 'Digital promo',
+    task: 'Сделать короткий запоминающийся материал для бренда в travel/digital-среде.',
+    solution: 'Динамичная подача с быстрым монтажом, понятным сообщением и лёгкой визуальной иронией.',
+    formats: ['Digital video', 'Shorts', 'Promo'],
+    tags: ['Бренды', 'Travel', 'Digital'],
+    image: '/portfolio/production-01.svg',
+    videos: projectVideos.aviasales,
+  }),
+  makeCase({
+    id: 'juice',
+    title: 'Juice',
+    category: 'FMCG',
+    type: 'Контент-пакет',
+    task: 'Собрать визуальные материалы для продукта и дальнейшего использования в соцсетях.',
+    solution: 'Серия роликов с продуктовой подачей, цветом, динамикой и короткими версиями.',
+    formats: ['Content pack', 'Reels', 'Product promo'],
+    tags: ['FMCG', 'Соцсети', 'Контент'],
+    image: '/portfolio/content-pack-01.svg',
+    videos: projectVideos.contentPack,
+  }),
+  makeCase({
+    id: 'letsgo',
+    title: "Let's go",
+    category: 'Бренды',
+    type: 'Promo video',
+    task: 'Собрать короткий рекламный материал с понятным настроением и быстрым входом в бренд.',
+    solution: 'Динамичный ролик с акцентом на визуальную идентичность и простую digital-подачу.',
+    formats: ['Promo', 'Short version', 'Digital'],
+    tags: ['Бренды', 'Реклама', 'Digital'],
+    image: '/portfolio/brand-01.svg',
+    videos: projectVideos.letsgo,
+  }),
+  makeCase({
+    id: 'mr-bbq',
+    title: 'MR.BBQ',
+    category: 'FMCG',
+    type: 'Food promo',
+    task: 'Показать продукт аппетитно, просто и достаточно ярко для соцсетей.',
+    solution: 'Продуктовая съёмка с фокусом на фактуру, процесс и желание попробовать.',
+    formats: ['Product video', 'Food content', 'Reels'],
+    tags: ['FMCG', 'Food', 'Соцсети'],
+    image: '/portfolio/product-01.svg',
+    videos: projectVideos.mrbbq,
+  }),
+  makeCase({
+    id: 'roxy',
+    title: 'ROXY',
+    category: 'Бренды',
+    type: 'Имиджевый контент',
+    task: 'Показать бренд через стиль, детали и визуальное настроение.',
+    solution: 'Серия роликов для соцсетей и digital с фокусом на образ, ритм и визуальную чистоту.',
+    formats: ['Brand film', 'Reels', 'Short cuts'],
+    tags: ['Бренды', 'Image', 'Social'],
+    image: '/portfolio/brand-01.svg',
+    videos: projectVideos.roxy,
+  }),
+  makeCase({
+    id: 'vibe',
+    title: 'VIBE',
+    category: 'Бренды',
+    type: 'Brand film',
+    task: 'Передать настроение бренда через визуальную историю и атмосферу.',
+    solution: 'Имиджевые ролики с фокусом на образ, детали, свет и узнаваемый стиль.',
+    formats: ['Brand film', 'Social cuts', 'Short version'],
+    tags: ['Бренды', 'Image', 'Commercial'],
+    image: '/portfolio/brand-01.svg',
+    videos: projectVideos.vibe,
+  }),
+  makeCase({
+    id: 'white-night',
+    title: 'WHITE NIGHT',
     category: 'Event',
     type: 'Aftermovie',
-    task: 'Передать атмосферу события и создать материал для продвижения.',
-    solution: 'Динамичный ролик с ключевыми моментами, гостями и настроением площадки.',
+    task: 'Передать атмосферу события и оставить материал для дальнейшего продвижения.',
+    solution: 'Динамичный aftermovie с ключевыми моментами, людьми, площадкой и настроением вечера.',
     formats: ['Aftermovie', 'Highlights', 'Stories'],
     tags: ['Event', 'Atmosphere', 'Promo'],
-    video: '/videos/event.mp4',
-  },
-  {
-    id: 6,
-    title: 'Brand Film',
+    image: '/portfolio/event-01.svg',
+    videos: [projectVideos.event[0]],
+  }),
+  makeCase({
+    id: 'xcomp',
+    title: 'XCOMP',
+    category: 'B2B',
+    type: 'Корпоративный ролик',
+    task: 'Упаковать услугу или компанию в понятный видеоматериал для digital и продаж.',
+    solution: 'Лаконичный ролик с деловой подачей, структурой и акцентом на пользу для клиента.',
+    formats: ['B2B video', 'Presentation', 'Digital'],
+    tags: ['B2B', 'Услуги', 'Продажи'],
+    image: '/portfolio/interview-01.svg',
+    videos: projectVideos.xcomp,
+  }),
+  makeCase({
+    id: 'bank-kompanion',
+    title: 'Банк Компаньон',
+    category: 'B2B',
+    type: 'Экспертный контент',
+    task: 'Собрать серию материалов для доверия, объяснения продукта и коммуникации с аудиторией.',
+    solution: 'Серия роликов с аккуратной структурой, понятной подачей и деловым визуальным тоном.',
+    formats: ['Expert video', 'B2B content', 'Social cuts'],
+    tags: ['B2B', 'Финансы', 'Экспертность'],
+    image: '/portfolio/interview-01.svg',
+    videos: projectVideos.expert,
+  }),
+  makeCase({
+    id: 'music-clips',
+    title: 'Музыкальные клипы',
+    category: 'Музыка',
+    type: 'Music video',
+    task: 'Создать визуальные истории для артистов с клиповой динамикой и характером.',
+    solution: 'Подборка музыкальных клипов с разной пластикой, монтажным ритмом и визуальным стилем.',
+    formats: ['Music video', 'Creative cut', 'Performance'],
+    tags: ['Музыка', 'Креатив', 'Clip'],
+    image: '/portfolio/production-01.svg',
+    videos: projectVideos.creative.slice(3),
+    featured: true,
+  }),
+  makeCase({
+    id: 'short-film',
+    title: 'Жылдыздын Кыялы',
+    category: 'Музыка',
+    type: 'Короткий метр',
+    task: 'Собрать художественный видеоматериал с настроением, драматургией и цельной визуальной линией.',
+    solution: 'Короткометражный формат с фокусом на историю, атмосферу и кинематографичную подачу.',
+    formats: ['Short film', 'Story', 'Cinema'],
+    tags: ['Креатив', 'Кино', 'Музыка'],
+    image: '/portfolio/production-01.svg',
+    videos: projectVideos.shortFilm,
+  }),
+  makeCase({
+    id: 'fashion-brand',
+    title: 'Бренд одежды',
     category: 'Бренды',
-    type: 'Имиджевый ролик',
-    task: 'Показать бренд через визуальную историю и атмосферу.',
-    solution: 'Ролик с фокусом на образ, детали, настроение и узнаваемость бренда.',
-    formats: ['Brand film', 'Social cuts', 'Short version'],
-    tags: ['Brand', 'Image', 'Commercial'],
-    video: '/videos/brand.mp4',
-  },
+    type: 'Fashion promo',
+    task: 'Показать одежду через стиль, движение и визуальную эстетику бренда.',
+    solution: 'Имиджевый fashion-ролик с акцентом на фактуру, силуэт, настроение и узнаваемость.',
+    formats: ['Fashion video', 'Brand film', 'Social cut'],
+    tags: ['Бренды', 'Fashion', 'Image'],
+    image: '/portfolio/brand-01.svg',
+    videos: projectVideos.fashionBrand,
+  }),
+  makeCase({
+    id: 'upsm',
+    title: 'УПСМ',
+    category: 'B2B',
+    type: 'Презентационное видео',
+    task: 'Сделать понятный видеоматериал для организации, услуги или внутренней коммуникации.',
+    solution: 'Структурная подача с деловым тоном, акцентом на процесс и доверие.',
+    formats: ['Presentation', 'Corporate', 'Digital'],
+    tags: ['B2B', 'Презентация', 'Услуги'],
+    image: '/portfolio/interview-01.svg',
+    videos: projectVideos.upsm,
+  }),
+  makeCase({
+    id: 'tsum',
+    title: 'ЦУМ GOLD',
+    category: 'Бренды',
+    type: 'Product review',
+    task: 'Показать продукт, детали и премиальность через аккуратный визуальный обзор.',
+    solution: 'Видеообзор с фокусом на фактуру, свет, крупные планы и ощущение качества.',
+    formats: ['Product review', 'Promo', 'Digital'],
+    tags: ['Бренды', 'Product', 'Обзор'],
+    image: '/portfolio/product-01.svg',
+    videos: projectVideos.product,
+  }),
+  makeCase({
+    id: 'show',
+    title: 'ШОУ',
+    category: 'Event',
+    type: 'Show content',
+    task: 'Передать энергию шоу и собрать материал для продвижения формата.',
+    solution: 'Два ролика с акцентом на сцену, эмоции, темп и атмосферу события.',
+    formats: ['Showreel', 'Highlights', 'Promo'],
+    tags: ['Event', 'Show', 'Promo'],
+    image: '/portfolio/event-01.svg',
+    videos: projectVideos.event.slice(1),
+  }),
+  makeCase({
+    id: 'shtuchki',
+    title: 'Штучки',
+    category: 'FMCG',
+    type: 'Product content',
+    task: 'Сделать лёгкий продуктовый контент для соцсетей и digital-размещения.',
+    solution: 'Короткие ролики с простым сообщением, быстрым монтажом и понятной продуктовой подачей.',
+    formats: ['Product video', 'Reels', 'Social cuts'],
+    tags: ['FMCG', 'Продукт', 'Соцсети'],
+    image: '/portfolio/content-pack-01.svg',
+    videos: projectVideos.shtuchki,
+  }),
 ];
 
 const workflowSteps = [
@@ -667,29 +1095,106 @@ function getFrontPortfolioItem(rotation) {
   ).item;
 }
 
-function getProjectMedia(item) {
-  const media = item.media ?? {};
+function isDirectVideoUrl(url) {
+  return /\.(mp4|webm|ogg)(?:[?#].*)?$/i.test(url);
+}
 
-  if (media.type === 'video' && media.src) {
+function getDriveFileId(url) {
+  return url?.match(/drive\.google\.com\/file\/d\/([^/]+)/i)?.[1] ?? null;
+}
+
+function normalizeVideoSource(video) {
+  if (!video) return null;
+
+  if (Array.isArray(video)) {
+    return { playlist: video };
+  }
+
+  if (typeof video === 'string') {
     return {
-      type: 'video',
-      src: media.src,
-      poster: media.poster ?? item.image,
+      full: video,
+      preview: video,
     };
   }
 
+  return video;
+}
+
+function getPrimaryVideoSource(source) {
+  if (!source) return null;
+
+  if (source.full || source.src || source.preview) {
+    return source;
+  }
+
+  return source.playlist?.[0] ?? source.videos?.[0] ?? null;
+}
+
+function getVideoList(video, fallbackPoster) {
+  const source = normalizeVideoSource(video);
+  const list = source?.playlist ?? source?.videos ?? (source ? [source] : []);
+
+  return list.map((clip, index) => ({
+    ...clip,
+    label: clip.label ?? `Видео ${index + 1}`,
+    poster: clip.poster ?? source?.poster ?? fallbackPoster,
+  }));
+}
+
+function getPreviewMedia(video, fallbackImage) {
+  const normalizedSource = normalizeVideoSource(video);
+  const source = getPrimaryVideoSource(normalizedSource);
+  const poster = source?.poster ?? normalizedSource?.poster ?? fallbackImage;
+  const preview = source?.preview ?? (source?.provider === 'drive' ? null : source?.src ?? source?.full);
+
+  if (preview && isDirectVideoUrl(preview)) {
+    return {
+      type: 'video',
+      src: preview,
+      poster,
+    };
+  }
+
+  if (poster) {
+    return {
+      type: 'image',
+      src: poster,
+    };
+  }
+
+  return null;
+}
+
+function getPlayableVideo(video, fallbackPoster) {
+  const source = getPrimaryVideoSource(normalizeVideoSource(video));
+  const src = source?.full ?? source?.src ?? source?.preview;
+
+  if (!src) return null;
+
+  const fileId = source?.fileId ?? getDriveFileId(src);
+  const isDrive = source?.provider === 'drive' || Boolean(fileId);
+
   return {
+    src,
+    poster: source?.poster ?? fallbackPoster,
+    provider: isDrive ? 'drive' : source?.provider,
+    external: source?.external ?? (fileId ? driveView(fileId) : src),
+    thumbnail: source?.thumbnail ?? (fileId ? driveThumbnail(fileId) : null),
+  };
+}
+
+function getProjectMedia(item) {
+  return getPreviewMedia(item.media, item.image) ?? {
     type: 'image',
-    src: media.src ?? item.image,
+    src: item.image,
   };
 }
 
 function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = false }) {
   const media = getProjectMedia(item);
+  const isPlayer = mode === 'player';
 
   if (media.type === 'video') {
-    const isPlayer = mode === 'player';
-
     return (
       <video
         src={media.src}
@@ -707,12 +1212,30 @@ function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = fa
   return <img src={media.src} alt="" loading={loading} draggable={draggable} />;
 }
 
-function isDirectVideoUrl(url) {
-  return /\.(mp4|webm|ogg)(?:[?#].*)?$/i.test(url);
+function DriveVideoPlayer({ video, title }) {
+  const openUrl = video.external ?? video.src;
+
+  return (
+    <div className="drive-player">
+      <iframe
+        key={video.src}
+        src={video.src}
+        title={title}
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+        allowFullScreen
+        loading="eager"
+        referrerPolicy="no-referrer-when-downgrade"
+      />
+      <a className="drive-player__fallback" href={openUrl} target="_blank" rel="noreferrer">
+        Открыть в Drive
+      </a>
+    </div>
+  );
 }
 
 function VideoModal({ item, onClose }) {
   const videoRef = useRef(null);
+  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
@@ -724,7 +1247,13 @@ function VideoModal({ item, onClose }) {
     };
   }, [onClose]);
 
-  const src = item?.media?.src;
+  useEffect(() => {
+    setActiveVideoIndex(0);
+  }, [item?.id]);
+
+  const videos = getVideoList(item?.media, item?.image);
+  const activeClip = videos[activeVideoIndex] ?? videos[0] ?? item?.media;
+  const video = getPlayableVideo(activeClip, item?.image);
 
   return (
     <AnimatePresence>
@@ -760,16 +1289,21 @@ function VideoModal({ item, onClose }) {
             <strong className="video-modal-title">{item.title}</strong>
           </div>
           <div className="video-modal-player">
-            {src ? (
-              <video
-                ref={videoRef}
-                src={src}
-                poster={item.image}
-                controls
-                autoPlay
-                playsInline
-                preload="auto"
-              />
+            {video ? (
+              video.provider === 'drive' ? (
+                <DriveVideoPlayer video={video} title={item.title} />
+              ) : (
+                <video
+                  key={video.src}
+                  ref={videoRef}
+                  src={video.src}
+                  poster={video.poster}
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="auto"
+                />
+              )
             ) : (
               <div className="video-modal-placeholder">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -781,6 +1315,22 @@ function VideoModal({ item, onClose }) {
               </div>
             )}
           </div>
+          {videos.length > 1 && (
+            <div className="video-modal-playlist" role="tablist" aria-label="Выбор ролика">
+              {videos.map((clip, index) => (
+                <button
+                  key={`${clip.full ?? clip.src ?? clip.label}-${index}`}
+                  type="button"
+                  className={index === activeVideoIndex ? 'is-active' : ''}
+                  onClick={() => setActiveVideoIndex(index)}
+                  role="tab"
+                  aria-selected={index === activeVideoIndex}
+                >
+                  {clip.label}
+                </button>
+              ))}
+            </div>
+          )}
         </motion.div>
       </motion.div>
     </AnimatePresence>
@@ -800,6 +1350,12 @@ function PortfolioCard({ item, style, isActive, isDimmed, onSelect }) {
       // Если активная — останавливаем propagation на mousedown/pointerdown
       // чтобы stage не начинал drag при клике на активную карточку
       onPointerDown={(e) => { if (isActive) e.stopPropagation(); }}
+      onPointerUp={(e) => {
+        if (isActive) {
+          e.stopPropagation();
+          onSelect();
+        }
+      }}
       onMouseDown={(e) => { if (isActive) e.stopPropagation(); }}
       onClick={(e) => {
         e.stopPropagation();
@@ -1049,6 +1605,7 @@ function OfferSection() {
   const [videoItem, setVideoItem] = useState(null);
   const activeService = hoveredService ?? selectedService;
   const activeItem = portfolioItems.find((item) => item.id === activeItemId) ?? portfolioItems[0];
+  const activeVideoCount = getVideoList(activeItem.media, activeItem.image).length;
 
   useEffect(() => {
     const matches = getServiceMatches(activeService.title);
@@ -1117,6 +1674,20 @@ function OfferSection() {
           onServicePreview={setHoveredService}
           onServicePreviewEnd={() => setHoveredService(null)}
         />
+
+        <button
+          type="button"
+          className="offer-video-cta"
+          onClick={() => setVideoItem(activeItem)}
+        >
+          <span>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M9 7.5v9l7-4.5-7-4.5z" />
+            </svg>
+            Смотреть ролики
+          </span>
+          <em>{activeVideoCount} видео</em>
+        </button>
       </div>
       {videoItem && <VideoModal item={videoItem} onClose={() => setVideoItem(null)} />}
     </section>
@@ -1277,6 +1848,8 @@ function CaseFilters({ activeFilter, onFilterChange }) {
 
 function CaseCard({ item, index, onSelect }) {
   const videoRef = useRef(null);
+  const previewMedia = getPreviewMedia(item.video, item.image);
+  const videoCount = getVideoList(item.videos ?? item.video, item.image).length;
 
   return (
     <motion.button
@@ -1293,15 +1866,18 @@ function CaseCard({ item, index, onSelect }) {
     >
       {/* Превью */}
       <div className="case-card__thumb">
-        {item.video ? (
+        {previewMedia?.type === 'video' ? (
           <video
             ref={videoRef}
-            src={item.video}
+            src={previewMedia.src}
+            poster={previewMedia.poster}
             muted
             loop
             playsInline
             preload="metadata"
           />
+        ) : previewMedia?.type === 'image' ? (
+          <img src={previewMedia.src} alt="" loading="lazy" draggable={false} />
         ) : (
           <div className="case-card__thumb-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
@@ -1329,6 +1905,7 @@ function CaseCard({ item, index, onSelect }) {
         <div className="case-card__tags">
           {item.formats.slice(0, 3).map((f) => <em key={f}>{f}</em>)}
         </div>
+        {videoCount > 1 && <span className="case-card__count">{videoCount} видео</span>}
       </div>
 
       {/* Стрелка */}
@@ -1342,12 +1919,21 @@ function CaseCard({ item, index, onSelect }) {
 }
 
 function CaseModal({ item, onClose }) {
+  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
+  const videos = getVideoList(item.videos ?? item.video, item.image);
+  const activeClip = videos[activeVideoIndex] ?? videos[0] ?? item.video;
+  const video = getPlayableVideo(activeClip, item.image);
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
     return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', onKey); };
   }, [onClose]);
+
+  useEffect(() => {
+    setActiveVideoIndex(0);
+  }, [item.id]);
 
   return (
     <motion.div
@@ -1375,8 +1961,12 @@ function CaseModal({ item, onClose }) {
 
         {/* Видеоплеер */}
         <div className="case-modal__media">
-          {item.video ? (
-            <video src={item.video} controls autoPlay playsInline preload="auto" />
+          {video ? (
+            video.provider === 'drive' ? (
+              <DriveVideoPlayer video={video} title={item.title} />
+            ) : (
+              <video key={video.src} src={video.src} poster={video.poster} controls autoPlay playsInline preload="auto" />
+            )
           ) : (
             <div className="case-modal__placeholder">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
@@ -1387,6 +1977,22 @@ function CaseModal({ item, onClose }) {
             </div>
           )}
         </div>
+        {videos.length > 1 && (
+          <div className="case-modal__playlist" role="tablist" aria-label="Выбор ролика">
+            {videos.map((clip, index) => (
+              <button
+                key={`${clip.full ?? clip.src ?? clip.label}-${index}`}
+                type="button"
+                className={index === activeVideoIndex ? 'is-active' : ''}
+                onClick={() => setActiveVideoIndex(index)}
+                role="tab"
+                aria-selected={index === activeVideoIndex}
+              >
+                {clip.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="case-modal__body">
           <p className="case-modal__kicker">{item.category} · {item.type}</p>
