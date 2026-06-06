@@ -1144,7 +1144,7 @@ function getVideoList(video, fallbackPoster) {
 function getPreviewMedia(video, fallbackImage) {
   const normalizedSource = normalizeVideoSource(video);
   const source = getPrimaryVideoSource(normalizedSource);
-  const poster = source?.poster ?? normalizedSource?.poster ?? fallbackImage;
+  const poster = source?.thumbnail ?? normalizedSource?.thumbnail ?? source?.poster ?? normalizedSource?.poster ?? fallbackImage;
   const preview = source?.preview ?? (source?.provider === 'drive' ? null : source?.src ?? source?.full);
 
   if (preview && isDirectVideoUrl(preview)) {
@@ -1213,8 +1213,6 @@ function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = fa
 }
 
 function DriveVideoPlayer({ video, title }) {
-  const openUrl = video.external ?? video.src;
-
   return (
     <div className="drive-player">
       <iframe
@@ -1226,9 +1224,6 @@ function DriveVideoPlayer({ video, title }) {
         loading="eager"
         referrerPolicy="no-referrer-when-downgrade"
       />
-      <a className="drive-player__fallback" href={openUrl} target="_blank" rel="noreferrer">
-        Открыть в Drive
-      </a>
     </div>
   );
 }
@@ -1901,7 +1896,6 @@ function CaseCard({ item, index, onSelect }) {
           <span className="case-card__type">{item.type}</span>
         </div>
         <strong className="case-card__title">{item.title}</strong>
-        <p className="case-card__task">{item.task}</p>
         <div className="case-card__tags">
           {item.formats.slice(0, 3).map((f) => <em key={f}>{f}</em>)}
         </div>
@@ -1943,6 +1937,11 @@ function CaseModal({ item, onClose }) {
       onClick={onClose}
       style={{ cursor: 'auto' }}
     >
+      <button type="button" className="case-modal__close" onClick={onClose} aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
       <motion.article
         className="case-modal"
         role="dialog" aria-modal="true"
@@ -1953,12 +1952,6 @@ function CaseModal({ item, onClose }) {
         transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button type="button" className="case-modal__close" onClick={onClose} aria-label="Закрыть">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-
         {/* Видеоплеер */}
         <div className="case-modal__media">
           {video ? (

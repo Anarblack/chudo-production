@@ -1717,39 +1717,73 @@ h1 span {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 10px;
 }
 
 /* ── Card ─────────────────────────────────── */
 
 .case-card {
+  position: relative;
   display: grid;
-  grid-template-columns: 200px 1fr auto;
+  grid-template-columns: minmax(220px, 280px) 1fr auto;
   align-items: center;
-  gap: clamp(16px, 2.5vw, 32px);
-  padding: clamp(14px, 1.8vw, 22px) clamp(16px, 2vw, 24px);
+  gap: clamp(18px, 2.6vw, 38px);
+  min-height: 172px;
+  padding: clamp(16px, 2vw, 24px);
   border: 0.5px solid rgba(255,255,255,0.07);
-  border-radius: 12px;
-  background: #0a0b0e;
+  border-radius: 8px;
+  background:
+    linear-gradient(120deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012)),
+    #08090c;
   cursor: pointer;
   text-align: left;
-  transition: background 0.2s, border-color 0.2s;
+  outline: none;
+  overflow: hidden;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.case-card::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    radial-gradient(circle at 18% 50%, rgba(255, 74, 10, 0.13), transparent 28%),
+    linear-gradient(90deg, rgba(255,255,255,0.045), transparent 54%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
 }
 
 .case-card:hover {
-  background: #0e0f13;
-  border-color: rgba(255,255,255,0.13);
+  background:
+    linear-gradient(120deg, rgba(255,255,255,0.06), rgba(255,255,255,0.018)),
+    #0b0c10;
+  border-color: rgba(255, 74, 10, 0.32);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.36);
+  transform: translateY(-2px);
+}
+
+.case-card:hover::before,
+.case-card:focus-visible::before {
+  opacity: 1;
+}
+
+.case-card:focus-visible {
+  border-color: rgba(255, 74, 10, 0.65);
+  box-shadow: 0 0 0 1px rgba(255, 74, 10, 0.25), 0 18px 50px rgba(0,0,0,0.36);
 }
 
 /* Превью */
 .case-card__thumb {
   position: relative;
-  width: 200px;
+  z-index: 1;
+  width: 100%;
   aspect-ratio: 16/9;
   border-radius: 8px;
   overflow: hidden;
   background: #111216;
   flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 16px 36px rgba(0,0,0,0.34);
 }
 
 .case-card__thumb img,
@@ -1759,6 +1793,15 @@ h1 span {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1.01);
+  filter: saturate(0.95) contrast(1.04) brightness(0.86);
+  transition: transform 0.28s ease, filter 0.28s ease;
+}
+
+.case-card:hover .case-card__thumb img,
+.case-card:hover .case-card__thumb video {
+  transform: scale(1.055);
+  filter: saturate(1.05) contrast(1.08) brightness(0.95);
 }
 
 .case-card__thumb-placeholder {
@@ -1778,25 +1821,34 @@ h1 span {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.3);
-  opacity: 0;
-  transition: opacity 0.2s;
+  background:
+    linear-gradient(180deg, transparent 35%, rgba(0,0,0,0.55)),
+    rgba(0,0,0,0.16);
+  opacity: 1;
+  transition: background 0.2s;
 }
 
-.case-card:hover .case-card__thumb-overlay { opacity: 1; }
+.case-card:hover .case-card__thumb-overlay {
+  background:
+    linear-gradient(180deg, transparent 28%, rgba(0,0,0,0.48)),
+    rgba(0,0,0,0.04);
+}
 
 .case-card__play-icon {
-  width: 36px;
-  height: 36px;
-  color: #fff;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+  width: 42px;
+  height: 42px;
+  color: rgba(255,255,255,0.92);
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.55));
+  opacity: 0.92;
 }
 
 /* Контент */
 .case-card__body {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
   min-width: 0;
 }
 
@@ -1825,28 +1877,18 @@ h1 span {
 
 .case-card__title {
   font-family: var(--display);
-  font-size: clamp(18px, 1.8vw, 26px);
-  font-weight: 680;
+  font-size: clamp(24px, 2.4vw, 40px);
+  font-weight: 760;
   letter-spacing: -0.01em;
   color: var(--text);
-  line-height: 1.1;
-}
-
-.case-card__task {
-  font-size: 13px;
-  color: rgba(244,245,242,0.48);
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 0.96;
 }
 
 .case-card__tags {
   display: flex;
   gap: 5px;
   flex-wrap: wrap;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .case-card__tags em {
@@ -1864,7 +1906,7 @@ h1 span {
 
 .case-card__count {
   width: fit-content;
-  margin-top: 3px;
+  margin-top: -2px;
   color: rgba(255, 74, 10, 0.9);
   font-size: 10px;
   font-weight: 820;
@@ -1874,6 +1916,8 @@ h1 span {
 
 /* Стрелка */
 .case-card__arrow {
+  position: relative;
+  z-index: 1;
   flex-shrink: 0;
   width: 36px;
   height: 36px;
@@ -1905,18 +1949,18 @@ h1 span {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: clamp(18px, 3vw, 38px);
   cursor: auto;
 }
 
 .case-modal {
   position: relative;
   width: 100%;
-  max-width: 860px;
+  max-width: 920px;
   max-height: 90svh;
   background: #0d0e12;
   border: 0.5px solid rgba(255,255,255,0.1);
-  border-radius: 14px;
+  border-radius: 8px;
   overflow: hidden;
   overflow-y: auto;
   box-shadow: 0 32px 80px rgba(0,0,0,0.7);
@@ -1925,25 +1969,33 @@ h1 span {
 }
 
 .case-modal__close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 10;
-  width: 34px;
-  height: 34px;
+  position: fixed;
+  top: clamp(18px, 3vw, 34px);
+  right: clamp(18px, 3vw, 34px);
+  z-index: 10002;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  border: 0.5px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.06);
-  color: rgba(244,245,242,0.7);
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(13, 14, 18, 0.88);
+  color: rgba(244,245,242,0.82);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.18s, color 0.18s;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 44px rgba(0,0,0,0.4);
+  transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.18s;
 }
 
-.case-modal__close:hover { background: rgba(255,255,255,0.12); color: #fff; }
-.case-modal__close svg { width: 15px; height: 15px; }
+.case-modal__close:hover {
+  background: rgba(255, 74, 10, 0.88);
+  border-color: rgba(255, 74, 10, 0.9);
+  color: #050505;
+  transform: scale(1.04);
+}
+
+.case-modal__close svg { width: 17px; height: 17px; }
 
 .case-modal__media {
   position: relative;
@@ -1973,34 +2025,6 @@ h1 span {
   width: 100%;
   height: 100%;
   border: 0;
-}
-
-.drive-player__fallback {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 34px;
-  padding: 0 13px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(0,0,0,0.62);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  text-transform: uppercase;
-  backdrop-filter: blur(10px);
-  transition: transform 0.18s ease, background 0.18s ease;
-}
-
-.drive-player__fallback:hover {
-  transform: translateY(-1px);
-  background: rgba(255, 74, 10, 0.82);
 }
 
 .case-modal__playlist,
@@ -3378,25 +3402,6 @@ h1 span {
     gap: 18px;
   }
 
-  .case-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: auto;
-  }
-
-  .case-card,
-  .case-card--hero,
-  .case-card--side,
-  .case-card--wide {
-    grid-column: auto;
-    grid-row: auto;
-    min-height: 360px;
-  }
-
-  .case-card--hero,
-  .case-card--wide {
-    grid-column: span 2;
-  }
-
   .case-modal {
     grid-template-columns: 1fr;
     overflow-y: auto;
@@ -3826,39 +3831,31 @@ h1 span {
     font-size: 10px;
   }
 
-  .case-grid {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
   .case-card,
   .case-card--hero,
   .case-card--side,
   .case-card--wide {
     grid-column: auto;
-    min-height: 390px;
-    border-radius: 15px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    min-height: 0;
+    padding: 14px;
+    border-radius: 8px;
   }
 
-  .case-card__content {
-    gap: 10px;
-    padding: 18px;
+  .case-card__thumb {
+    width: 100%;
+  }
+
+  .case-card__arrow {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
   }
 
   .case-card strong,
   .case-card:not(.case-card--hero) strong {
     font-size: 24px;
-  }
-
-  .case-card__task {
-    font-size: 13px;
-  }
-
-  .case-card__play {
-    top: 14px;
-    right: 14px;
-    width: 38px;
-    height: 38px;
   }
 
   .case-modal-backdrop {
@@ -3869,7 +3866,14 @@ h1 span {
   .case-modal {
     width: 100%;
     max-height: 94svh;
-    border-radius: 18px;
+    border-radius: 8px;
+  }
+
+  .case-modal__close {
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
   }
 
   .case-modal__media,
@@ -3901,14 +3905,6 @@ h1 span {
     bottom: 14px;
     max-width: calc(100% - 28px);
     font-size: 8px;
-  }
-
-  .drive-player__fallback {
-    top: 10px;
-    left: 10px;
-    min-height: 30px;
-    padding: 0 10px;
-    font-size: 9px;
   }
 
   .case-modal__body {
