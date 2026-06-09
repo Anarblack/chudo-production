@@ -8,6 +8,7 @@ import logo from '../assets/chudo-logo-new.png';
 import cameraModelUrl from '../assets/red_camera_web.glb?url';
 import CustomCursor from './components/CustomCursor.jsx';
 import BlurText from './components/BlurText.jsx';
+import PartnersSection from './components/PartnersSection.jsx';
 
 const navItems = [
   { label: 'Проблемы рынка', href: '#market-pains' },
@@ -15,6 +16,7 @@ const navItems = [
   { label: 'Наш подход',     href: '#usp' },
   { label: 'Работы',         href: '#cases' },
   { label: 'Как работаем',   href: '#workflow' },
+  { label: 'Партнёры',       href: '#partners' },
   { label: 'Контакты',       href: '#contact' },
 ];
 
@@ -2822,6 +2824,7 @@ function App() {
       <UniqueValueSection />
       <CasesSection />
       <WorkflowSection />
+      <PartnersSection />
       <ContactSection />
     </main>
   );

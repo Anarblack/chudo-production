@@ -4767,3 +4767,239 @@ body:has(.custom-cursor):not(:has(.video-modal-backdrop)) button {
   max-width: 320px;
   line-height: 1.5;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PARTNERS SECTION — flashlight effect
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.partners-section {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(72px, 10vw, 130px) clamp(20px, 5vw, 72px) clamp(56px, 8vw, 100px);
+  background: var(--bg);
+  overflow: hidden;
+  isolation: isolate;
+  /* flashlight CSS variables — updated by JS on mousemove */
+  --fl-x: 50%;
+  --fl-y: 50%;
+  --fl-r: 240px;
+}
+
+/* ── Ambient gradient ──────────────────────────────────────────────────────── */
+.partners-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 35% at 50% 0%, rgba(143, 184, 255, 0.055), transparent 70%),
+    radial-gradient(ellipse 40% 20% at 50% 100%, rgba(255, 255, 255, 0.025), transparent 70%);
+}
+
+/* ── Film grain ────────────────────────────────────────────────────────────── */
+.partners-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.32;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: overlay;
+}
+
+/* ── Heading ───────────────────────────────────────────────────────────────── */
+.partners-heading {
+  position: relative;
+  z-index: 4;
+  text-align: center;
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.partners-heading h2 {
+  font-family: var(--display);
+  font-size: clamp(2rem, 5.5vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: 10px 0 14px;
+}
+
+.partners-subtitle {
+  font-size: clamp(13px, 1.5vw, 16px);
+  color: var(--muted);
+  margin: 0;
+  max-width: 380px;
+  margin-inline: auto;
+  line-height: 1.55;
+}
+
+/* ── Stage (logos + overlay) ──────────────────────────────────────────────── */
+.partners-stage {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1100px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* ── Logo grid ─────────────────────────────────────────────────────────────── */
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 15vw, 180px), 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+}
+
+.partner-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(22px, 3.5vw, 36px) clamp(18px, 2.5vw, 28px);
+  background: rgba(3, 4, 5, 0.4);
+  transition: background 0.3s ease;
+  aspect-ratio: 2.4 / 1;
+}
+
+.partner-logo:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Logo images — forced to white monochrome */
+.partner-logo__img {
+  max-width: 100%;
+  max-height: 40px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+  display: block;
+}
+
+/* SVG placeholder */
+.partner-logo__svg {
+  width: 100%;
+  max-width: 128px;
+  height: auto;
+  display: block;
+  opacity: 0.88;
+}
+
+/* ── Flashlight overlay ────────────────────────────────────────────────────── */
+/*
+   Darkness layer with a transparent "hole" at cursor position.
+   Logos under the hole appear at full brightness.
+   Logos in darkness appear at ~6% opacity due to the rgba(3,4,5,0.94) mask.
+*/
+.partners-flashlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    /* Cold-blue halo for cinematic flashlight feel */
+    radial-gradient(
+      circle var(--fl-r) at var(--fl-x) var(--fl-y),
+      rgba(180, 210, 255, 0.06) 0%,
+      transparent 100%
+    ),
+    /* Main darkness with transparent hole */
+    radial-gradient(
+      circle calc(var(--fl-r) * 0.95) at var(--fl-x) var(--fl-y),
+      transparent 0%,
+      transparent 22%,
+      rgba(3, 4, 5, 0.55) 52%,
+      rgba(3, 4, 5, 0.88) 72%,
+      rgba(3, 4, 5, 0.96) 100%
+    );
+  /* No transition — gradient follows CSS var instantly for zero lag */
+}
+
+/* ── Scanlines — subtle cinematic texture ─────────────────────────────────── */
+.partners-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.07) 2px,
+    rgba(0, 0, 0, 0.07) 4px
+  );
+  opacity: 0.5;
+}
+
+/* ── Hint text ─────────────────────────────────────────────────────────────── */
+.partners-hint {
+  position: relative;
+  z-index: 4;
+  margin: 18px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.18);
+  text-align: center;
+  font-family: var(--tech);
+}
+
+/* ── Tagline ───────────────────────────────────────────────────────────────── */
+.partners-tagline {
+  position: relative;
+  z-index: 4;
+  margin: clamp(40px, 6vw, 68px) 0 0;
+  font-family: var(--display);
+  font-size: clamp(13px, 1.8vw, 18px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(244, 245, 242, 0.28);
+  text-align: center;
+  max-width: 520px;
+  line-height: 1.5;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .partners-section {
+    --fl-r: 180px;
+  }
+
+  .partners-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .partner-logo {
+    aspect-ratio: 2 / 1;
+    padding: 18px 14px;
+  }
+
+  /* On mobile, hint is always visible since auto-animation runs */
+  .partners-hint {
+    opacity: 1 !important;
+    color: rgba(255, 255, 255, 0.22);
+  }
+}
+
+@media (max-width: 380px) {
+  .partners-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Reduce motion — show all logos at moderate opacity, no animation */
+@media (prefers-reduced-motion: reduce) {
+  .partners-flashlight {
+    display: none;
+  }
+
+  .partner-logo {
+    opacity: 0.65;
+  }
+}
