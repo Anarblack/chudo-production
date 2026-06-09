@@ -29,7 +29,8 @@ export default function CustomCursor() {
     const over = (e) => {
       const el = e.target.closest('button, a, [data-cursor]');
       if (!el) return;
-      setVariant(el.dataset.cursor === 'camera' ? 'camera' : 'hover');
+      const dc = el.dataset.cursor;
+      setVariant(dc === 'camera' ? 'camera' : dc === 'flashlight' ? 'flashlight' : 'hover');
     };
 
     const out = (e) => {
@@ -47,9 +48,10 @@ export default function CustomCursor() {
   }, [mouseX, mouseY, dotX, dotY]);
 
   const sizes = {
-    default: { width: 30, height: 30 },
-    hover:   { width: 52, height: 52 },
-    camera:  { width: 50, height: 50 },
+    default:    { width: 30, height: 30 },
+    hover:      { width: 52, height: 52 },
+    camera:     { width: 50, height: 50 },
+    flashlight: { width: 0,  height: 0  },
   };
 
   return (
@@ -61,7 +63,7 @@ export default function CustomCursor() {
           y: cursorY,
           translateX: '-50%',
           translateY: '-50%',
-          opacity: visible ? 1 : 0,
+          opacity: variant === 'flashlight' ? 0 : visible ? 1 : 0,
         }}
         animate={sizes[variant]}
         transition={{ duration: 0.16, ease: 'easeOut' }}
@@ -85,7 +87,7 @@ export default function CustomCursor() {
           y: trailY,
           translateX: '-50%',
           translateY: '-50%',
-          opacity: visible ? 0.8 : 0,
+          opacity: variant === 'flashlight' ? 0 : visible ? 0.8 : 0,
         }}
       />
     </>

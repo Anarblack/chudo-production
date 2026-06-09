@@ -4769,237 +4769,351 @@ body:has(.custom-cursor):not(:has(.video-modal-backdrop)) button {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   PARTNERS SECTION — flashlight effect
+   PARTNERS / TRUST SECTION — premium dark gallery with cursor flashlight
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.partners-section {
+/* ── Section shell ─────────────────────────────────────────────────────────── */
+.pt-section {
   position: relative;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: clamp(72px, 10vw, 130px) clamp(20px, 5vw, 72px) clamp(56px, 8vw, 100px);
+  padding: clamp(80px, 11vw, 140px) clamp(20px, 5vw, 72px) clamp(64px, 9vw, 110px);
   background: var(--bg);
   overflow: hidden;
   isolation: isolate;
-  /* flashlight CSS variables — updated by JS on mousemove */
-  --fl-x: 50%;
-  --fl-y: 50%;
-  --fl-r: 240px;
 }
 
-/* ── Ambient gradient ──────────────────────────────────────────────────────── */
-.partners-ambient {
+/* ── Decorative backgrounds ────────────────────────────────────────────────── */
+.pt-ambient {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 60% 35% at 50% 0%, rgba(143, 184, 255, 0.055), transparent 70%),
-    radial-gradient(ellipse 40% 20% at 50% 100%, rgba(255, 255, 255, 0.025), transparent 70%);
+    radial-gradient(ellipse 70% 40% at 50% -5%,  rgba(143, 184, 255, 0.05), transparent 68%),
+    radial-gradient(ellipse 50% 25% at 50% 105%, rgba(255, 255, 255, 0.02), transparent 70%);
 }
 
-/* ── Film grain ────────────────────────────────────────────────────────────── */
-.partners-grain {
+/* Subtle dot grid — same motif as hero */
+.pt-grid-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.32;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 25%, rgba(0,0,0,0.55) 75%, transparent 100%);
+}
+
+.pt-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
   mix-blend-mode: overlay;
 }
 
-/* ── Heading ───────────────────────────────────────────────────────────────── */
-.partners-heading {
+/* ── Heading block ─────────────────────────────────────────────────────────── */
+.pt-heading {
   position: relative;
   z-index: 4;
   text-align: center;
-  margin-bottom: clamp(40px, 6vw, 72px);
+  margin-bottom: clamp(40px, 5.5vw, 72px);
 }
 
-.partners-heading h2 {
+.pt-heading .eyebrow {
+  margin-bottom: 14px;
+}
+
+.pt-heading h2 {
   font-family: var(--display);
-  font-size: clamp(2rem, 5.5vw, 4.2rem);
+  font-size: clamp(2.2rem, 5.8vw, 4.8rem);
   font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
   color: var(--text);
-  margin: 10px 0 14px;
+  margin: 0 0 16px;
 }
 
-.partners-subtitle {
+.pt-subtitle {
   font-size: clamp(13px, 1.5vw, 16px);
   color: var(--muted);
-  margin: 0;
-  max-width: 380px;
-  margin-inline: auto;
-  line-height: 1.55;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 400px;
 }
 
-/* ── Stage (logos + overlay) ──────────────────────────────────────────────── */
-.partners-stage {
+/* ── Counter badge ─────────────────────────────────────────────────────────── */
+.pt-counter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  margin-top: 20px;
+  padding: 7px 16px 7px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(4px);
+}
+
+.pt-counter strong {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.pt-counter span {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--silver);
+  margin-right: 6px;
+}
+
+.pt-counter em {
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* ── Grid wrapper ──────────────────────────────────────────────────────────── */
+.pt-grid-wrapper {
   position: relative;
   z-index: 3;
   width: 100%;
-  max-width: 1100px;
-  border-radius: 2px;
-  overflow: hidden;
+  max-width: 1120px;
+}
+
+/* ── Flashlight grid container ─────────────────────────────────────────────── */
+.pGrid-wrap {
+  position: relative;
+  width: 100%;
+  cursor: none;          /* replaced by glow dot cursor */
+  --fl-x: 50%;
+  --fl-y: 50%;
+}
+
+/* ── Glow dot — the visible flashlight source ──────────────────────────────── */
+.pGrid-cursor {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 20;
+  will-change: left, top;
+  box-shadow:
+    0 0 0 2px  rgba(255, 255, 255, 0.12),
+    0 0 14px 8px rgba(255, 255, 255, 0.18),
+    0 0 40px 20px rgba(200, 220, 255, 0.08);
+  transition: opacity 0.3s ease;
 }
 
 /* ── Logo grid ─────────────────────────────────────────────────────────────── */
-.partners-grid {
+.pGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 15vw, 180px), 1fr));
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-flow: dense;
   gap: 1px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.07);   /* visible as divider lines */
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.partner-logo {
+/* Logo cell */
+.pLogo {
+  --lit: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: clamp(68px, 8.5vw, 96px);
+  position: relative;
+  overflow: hidden;
+  /* Opacity driven by --lit variable (set per-frame by RAF) */
+  opacity: calc(0.08 + var(--lit) * 0.91);
+  will-change: opacity;
+}
+
+.pLogo[data-wide="true"] {
+  grid-column: span 2;
+}
+
+/* Inner wrapper — scale driven by --lit */
+.pLogo__inner {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(22px, 3.5vw, 36px) clamp(18px, 2.5vw, 28px);
-  background: rgba(3, 4, 5, 0.4);
-  transition: background 0.3s ease;
-  aspect-ratio: 2.4 / 1;
+  padding: clamp(14px, 2vw, 22px) clamp(16px, 2.5vw, 28px);
+  width: 100%;
+  height: 100%;
+  transform: scale(calc(1 + var(--lit) * 0.04));
+  will-change: transform;
+  filter: drop-shadow(0 0 calc(var(--lit) * 12px) rgba(200, 220, 255, 0.28));
 }
 
-.partner-logo:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-/* Logo images — forced to white monochrome */
-.partner-logo__img {
+/* Real logo images → white monochrome */
+.pLogo__img {
   max-width: 100%;
-  max-height: 40px;
+  max-height: clamp(28px, 3.5vw, 42px);
   object-fit: contain;
   filter: brightness(0) invert(1);
-  opacity: 0.9;
   display: block;
 }
 
-/* SVG placeholder */
-.partner-logo__svg {
+/* FallbackLogo SVG */
+.fallback-logo {
   width: 100%;
-  max-width: 128px;
+  max-width: clamp(100px, 14vw, 148px);
   height: auto;
   display: block;
-  opacity: 0.88;
+  overflow: visible;
+}
+
+/* Company name: revealed only deep inside the light zone (--lit^2 easing) */
+.pLogo__label {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--tech);
+  font-size: 7px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: calc(var(--lit) * var(--lit) * 0.65);
+  will-change: opacity;
 }
 
 /* ── Flashlight overlay ────────────────────────────────────────────────────── */
-/*
-   Darkness layer with a transparent "hole" at cursor position.
-   Logos under the hole appear at full brightness.
-   Logos in darkness appear at ~6% opacity due to the rgba(3,4,5,0.94) mask.
-*/
-.partners-flashlight {
+.pGrid-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 2;
+  z-index: 10;
   background:
-    /* Cold-blue halo for cinematic flashlight feel */
+    /* Cold-white / blue halo around the beam center */
     radial-gradient(
-      circle var(--fl-r) at var(--fl-x) var(--fl-y),
-      rgba(180, 210, 255, 0.06) 0%,
-      transparent 100%
+      circle 360px at var(--fl-x) var(--fl-y),
+      rgba(210, 228, 255, 0.045) 0%,
+      transparent 65%
     ),
-    /* Main darkness with transparent hole */
+    /* Main darkness mask with soft-edge hole */
     radial-gradient(
-      circle calc(var(--fl-r) * 0.95) at var(--fl-x) var(--fl-y),
-      transparent 0%,
-      transparent 22%,
-      rgba(3, 4, 5, 0.55) 52%,
-      rgba(3, 4, 5, 0.88) 72%,
-      rgba(3, 4, 5, 0.96) 100%
+      circle 280px at var(--fl-x) var(--fl-y),
+      transparent      0%,
+      transparent     18%,
+      rgba(3,4,5,0.48) 42%,
+      rgba(3,4,5,0.84) 62%,
+      rgba(3,4,5,0.97) 100%
     );
-  /* No transition — gradient follows CSS var instantly for zero lag */
 }
 
-/* ── Scanlines — subtle cinematic texture ─────────────────────────────────── */
-.partners-scanlines {
+/* ── Scanlines ─────────────────────────────────────────────────────────────── */
+.pGrid-overlay::after {
+  content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 1;
   background: repeating-linear-gradient(
     to bottom,
     transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.07) 2px,
-    rgba(0, 0, 0, 0.07) 4px
+    transparent 3px,
+    rgba(0, 0, 0, 0.055) 3px,
+    rgba(0, 0, 0, 0.055) 4px
   );
-  opacity: 0.5;
+  z-index: 0;
 }
 
-/* ── Hint text ─────────────────────────────────────────────────────────────── */
-.partners-hint {
+/* ── Hint ──────────────────────────────────────────────────────────────────── */
+.pt-hint {
   position: relative;
   z-index: 4;
-  margin: 18px 0 0;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.18);
-  text-align: center;
+  margin: 14px 0 0;
   font-family: var(--tech);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.16);
+  text-align: center;
 }
+
+.pt-hint__mobile { display: none; }
 
 /* ── Tagline ───────────────────────────────────────────────────────────────── */
-.partners-tagline {
+.pt-tagline {
   position: relative;
   z-index: 4;
-  margin: clamp(40px, 6vw, 68px) 0 0;
-  font-family: var(--display);
-  font-size: clamp(13px, 1.8vw, 18px);
-  font-weight: 600;
+  margin: clamp(44px, 6vw, 72px) 0 0;
+  font-family: var(--font);
+  font-size: clamp(14px, 1.7vw, 18px);
+  font-weight: 500;
   letter-spacing: 0.01em;
-  color: rgba(244, 245, 242, 0.28);
+  color: rgba(244, 245, 242, 0.22);
   text-align: center;
   max-width: 520px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-/* ── Responsive ────────────────────────────────────────────────────────────── */
-@media (max-width: 640px) {
-  .partners-section {
-    --fl-r: 180px;
+/* ── Tablet ────────────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .pGrid {
+    grid-template-columns: repeat(4, 1fr);
   }
+}
 
-  .partners-grid {
+/* ── Mobile ────────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .pGrid {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .partner-logo {
-    aspect-ratio: 2 / 1;
-    padding: 18px 14px;
+  /* On mobile all items same width — disable wide */
+  .pLogo[data-wide="true"] {
+    grid-column: span 1;
   }
 
-  /* On mobile, hint is always visible since auto-animation runs */
-  .partners-hint {
-    opacity: 1 !important;
-    color: rgba(255, 255, 255, 0.22);
+  .pGrid-wrap { cursor: auto; }
+  .pGrid-cursor { display: none; }
+
+  .pt-hint__desktop { display: none; }
+  .pt-hint__mobile  { display: inline; }
+
+  .pt-hint {
+    color: rgba(255, 255, 255, 0.2);
   }
 }
 
-@media (max-width: 380px) {
-  .partners-grid {
+@media (max-width: 400px) {
+  .pGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Reduce motion — show all logos at moderate opacity, no animation */
+/* ── Reduced motion ────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .partners-flashlight {
-    display: none;
+  .pGrid-overlay { display: none; }
+  .pGrid-cursor  { display: none; }
+  .pLogo {
+    opacity: 0.6;
+    will-change: auto;
   }
-
-  .partner-logo {
-    opacity: 0.65;
+  .pLogo__inner {
+    transform: none;
+    will-change: auto;
   }
 }
