@@ -15,6 +15,7 @@ const navItems = [
   { label: 'Наш подход',     href: '#usp' },
   { label: 'Работы',         href: '#cases' },
   { label: 'Как работаем',   href: '#workflow' },
+  { label: 'Доверие',        href: '#partners' },
   { label: 'Контакты',       href: '#contact' },
 ];
 
@@ -921,6 +922,206 @@ const workflowStats = [
   { value: '2+', label: 'версии под площадки' },
   { value: '1', label: 'понятный маршрут проекта' },
 ];
+
+const LOGO_FILE_EXTENSIONS = new Set(['png', 'jpg', 'jpeg', 'svg', 'webp']);
+
+// Google Drive integration point:
+// replace this temporary list with the recursive Drive API result from the root partners folder.
+const partnersLogos = [
+  { id: 'adidas', name: 'ADIDAS', src: '', driveFileId: '' },
+  { id: 'aviasales', name: 'Aviasales', src: '', driveFileId: '' },
+  { id: 'chevrolet', name: 'Chevrolet', src: '', driveFileId: '' },
+  { id: 'kia', name: 'KIA', src: '', driveFileId: '' },
+  { id: 'ngroup', name: 'NGROUP', src: '', driveFileId: '' },
+  { id: 'bank-kompanion', name: 'Банк Компаньон', src: '', driveFileId: '' },
+  { id: 'avangard', name: 'Avangard', src: '', driveFileId: '' },
+  { id: 'alatoo', name: 'Ala-Too', src: '', driveFileId: '' },
+  { id: 'asab', name: 'ASAB', src: '', driveFileId: '' },
+  { id: 'asylsu', name: 'Asylsu', src: '', driveFileId: '' },
+  { id: 'letsgo', name: 'LetsGo', src: '', driveFileId: '' },
+  { id: 'mr-bbq', name: 'MR.BBQ', src: '', driveFileId: '' },
+  { id: 'roxy', name: 'ROXY', src: '', driveFileId: '' },
+  { id: 'vibe', name: 'VIBE', src: '', driveFileId: '' },
+  { id: 'white-night', name: 'WHITE NIGHT', src: '', driveFileId: '' },
+  { id: 'xcomp', name: 'XCOMP', src: '', driveFileId: '' },
+  { id: 'upsm', name: 'УПСМ', src: '', driveFileId: '' },
+  { id: 'tsum-gold', name: 'ЦУМ GOLD', src: '', driveFileId: '' },
+  { id: 'shtuchki', name: 'Штучки', src: '', driveFileId: '' },
+  { id: 'juice', name: 'Juice', src: '', driveFileId: '' },
+];
+
+function isSupportedLogoFile(fileName = '') {
+  const extension = fileName.split('.').pop()?.toLowerCase();
+
+  return Boolean(extension && LOGO_FILE_EXTENSIONS.has(extension));
+}
+
+function makePartnerLogoFromDriveFile(file) {
+  if (!file?.id || !isSupportedLogoFile(file.name)) return null;
+
+  const name = file.displayName || file.name.replace(/\.[^/.]+$/, '');
+
+  return {
+    id: file.id,
+    name,
+    src: file.webContentLink || file.thumbnailLink || driveThumbnail(file.id),
+    driveFileId: file.id,
+    source: 'google-drive',
+  };
+}
+
+function getPartnerLogoSignature(item) {
+  return String(item.id || item.driveFileId || item.src || item.name)
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-');
+}
+
+function normalizePartnerLogo(item) {
+  const src = item.src || (item.driveFileId ? driveThumbnail(item.driveFileId) : '');
+
+  return {
+    ...item,
+    src,
+    key: getPartnerLogoSignature({ ...item, src }),
+  };
+}
+
+function getUniquePartnerLogos(logos) {
+  const seen = new Set();
+
+  return logos
+    .map(normalizePartnerLogo)
+    .filter((logo) => {
+      if (!logo.key || seen.has(logo.key)) return false;
+
+      seen.add(logo.key);
+      return true;
+    });
+}
+
+const HASH_SCROLL_DELAYS = [0, 120, 360, 800, 1500, 2600, 4200];
+
+function getSamePageHash(href) {
+  if (!href) return null;
+
+  try {
+    const url = new URL(href, window.location.href);
+    const current = new URL(window.location.href);
+    const samePage = url.origin === current.origin && url.pathname === current.pathname;
+
+    return samePage ? url.hash : null;
+  } catch {
+    return href.startsWith('#') ? href : null;
+  }
+}
+
+function scrollToHash(hash, behavior = 'smooth') {
+  const targetId = decodeURIComponent(hash.replace(/^#/, ''));
+  const target = document.getElementById(targetId);
+
+  if (!target) return false;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const html = document.documentElement;
+  const previousScrollBehavior = html.style.scrollBehavior;
+  const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY);
+  const resolvedBehavior = prefersReducedMotion ? 'auto' : behavior;
+
+  if (resolvedBehavior === 'auto') {
+    html.style.scrollBehavior = 'auto';
+  }
+
+  window.scrollTo({
+    top,
+    behavior: resolvedBehavior,
+  });
+
+  if (resolvedBehavior === 'auto') {
+    html.style.scrollBehavior = previousScrollBehavior;
+  }
+
+  return true;
+}
+
+function scheduleHashScroll(hash, behavior = 'smooth', shouldScroll = () => true) {
+  HASH_SCROLL_DELAYS.forEach((delay) => {
+    window.setTimeout(() => {
+      if (!shouldScroll()) return;
+
+      scrollToHash(hash, delay >= 800 ? 'auto' : behavior);
+    }, delay);
+  });
+}
+
+function useHashNavigation() {
+  const navigationTokenRef = useRef(0);
+
+  useEffect(() => {
+    const navigateToHash = (hash, { replace = false, behavior = 'smooth' } = {}) => {
+      if (!hash) return;
+
+      const navigationToken = navigationTokenRef.current + 1;
+      const nextUrl = `${window.location.pathname}${window.location.search}${hash}`;
+
+      navigationTokenRef.current = navigationToken;
+
+      if (replace) {
+        window.history.replaceState(null, '', nextUrl);
+      } else if (window.location.hash !== hash) {
+        window.history.pushState(null, '', nextUrl);
+      }
+
+      scheduleHashScroll(
+        hash,
+        behavior,
+        () => navigationTokenRef.current === navigationToken && window.location.hash === hash,
+      );
+    };
+
+    const handleClick = (event) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+
+      if (!link || link.target || link.hasAttribute('download')) return;
+
+      const hash = getSamePageHash(link.getAttribute('href'));
+
+      if (!hash) return;
+
+      event.preventDefault();
+      navigateToHash(hash);
+    };
+
+    const handleHashChange = () => {
+      if (window.location.hash) {
+        navigateToHash(window.location.hash, { replace: true });
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+    window.addEventListener('hashchange', handleHashChange);
+
+    if (window.location.hash) {
+      navigateToHash(window.location.hash, { replace: true, behavior: 'auto' });
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+}
 
 function AnchorNav({ compact = false }) {
   return (
@@ -2741,7 +2942,201 @@ function HeroVisual() {
   );
 }
 
+function PartnersTrustCopy({ reveal = false }) {
+  return (
+    <div className="partners-copy">
+      <p className="eyebrow">Финальный кадр</p>
+      <h2 id={reveal ? undefined : 'partners-title'}>Нам доверяют</h2>
+      <p>
+        Партнёры и бренды, с которыми мы уже работали
+      </p>
+    </div>
+  );
+}
+
+function PartnerLogoCard({ logo, index, reveal = false }) {
+  return (
+    <div className="partner-logo-card" style={{ '--logo-delay': `${index * 0.035}s` }}>
+      {logo.src ? (
+        <img
+          src={logo.src}
+          alt={reveal ? '' : `${logo.name} logo`}
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <span className="partner-logo-card__wordmark">{logo.name}</span>
+      )}
+    </div>
+  );
+}
+
+function PartnerLogoGrid({ logos, density, reveal = false }) {
+  return (
+    <div
+      className="partners-logo-grid"
+      data-density={density}
+      aria-label={reveal ? undefined : 'Логотипы партнёров и клиентов'}
+    >
+      {logos.map((item, index) => (
+        <PartnerLogoCard
+          key={`${item.key}-${reveal ? 'reveal' : 'base'}`}
+          logo={item}
+          index={index}
+          reveal={reveal}
+        />
+      ))}
+    </div>
+  );
+}
+
+function PartnersTrustSection({ logos = partnersLogos }) {
+  const sectionRef = useRef(null);
+  const logoItems = useMemo(() => getUniquePartnerLogos(logos), [logos]);
+  const density = logoItems.length <= 8 ? 'compact' : logoItems.length > 18 ? 'dense' : 'balanced';
+
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section) return undefined;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const mobileViewport = window.matchMedia('(max-width: 760px)');
+    const current = { x: 0, y: 0 };
+    const target = { x: 0, y: 0 };
+    let touchActiveUntil = 0;
+    let frameId = 0;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    const setLight = (x, y) => {
+      section.style.setProperty('--light-x', `${Math.round(x)}px`);
+      section.style.setProperty('--light-y', `${Math.round(y)}px`);
+    };
+
+    const setTargetToPoint = (clientX, clientY) => {
+      const rect = section.getBoundingClientRect();
+
+      target.x = clamp(clientX - rect.left, 0, rect.width);
+      target.y = clamp(clientY - rect.top, 0, rect.height);
+    };
+
+    const setTargetToCenter = (snap = false) => {
+      const rect = section.getBoundingClientRect();
+
+      target.x = rect.width * 0.5;
+      target.y = rect.height * 0.48;
+
+      if (snap) {
+        current.x = target.x;
+        current.y = target.y;
+        setLight(current.x, current.y);
+      }
+    };
+
+    const animateLight = (time) => {
+      const rect = section.getBoundingClientRect();
+      const shouldAutoMove = (!finePointer || mobileViewport.matches) && time > touchActiveUntil;
+
+      if (shouldAutoMove && rect.width > 0 && rect.height > 0) {
+        target.x = rect.width * (0.5 + Math.sin(time * 0.00028) * 0.32 + Math.sin(time * 0.00011) * 0.08);
+        target.y = rect.height * (0.5 + Math.cos(time * 0.00022) * 0.27);
+      }
+
+      current.x += (target.x - current.x) * 0.13;
+      current.y += (target.y - current.y) * 0.13;
+      setLight(current.x, current.y);
+
+      frameId = window.requestAnimationFrame(animateLight);
+    };
+
+    const handlePointerMove = (event) => {
+      if (event.pointerType === 'touch') {
+        touchActiveUntil = performance.now() + 900;
+      }
+
+      setTargetToPoint(event.clientX, event.clientY);
+      section.classList.add('is-pointer-active');
+    };
+
+    const handlePointerDown = (event) => {
+      if (event.pointerType === 'touch') {
+        touchActiveUntil = performance.now() + 900;
+      }
+
+      handlePointerMove(event);
+    };
+
+    const handlePointerUp = () => {
+      touchActiveUntil = 0;
+
+      if (!finePointer) {
+        section.classList.remove('is-pointer-active');
+      }
+    };
+
+    const handlePointerLeave = () => {
+      if (finePointer) {
+        section.classList.remove('is-pointer-active');
+        setTargetToCenter();
+      }
+    };
+
+    const handleResize = () => setTargetToCenter(true);
+
+    setTargetToCenter(true);
+
+    if (!prefersReducedMotion) {
+      frameId = window.requestAnimationFrame(animateLight);
+      section.addEventListener('pointermove', handlePointerMove);
+      section.addEventListener('pointerdown', handlePointerDown);
+      section.addEventListener('pointerleave', handlePointerLeave);
+      window.addEventListener('pointerup', handlePointerUp);
+      window.addEventListener('resize', handleResize);
+    } else {
+      section.classList.add('partners-section--static');
+    }
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      section.removeEventListener('pointermove', handlePointerMove);
+      section.removeEventListener('pointerdown', handlePointerDown);
+      section.removeEventListener('pointerleave', handlePointerLeave);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('resize', handleResize);
+      section.classList.remove('partners-section--static', 'is-pointer-active');
+    };
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="partners" className="partners-section" aria-labelledby="partners-title">
+      <div className="partners-section__noise" aria-hidden="true" />
+      <div className="partners-section__beam" aria-hidden="true" />
+
+      <motion.div
+        className="partners-stage"
+        initial={{ opacity: 0, y: 34 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+      >
+        <PartnersTrustCopy />
+        <PartnerLogoGrid logos={logoItems} density={density} />
+        <p className="partners-final-line">Создаём визуальные решения, которые работают на бренд</p>
+
+        <div className="partners-reveal" aria-hidden="true">
+          <PartnersTrustCopy reveal />
+          <PartnerLogoGrid logos={logoItems} density={density} reveal />
+          <p className="partners-final-line">Создаём визуальные решения, которые работают на бренд</p>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
 function App() {
+  useHashNavigation();
+
   return (
     <main className="site-shell">
       <CustomCursor />
@@ -2822,6 +3217,7 @@ function App() {
       <UniqueValueSection />
       <CasesSection />
       <WorkflowSection />
+      <PartnersTrustSection />
       <ContactSection />
     </main>
   );
