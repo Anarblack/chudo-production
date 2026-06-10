@@ -937,6 +937,30 @@ function AnchorNav({ compact = false }) {
   );
 }
 
+function StickyNav() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const hero = document.querySelector('.hero-section');
+    if (!hero) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(!entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      className={`sticky-nav${visible ? ' sticky-nav--visible' : ''}`}
+      aria-hidden={!visible}
+    >
+      <AnchorNav compact />
+    </div>
+  );
+}
+
 function MarketPainsSection() {
   const sectionRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -2748,6 +2772,7 @@ function App() {
   return (
     <main className="site-shell">
       <CustomCursor />
+      <StickyNav />
       <section className="hero-section" aria-labelledby="hero-title">
         <div className="grain" aria-hidden="true" />
 
