@@ -2560,7 +2560,6 @@ function WorkflowSection() {
 
   const handleStepSelect = (index) => {
     setActiveIndex(index);
-    stepRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
   return (
