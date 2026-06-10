@@ -478,6 +478,13 @@ h1 span {
   padding-top: 22px;
 }
 
+/* On desktop the header already shows the full nav — hide the duplicate in the footer */
+@media (min-width: 1100px) {
+  .hero-footer .anchor-nav {
+    display: none;
+  }
+}
+
 .pains-section {
   position: relative;
   height: var(--pains-scroll-height, 600svh);
@@ -1963,9 +1970,10 @@ h1 span {
   background: rgba(0,0,0,0.88);
   backdrop-filter: blur(14px);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: clamp(18px, 3vw, 38px);
+  padding: clamp(24px, 4svh, 60px) clamp(18px, 3vw, 38px);
+  overflow-y: auto;
   cursor: auto;
 }
 
@@ -1973,15 +1981,14 @@ h1 span {
   position: relative;
   width: 100%;
   max-width: 920px;
-  max-height: 90svh;
   background: #0d0e12;
   border: 0.5px solid rgba(255,255,255,0.1);
   border-radius: 8px;
   overflow: hidden;
-  overflow-y: auto;
   box-shadow: 0 32px 80px rgba(0,0,0,0.7);
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
 }
 
 .case-modal__close {
@@ -2042,6 +2049,58 @@ h1 span {
   height: 100%;
   border: 0;
 }
+
+/* "Open in Drive" overlay button — bottom-right corner */
+.drive-player__ext {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(13, 14, 18, 0.72);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(244,245,242,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  transition: background 0.18s, color 0.18s;
+}
+
+.drive-player__ext:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+.drive-player__ext svg { width: 14px; height: 14px; }
+
+/* Fallback state when iframe errors */
+.drive-player--fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: rgba(244,245,242,0.4);
+  font-size: 13px;
+  text-align: center;
+}
+
+.drive-player--fallback svg { width: 40px; height: 40px; opacity: 0.3; }
+
+.drive-player__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.drive-player__open:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.3); }
 
 .case-modal__playlist,
 .video-modal-playlist {
@@ -4074,13 +4133,15 @@ h1 span {
   }
 
   .case-modal-backdrop {
-    align-items: end;
+    align-items: flex-end;
+    overflow-y: hidden;
     padding: 12px;
   }
 
   .case-modal {
     width: 100%;
     max-height: 94svh;
+    overflow-y: auto;
     border-radius: 8px;
   }
 
