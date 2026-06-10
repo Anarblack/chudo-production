@@ -11,6 +11,18 @@ import BlurText from './components/BlurText.jsx';
 import PartnersSection from './components/PartnersSection.jsx';
 import ContactSection from './components/ContactSection.jsx';
 
+// Prevents IntersectionObserver from changing accordion state during anchor-scroll,
+// which would shift the page height and cause smooth scroll to land at the wrong target.
+let _anchorScrollActive = false;
+let _anchorScrollTimer = null;
+
+function _startAnchorScroll() {
+  _anchorScrollActive = true;
+  clearTimeout(_anchorScrollTimer);
+  // 1300ms covers any smooth-scroll distance on this page; unblocks IntersectionObserver after landing
+  _anchorScrollTimer = setTimeout(() => { _anchorScrollActive = false; }, 1300);
+}
+
 const navItems = [
   { label: 'Проблемы рынка', href: '#market-pains' },
   { label: 'Решения',        href: '#offer' },
@@ -929,7 +941,7 @@ function AnchorNav({ compact = false }) {
   return (
     <nav className={compact ? 'anchor-nav anchor-nav--compact' : 'anchor-nav'} aria-label="Навигация по предложению">
       {navItems.map((item) => (
-        <a key={item.href} href={item.href}>
+        <a key={item.href} href={item.href} onClick={_startAnchorScroll}>
           {item.label}
         </a>
       ))}
@@ -2525,6 +2537,8 @@ function WorkflowSection() {
 
     const observer = new IntersectionObserver(
       (entries) => {
+        if (_anchorScrollActive) return;
+
         const visibleEntries = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
