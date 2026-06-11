@@ -2027,94 +2027,22 @@ h1 span {
   background: #000;
 }
 
+.case-modal__media img,
 .case-modal__media iframe,
 .case-modal__media video {
   display: block;
   width: 100%;
   height: 100%;
   border: 0;
-  object-fit: contain;
+  object-fit: cover;
 }
 
-.drive-player {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background: #000;
+.case-modal__ctas {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.drive-player iframe {
-  display: block;
-  width: 100%;
-  flex: 1 1 auto;
-  min-height: 0;
-  border: 0;
-}
-
-/* Always-visible bar below the iframe — ensures video is reachable even when embed is blocked */
-.drive-player__bar {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 9px 14px;
-  background: rgba(13, 14, 18, 0.9);
-  border-top: 1px solid rgba(255,255,255,0.08);
-  color: rgba(244,245,242,0.6);
-  font-size: 11px;
-  font-weight: 640;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition: background 0.18s, color 0.18s;
-}
-
-.drive-player__bar:hover { background: rgba(255,74,10,0.18); color: var(--text); }
-.drive-player__bar svg { width: 13px; height: 13px; flex-shrink: 0; }
-
-.case-modal__playlist,
-.video-modal-playlist {
-  display: flex;
-  gap: 7px;
-  overflow-x: auto;
-  padding: 12px clamp(14px, 2vw, 20px);
-  border-top: 0.5px solid rgba(255,255,255,0.08);
-  border-bottom: 0.5px solid rgba(255,255,255,0.08);
-  background: #090a0d;
-  scrollbar-width: thin;
-}
-
-.case-modal__playlist button,
-.video-modal-playlist button {
-  flex: 0 0 auto;
-  min-height: 30px;
-  border: 0.5px solid rgba(255,255,255,0.12);
-  border-radius: 999px;
-  padding: 6px 11px;
-  background: rgba(255,255,255,0.045);
-  color: rgba(244,245,242,0.62);
-  cursor: pointer;
-  font-size: 10px;
-  font-weight: 760;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: border-color 0.18s, background 0.18s, color 0.18s;
-}
-
-.case-modal__playlist button:hover,
-.video-modal-playlist button:hover {
-  border-color: rgba(255, 74, 10, 0.55);
-  color: rgba(244,245,242,0.9);
-}
-
-.case-modal__playlist button.is-active,
-.video-modal-playlist button.is-active {
-  border-color: rgba(255, 74, 10, 0.86);
-  background: rgba(255, 74, 10, 0.16);
-  color: #fff;
-}
 
 .case-modal__placeholder {
   position: absolute;
@@ -5140,25 +5068,6 @@ body:has(.custom-cursor):not(:has(.video-modal-backdrop)) button {
   letter-spacing: -0.01em;
 }
 
-.video-modal-player {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000;
-}
-
-.video-modal-player iframe,
-.video-modal-player video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  object-fit: contain;
-}
-
-.video-modal-playlist {
-  border-bottom: 0;
-}
 
 /* Плейсхолдер пока нет файла */
 .video-modal-placeholder {
@@ -5178,6 +5087,47 @@ body:has(.custom-cursor):not(:has(.video-modal-backdrop)) button {
   width: 56px;
   height: 56px;
   opacity: 0.3;
+}
+
+.video-modal-poster {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+}
+
+.video-modal-poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-modal-poster__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(244,245,242,0.22);
+}
+
+.video-modal-poster__placeholder svg {
+  width: 56px;
+  height: 56px;
+}
+
+.video-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px 20px 20px;
+}
+
+.video-modal-actions .button {
+  flex: 1;
+  min-width: 160px;
 }
 
 .video-modal-placeholder p {

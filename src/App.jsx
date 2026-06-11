@@ -1290,43 +1290,12 @@ function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = fa
   return <img src={media.src} alt="" loading={loading} draggable={draggable} onError={() => setImgError(true)} />;
 }
 
-function DriveVideoPlayer({ video, title }) {
-  const externalUrl = video.external ?? video.src;
-
-  // Drive returns HTTP 200 even for "access denied" pages — onError never fires,
-  // so we can't reliably detect failure. Always show the external link so the
-  // user can watch even when the embed is blocked.
-  return (
-    <div className="drive-player">
-      <iframe
-        key={video.src}
-        src={video.src}
-        title={title}
-        allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-        allowFullScreen
-        loading="eager"
-        referrerPolicy="no-referrer-when-downgrade"
-      />
-      <a
-        className="drive-player__bar"
-        href={externalUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-          <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
-          <polyline points="15 3 21 3 21 9"/>
-          <line x1="10" y1="14" x2="21" y2="3"/>
-        </svg>
-        Открыть в Google Drive
-      </a>
-    </div>
-  );
-}
 
 function VideoModal({ item, onClose }) {
-  const videoRef = useRef(null);
-  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
+  const videos = getVideoList(item?.media, item?.image);
+  const primaryVideo = getPlayableVideo(videos[0] ?? item?.media, item?.image);
+  const [thumbError, setThumbError] = useState(false);
+  const thumbSrc = (!thumbError && primaryVideo?.thumbnail) ? primaryVideo.thumbnail : (item?.image ?? null);
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
@@ -1337,14 +1306,6 @@ function VideoModal({ item, onClose }) {
       document.body.style.overflow = '';
     };
   }, [onClose]);
-
-  useEffect(() => {
-    setActiveVideoIndex(0);
-  }, [item?.id]);
-
-  const videos = getVideoList(item?.media, item?.image);
-  const activeClip = videos[activeVideoIndex] ?? videos[0] ?? item?.media;
-  const video = getPlayableVideo(activeClip, item?.image);
 
   return (
     <AnimatePresence>
@@ -1379,49 +1340,45 @@ function VideoModal({ item, onClose }) {
             <span className="video-modal-category">{item.category}</span>
             <strong className="video-modal-title">{item.title}</strong>
           </div>
-          <div className="video-modal-player">
-            {video ? (
-              video.provider === 'drive' ? (
-                <DriveVideoPlayer video={video} title={item.title} />
-              ) : (
-                <video
-                  key={video.src}
-                  ref={videoRef}
-                  src={video.src}
-                  poster={video.poster}
-                  controls
-                  autoPlay
-                  playsInline
-                  preload="auto"
-                />
-              )
+          <div className="video-modal-poster">
+            {thumbSrc ? (
+              <img src={thumbSrc} alt={item.title} onError={() => setThumbError(true)} />
             ) : (
-              <div className="video-modal-placeholder">
+              <div className="video-modal-poster__placeholder">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                   <circle cx="12" cy="12" r="10" />
                   <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none" />
                 </svg>
-                <p>Видео появится позже</p>
-                <span>{item.description}</span>
               </div>
             )}
           </div>
-          {videos.length > 1 && (
-            <div className="video-modal-playlist" role="tablist" aria-label="Выбор ролика">
-              {videos.map((clip, index) => (
-                <button
-                  key={`${clip.full ?? clip.src ?? clip.label}-${index}`}
-                  type="button"
-                  className={index === activeVideoIndex ? 'is-active' : ''}
-                  onClick={() => setActiveVideoIndex(index)}
-                  role="tab"
-                  aria-selected={index === activeVideoIndex}
-                >
-                  {clip.label}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="video-modal-actions">
+            {videos.length > 1 ? (
+              videos.map((clip, index) => {
+                const v = getPlayableVideo(clip, item?.image);
+                return (
+                  <a
+                    key={`${clip.full ?? clip.src ?? index}`}
+                    className="button button--ghost"
+                    href={v?.external ?? '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {clip.label ?? `Ролик ${index + 1}`}
+                  </a>
+                );
+              })
+            ) : (
+              <a
+                className="button button--primary"
+                href={primaryVideo?.external ?? '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Смотреть видео
+              </a>
+            )}
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>
@@ -2010,10 +1967,10 @@ function CaseCard({ item, index, onSelect }) {
 }
 
 function CaseModal({ item, onClose }) {
-  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
   const videos = getVideoList(item.videos ?? item.video, item.image);
-  const activeClip = videos[activeVideoIndex] ?? videos[0] ?? item.video;
-  const video = getPlayableVideo(activeClip, item.image);
+  const primaryVideo = getPlayableVideo(videos[0] ?? item.video, item.image);
+  const [thumbError, setThumbError] = useState(false);
+  const thumbSrc = (!thumbError && primaryVideo?.thumbnail) ? primaryVideo.thumbnail : (item.image ?? null);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -2021,10 +1978,6 @@ function CaseModal({ item, onClose }) {
     window.addEventListener('keydown', onKey);
     return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', onKey); };
   }, [onClose]);
-
-  useEffect(() => {
-    setActiveVideoIndex(0);
-  }, [item.id]);
 
   return (
     <motion.div
@@ -2049,14 +2002,9 @@ function CaseModal({ item, onClose }) {
         transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Видеоплеер */}
         <div className="case-modal__media">
-          {video ? (
-            video.provider === 'drive' ? (
-              <DriveVideoPlayer video={video} title={item.title} />
-            ) : (
-              <video key={video.src} src={video.src} poster={video.poster} controls autoPlay playsInline preload="auto" />
-            )
+          {thumbSrc ? (
+            <img src={thumbSrc} alt={item.title} onError={() => setThumbError(true)} />
           ) : (
             <div className="case-modal__placeholder">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
@@ -2067,22 +2015,6 @@ function CaseModal({ item, onClose }) {
             </div>
           )}
         </div>
-        {videos.length > 1 && (
-          <div className="case-modal__playlist" role="tablist" aria-label="Выбор ролика">
-            {videos.map((clip, index) => (
-              <button
-                key={`${clip.full ?? clip.src ?? clip.label}-${index}`}
-                type="button"
-                className={index === activeVideoIndex ? 'is-active' : ''}
-                onClick={() => setActiveVideoIndex(index)}
-                role="tab"
-                aria-selected={index === activeVideoIndex}
-              >
-                {clip.label}
-              </button>
-            ))}
-          </div>
-        )}
 
         <div className="case-modal__body">
           <p className="case-modal__kicker">{item.category} · {item.type}</p>
@@ -2095,9 +2027,36 @@ function CaseModal({ item, onClose }) {
               {item.formats.map((f) => <em key={f}>{f}</em>)}
             </div>
           </div>
-          <a className="button button--primary" href="#contact" onClick={onClose}>
-            Обсудить похожий проект
-          </a>
+          <div className="case-modal__ctas">
+            {videos.length > 1 ? (
+              videos.map((clip, index) => {
+                const v = getPlayableVideo(clip, item.image);
+                return (
+                  <a
+                    key={`${clip.full ?? clip.src ?? index}`}
+                    className="button button--ghost"
+                    href={v?.external ?? '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {clip.label ?? `Ролик ${index + 1}`}
+                  </a>
+                );
+              })
+            ) : primaryVideo?.external ? (
+              <a
+                className="button button--primary"
+                href={primaryVideo.external}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Смотреть видео
+              </a>
+            ) : null}
+            <a className="button button--ghost" href="#contact" onClick={onClose}>
+              Обсудить похожий проект
+            </a>
+          </div>
         </div>
       </motion.article>
     </motion.div>
