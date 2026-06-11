@@ -3407,7 +3407,9 @@ h1 span {
   overflow-x: auto;
   padding: 4px 0 10px;
   scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
+.portfolio-mobile__rail::-webkit-scrollbar { display: none; }
 
 .portfolio-mobile-card {
   position: relative;
@@ -3472,7 +3474,9 @@ h1 span {
   gap: clamp(12px, 2vw, 24px);
   overflow-x: auto;
   padding-bottom: 4px;
+  scrollbar-width: none;
 }
+.anchor-nav--compact::-webkit-scrollbar { display: none; }
 
 /* ── Sticky nav bar (appears after hero scrolls out) ── */
 .sticky-nav {
@@ -4069,7 +4073,9 @@ h1 span {
     overflow-x: auto;
     padding: 0 18px 10px;
     scroll-padding: 18px;
+    scrollbar-width: none;
   }
+  .case-filters::-webkit-scrollbar { display: none; }
 
   .case-filter {
     min-height: 38px;
@@ -5534,5 +5540,22 @@ body:has(.custom-cursor):not(:has(.video-modal-backdrop)) button {
   .pLogo__inner {
     transform: none;
     will-change: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .video-modal-backdrop {
+    padding: 12px;
+  }
+  .video-modal-box {
+    max-height: calc(100svh - 24px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .video-modal-close {
+    position: fixed;
+    top: 26px;
+    right: 26px;
+    z-index: 10001;
   }
 }
