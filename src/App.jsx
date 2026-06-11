@@ -1286,24 +1286,11 @@ function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = fa
 }
 
 function DriveVideoPlayer({ video, title }) {
-  const [failed, setFailed] = useState(false);
   const externalUrl = video.external ?? video.src;
 
-  if (failed) {
-    return (
-      <div className="drive-player drive-player--fallback">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/>
-        </svg>
-        <p>Видео недоступно для встраивания</p>
-        <a href={externalUrl} target="_blank" rel="noopener noreferrer" className="drive-player__open">
-          Открыть в Google Drive →
-        </a>
-      </div>
-    );
-  }
-
+  // Drive returns HTTP 200 even for "access denied" pages — onError never fires,
+  // so we can't reliably detect failure. Always show the external link so the
+  // user can watch even when the embed is blocked.
   return (
     <div className="drive-player">
       <iframe
@@ -1314,21 +1301,19 @@ function DriveVideoPlayer({ video, title }) {
         allowFullScreen
         loading="eager"
         referrerPolicy="no-referrer-when-downgrade"
-        onError={() => setFailed(true)}
       />
       <a
-        className="drive-player__ext"
+        className="drive-player__bar"
         href={externalUrl}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Открыть в Google Drive"
-        title="Открыть в Google Drive"
       >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
           <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
           <polyline points="15 3 21 3 21 9"/>
           <line x1="10" y1="14" x2="21" y2="3"/>
         </svg>
+        Открыть в Google Drive
       </a>
     </div>
   );
