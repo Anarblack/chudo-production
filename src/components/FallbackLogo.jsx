@@ -40,13 +40,35 @@ function shouldSplit(label) {
   return parts.length === 2 && label.length > 7;
 }
 
+// Угловые скобки — 4 штуки, как viewfinder
+function CornerBrackets() {
+  const arm = 9;
+  const m   = 7;
+  const r   = 160 - m;
+  const b   = 60  - m;
+  const sw  = '0.9';
+  const op  = '0.26';
+  return (
+    <>
+      <path d={`M${m} ${m + arm} L${m} ${m} L${m + arm} ${m}`}
+            stroke="white" strokeWidth={sw} fill="none" opacity={op}/>
+      <path d={`M${r - arm} ${m} L${r} ${m} L${r} ${m + arm}`}
+            stroke="white" strokeWidth={sw} fill="none" opacity={op}/>
+      <path d={`M${m} ${b - arm} L${m} ${b} L${m + arm} ${b}`}
+            stroke="white" strokeWidth={sw} fill="none" opacity={op}/>
+      <path d={`M${r - arm} ${b} L${r} ${b} L${r} ${b - arm}`}
+            stroke="white" strokeWidth={sw} fill="none" opacity={op}/>
+    </>
+  );
+}
+
 export default function FallbackLogo({ companyName }) {
   const label  = createFallbackLabel(companyName);
   const split  = shouldSplit(label);
   const parts  = label.split(' ');
 
   // Размер шрифта в зависимости от длины
-  const rawLen = label.replace(/\s+/g, '').length;
+  const rawLen   = label.replace(/\s+/g, '').length;
   const fontSize = split
     ? (parts[0].length <= 5 && parts[1].length <= 5 ? 13 : 10)
     : rawLen <= 4 ? 18 : rawLen <= 6 ? 15 : rawLen <= 9 ? 12 : rawLen <= 12 ? 9.5 : 8;
@@ -61,12 +83,12 @@ export default function FallbackLogo({ companyName }) {
       aria-label={companyName}
       role="img"
     >
+      <CornerBrackets />
+
       {split ? (
-        // Двустрочный wordmark для длинных двухсловных имён
         <>
-          <line x1="24" y1="11" x2="136" y2="11" stroke="white" strokeWidth="0.5" opacity="0.22" />
           <text
-            x="80" y="28"
+            x="80" y="25"
             textAnchor="middle" dominantBaseline="middle"
             fontFamily="Unbounded, Tektur, sans-serif"
             fontWeight="700"
@@ -76,38 +98,32 @@ export default function FallbackLogo({ companyName }) {
           >
             {parts[0]}
           </text>
-          <line x1="48" y1="33" x2="112" y2="33" stroke="white" strokeWidth="0.3" opacity="0.18" />
+          <line x1="64" y1="32" x2="96" y2="32" stroke="white" strokeWidth="0.35" opacity="0.18"/>
           <text
-            x="80" y="44"
+            x="80" y="39"
             textAnchor="middle" dominantBaseline="middle"
             fontFamily="Unbounded, Tektur, sans-serif"
             fontWeight="500"
             fontSize={fontSize * 0.85}
             fill="white"
             letterSpacing={tracking + 1}
-            opacity="0.75"
+            opacity="0.6"
           >
             {parts[1]}
           </text>
-          <line x1="24" y1="51" x2="136" y2="51" stroke="white" strokeWidth="0.5" opacity="0.22" />
         </>
       ) : (
-        // Однострочный wordmark
-        <>
-          <line x1="24" y1="16" x2="136" y2="16" stroke="white" strokeWidth="0.5" opacity="0.22" />
-          <text
-            x="80" y="33"
-            textAnchor="middle" dominantBaseline="middle"
-            fontFamily="Unbounded, Tektur, sans-serif"
-            fontWeight="700"
-            fontSize={fontSize}
-            fill="white"
-            letterSpacing={tracking}
-          >
-            {label}
-          </text>
-          <line x1="24" y1="46" x2="136" y2="46" stroke="white" strokeWidth="0.5" opacity="0.22" />
-        </>
+        <text
+          x="80" y="31"
+          textAnchor="middle" dominantBaseline="middle"
+          fontFamily="Unbounded, Tektur, sans-serif"
+          fontWeight="700"
+          fontSize={fontSize}
+          fill="white"
+          letterSpacing={tracking}
+        >
+          {label}
+        </text>
       )}
     </svg>
   );
