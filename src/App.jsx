@@ -1264,6 +1264,7 @@ function getProjectMedia(item) {
 }
 
 function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = false }) {
+  const [imgError, setImgError] = useState(false);
   const media = getProjectMedia(item);
   const isPlayer = mode === 'player';
 
@@ -1282,7 +1283,9 @@ function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = fa
     );
   }
 
-  return <img src={media.src} alt="" loading={loading} draggable={draggable} />;
+  if (imgError) return null;
+
+  return <img src={media.src} alt="" loading={loading} draggable={draggable} onError={() => setImgError(true)} />;
 }
 
 function DriveVideoPlayer({ video, title }) {
@@ -1934,6 +1937,7 @@ function CaseFilters({ activeFilter, onFilterChange }) {
 
 function CaseCard({ item, index, onSelect }) {
   const videoRef = useRef(null);
+  const [thumbError, setThumbError] = useState(false);
   const previewMedia = getPreviewMedia(item.video, item.image);
   const videoCount = getVideoList(item.videos ?? item.video, item.image).length;
 
@@ -1962,8 +1966,8 @@ function CaseCard({ item, index, onSelect }) {
             playsInline
             preload="metadata"
           />
-        ) : previewMedia?.type === 'image' ? (
-          <img src={previewMedia.src} alt="" loading="lazy" draggable={false} />
+        ) : previewMedia?.type === 'image' && !thumbError ? (
+          <img src={previewMedia.src} alt="" loading="lazy" draggable={false} onError={() => setThumbError(true)} />
         ) : (
           <div className="case-card__thumb-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
