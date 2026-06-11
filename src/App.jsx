@@ -1268,6 +1268,8 @@ function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = fa
   const media = getProjectMedia(item);
   const isPlayer = mode === 'player';
 
+  if (!media) return null;
+
   if (media.type === 'video') {
     return (
       <video
