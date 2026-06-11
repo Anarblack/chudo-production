@@ -2357,7 +2357,7 @@ function WorkflowVisual({ step, compact = false }) {
       </div>
       <div className="workflow-visual__grid" aria-hidden="true" />
       <div className="workflow-visual__inner">
-        {renderVisual()}
+        {!compact && renderVisual()}
         <WorkflowDossier step={step} />
       </div>
     </motion.div>
