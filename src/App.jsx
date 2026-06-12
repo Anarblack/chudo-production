@@ -1,11 +1,8 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'framer-motion';
-import * as THREE from 'three';
-import { OrbitControls as OrbitControlsImpl } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import logo from '../assets/chudo-logo-new.png';
-import cameraModelUrl from '../assets/red_camera_web.glb?url';
+
+const CameraSceneLazy = React.lazy(() => import('./CameraScene.jsx'));
 import CustomCursor from './components/CustomCursor.jsx';
 import BlurText from './components/BlurText.jsx';
 import PartnersSection from './components/PartnersSection.jsx';
@@ -2583,153 +2580,59 @@ function WorkflowSection() {
   );
 }
 
-function CinemaCameraModel() {
-  const rig = useRef(null);
-  const gltf = useLoader(GLTFLoader, cameraModelUrl);
-
-  const { scene, scale } = useMemo(() => {
-    const clonedScene = gltf.scene.clone(true);
-
-    clonedScene.traverse((object) => {
-      if (!object.isMesh) return;
-
-      // Скрываем стол — плоский широкий меш
-      const box = new THREE.Box3().setFromObject(object);
-      const sz = new THREE.Vector3();
-      box.getSize(sz);
-      if (sz.x > sz.y * 3 || sz.z > sz.y * 3) {
-        object.visible = false;
-        return;
-      }
-
-      object.castShadow = true;
-      object.receiveShadow = false;
-
-      if (object.material) {
-        object.material = object.material.clone();
-        object.material.roughness   = Math.min(object.material.roughness  ?? 0.3,  0.28);
-        object.material.metalness   = Math.max(object.material.metalness  ?? 0.6,  0.55);
-        object.material.envMapIntensity = 1.4;
-        if (object.material.color) object.material.color.multiplyScalar(1.35);
-        object.material.needsUpdate = true;
-      }
-    });
-
-    const box    = new THREE.Box3().setFromObject(clonedScene);
-    const size   = new THREE.Vector3();
-    const center = new THREE.Vector3();
-    box.getSize(size);
-    box.getCenter(center);
-    clonedScene.position.set(-center.x, -center.y, -center.z);
-
-    const maxDimension = Math.max(size.x, size.y, size.z) || 1;
-    return { scene: clonedScene, scale: 5.6 / maxDimension };
-  }, [gltf]);
-
+function CameraPoster() {
   return (
-    <group ref={rig} scale={scale}>
-      <primitive object={scene} />
-    </group>
-  );
-}
-
-// Авто-вращение + полный OrbitControls при взаимодействии
-function SmartControls({ isInteracting }) {
-  const { camera, gl } = useThree();
-  const controls = useRef(null);
-  const autoAngle = useRef(0);
-
-  useEffect(() => {
-    const c = new OrbitControlsImpl(camera, gl.domElement);
-    c.enableDamping   = true;
-    c.dampingFactor   = 0.07;
-    c.enablePan       = false;
-    c.enableZoom      = true;
-    c.enableRotate    = true;
-    c.minDistance     = 2.5;
-    c.maxDistance     = 12;
-    c.rotateSpeed     = 0.85;
-    c.zoomSpeed       = 0.9;
-    // Без ограничений по вертикали — полный 360°
-    c.minPolarAngle   = 0;
-    c.maxPolarAngle   = Math.PI;
-    c.target.set(0, 0, 0);
-    c.update();
-    controls.current = c;
-    return () => { c.dispose(); controls.current = null; };
-  }, [camera, gl]);
-
-  useFrame((_, delta) => {
-    if (!controls.current) return;
-
-    if (isInteracting.current) {
-      // Пользователь взаимодействует — обычный OrbitControls
-      controls.current.autoRotate = false;
-      controls.current.update();
-    } else {
-      // Idle — медленное авто-вращение по орбите
-      controls.current.autoRotate      = true;
-      controls.current.autoRotateSpeed = 1.2;
-      controls.current.update();
-    }
-  });
-
-  return null;
-}
-
-function CameraLoadingFallback() {
-  return (
-    <group>
-      <mesh>
-        <boxGeometry args={[2.2, 1.1, 0.9]} />
-        <meshStandardMaterial color="#252b34" roughness={0.6} metalness={0.35} />
-      </mesh>
-      <mesh position={[-1.45, 0, 0.28]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.42, 0.52, 0.9, 48]} />
-        <meshStandardMaterial color="#08090b" roughness={0.5} metalness={0.6} />
-      </mesh>
-    </group>
-  );
-}
-
-function CameraScene({ isInteracting }) {
-  return (
-    <Canvas
-      aria-hidden="true"
-      camera={{ position: [0, 0.5, 6.2], fov: 30 }}
-      dpr={[1, 1.7]}
-      gl={{
-        antialias: true,
-        alpha: true,
-        preserveDrawingBuffer: true,
-        powerPreference: 'high-performance',
-      }}
-      onCreated={({ gl }) => {
-        gl.toneMapping = THREE.ACESFilmicToneMapping;
-        gl.toneMappingExposure = 1.65;
-      }}
-    >
-      <hemisphereLight args={['#ffffff', '#1a0a05', 1.4]} />
-      <ambientLight intensity={1.6} />
-      <directionalLight position={[4, 6, 6]}   intensity={5.5} color="#f5f8ff" />
-      <directionalLight position={[-3, 4, 2]}  intensity={2.8} color="#ffffff" />
-      <spotLight       position={[-4.6, 3.2, 4.2]} intensity={4.5} angle={0.45} penumbra={0.6} color="#ff6a2a" />
-      <pointLight      position={[2.6, 1.2, 3.2]}  intensity={4.0} color="#86b5ff" />
-      <pointLight      position={[-2.8, 1.5, 2.6]} intensity={3.2} color="#ffffff" />
-      <pointLight      position={[0, -1, 2]}        intensity={1.8} color="#ffcfb0" />
-      <Suspense fallback={<CameraLoadingFallback />}>
-        <CinemaCameraModel />
-      </Suspense>
-      <SmartControls isInteracting={isInteracting} />
-    </Canvas>
+    <div className="camera-poster" aria-hidden="true">
+      <svg className="camera-poster__svg" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Viewfinder corners */}
+        <path d="M10 26 L10 10 L26 10" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9" fill="none"/>
+        <path d="M214 10 L230 10 L230 26" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9" fill="none"/>
+        <path d="M10 134 L10 150 L26 150" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9" fill="none"/>
+        <path d="M214 150 L230 150 L230 134" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9" fill="none"/>
+        {/* Camera body */}
+        <rect x="28" y="42" width="140" height="76" rx="6" fill="#141a22" stroke="rgba(255,255,255,0.09)" strokeWidth="0.6"/>
+        {/* Side grip */}
+        <rect x="22" y="54" width="8" height="40" rx="4" fill="#0f141a" stroke="rgba(255,255,255,0.07)" strokeWidth="0.5"/>
+        {/* Top handle */}
+        <rect x="88" y="30" width="52" height="14" rx="4" fill="#111720" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5"/>
+        {/* Viewfinder eyepiece */}
+        <rect x="170" y="48" width="12" height="20" rx="3" fill="#0c1016" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5"/>
+        {/* Lens mount outer */}
+        <circle cx="78" cy="80" r="28" fill="#0c1016" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5"/>
+        {/* Lens barrel ring */}
+        <circle cx="78" cy="80" r="20" fill="#090c10" stroke="rgba(255,255,255,0.07)" strokeWidth="0.5"/>
+        {/* Lens inner */}
+        <circle cx="78" cy="80" r="12" fill="#050608"/>
+        {/* Lens centre highlight */}
+        <circle cx="73" cy="75" r="4" fill="rgba(130,170,255,0.07)"/>
+        <circle cx="72" cy="74" r="1.5" fill="rgba(255,255,255,0.06)"/>
+        {/* Body detail lines */}
+        <line x1="116" y1="52" x2="116" y2="108" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
+        <line x1="140" y1="52" x2="140" y2="108" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
+        {/* REC indicator */}
+        <circle cx="155" cy="38" r="4" fill="#ff4a0a"/>
+        <circle cx="155" cy="38" r="6" fill="rgba(255,74,10,0.18)"/>
+        {/* REC label */}
+        <text x="163" y="41" fontFamily="monospace" fontSize="7" fill="rgba(255,74,10,0.7)" letterSpacing="1">REC</text>
+      </svg>
+    </div>
   );
 }
 
 function HeroVisual() {
+  const [showCanvas, setShowCanvas] = useState(
+    () => !window.matchMedia('(max-width: 760px)').matches
+  );
   const isInteracting = useRef(false);
   const idleTimer     = useRef(null);
 
-  // Сброс в idle через 2 сек после последнего действия
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 760px)');
+    const update = () => setShowCanvas(!media.matches);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
   const resetIdle = () => {
     isInteracting.current = true;
     clearTimeout(idleTimer.current);
@@ -2743,22 +2646,30 @@ function HeroVisual() {
   return (
     <div
       className="hero-visual"
-      aria-label="3D-камера RED. Вращайте и приближайте мышью. Без действий — медленно вращается сама."
-      onMouseDown={resetIdle}
-      onMouseMove={(e) => { if (e.buttons > 0) resetIdle(); }}
-      onWheel={resetIdle}
-      onTouchStart={resetIdle}
-      onTouchMove={resetIdle}
+      aria-label={showCanvas
+        ? '3D-камера RED. Вращайте и приближайте мышью. Без действий — медленно вращается сама.'
+        : 'Камера RED'}
+      onMouseDown={showCanvas ? resetIdle : undefined}
+      onMouseMove={showCanvas ? (e) => { if (e.buttons > 0) resetIdle(); } : undefined}
+      onWheel={showCanvas ? resetIdle : undefined}
+      onTouchStart={showCanvas ? resetIdle : undefined}
+      onTouchMove={showCanvas ? resetIdle : undefined}
     >
       <motion.div
         className="camera-stage"
-        data-cursor="camera"
+        data-cursor={showCanvas ? 'camera' : undefined}
         initial={{ opacity: 0, scale: 0.88, y: 32 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
       >
         <div className="camera-canvas">
-          <CameraScene isInteracting={isInteracting} />
+          {showCanvas ? (
+            <Suspense fallback={<CameraPoster />}>
+              <CameraSceneLazy isInteracting={isInteracting} />
+            </Suspense>
+          ) : (
+            <CameraPoster />
+          )}
         </div>
       </motion.div>
     </div>
