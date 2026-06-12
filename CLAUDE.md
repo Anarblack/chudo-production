@@ -34,7 +34,7 @@ This is a **single-page marketing site** for ChuDo Production (a video productio
 
 - **`projectVideos`** — all video assets as Google Drive file IDs, built with `makeDriveVideo()` / `makeDriveVideos()` helpers
 - **`portfolioItems`** — 8 showcase items for the sphere in OfferSection; each links to a `serviceType` for filtering
-- **`cases`** — 24 full case entries for CasesSection, built with `makeCase()`; each references `projectVideos` entries
+- **`cases`** — 25 full case entries for CasesSection, built with `makeCase()`; each references `projectVideos` entries
 - **`services`** — 8 service types with visual accent themes
 - **`workflowSteps`** — 7 workflow steps with metadata for the dossier panel
 
@@ -45,9 +45,11 @@ All videos are hosted on Google Drive. Three URL helpers:
 - `driveView(fileId)` → external link URL (`/view`)
 - `driveThumbnail(fileId)` → thumbnail image URL
 
-`normalizeVideoSource` / `getPrimaryVideoSource` / `getVideoList` / `getPlayableVideo` / `getPreviewMedia` form a pipeline that handles strings, single objects, and playlist arrays uniformly.
+Data builders: `makeDriveVideo(fileId)` produces a single video object; `makeDriveVideos(entries)` maps `[fileId, label]` pairs to an array; `makeVideoSet(videos, options)` wraps that array into a playlist object (spreads first entry + merges options) suitable for use as a `media` or `videos` field.
 
-`DriveVideoPlayer` renders a Drive iframe + always-visible "Open in Drive" link (Drive returns HTTP 200 even for access-denied pages so `onError` never fires — the link is the reliable fallback).
+`normalizeVideoSource` / `getPrimaryVideoSource` / `getVideoList` / `getPlayableVideo` / `getPreviewMedia` form a pipeline that handles strings, single objects, and playlist objects uniformly.
+
+Modals (`VideoModal`, `CaseModal`) render Drive embeds as raw `<iframe>` elements with a hard-coded "Open in Drive" link below — Drive returns HTTP 200 even on access-denied pages so `onError` never fires; the external link is the reliable fallback.
 
 ### Anchor scroll guard
 
