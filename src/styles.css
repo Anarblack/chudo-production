@@ -334,6 +334,31 @@ h1 span {
   height: 100% !important;
 }
 
+.camera-poster {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 38% 54%, #0f1318 0%, #050709 100%);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.camera-poster::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 38% 62%, rgba(255,74,10,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.camera-poster__svg {
+  width: 74%;
+  max-width: 300px;
+  position: relative;
+}
+
 .camera-tags {
   position: absolute;
   right: 9%;
@@ -3402,7 +3427,9 @@ h1 span {
   gap: clamp(12px, 2vw, 24px);
   overflow-x: auto;
   padding-bottom: 4px;
+  padding-inline-end: 16px;
   scrollbar-width: none;
+  min-width: 0;
 }
 .anchor-nav--compact::-webkit-scrollbar { display: none; }
 
@@ -3802,6 +3829,11 @@ h1 span {
   .offer-showreel {
     order: 2;
     min-height: auto;
+    overflow: hidden;
+  }
+
+  .offer-showreel::before {
+    display: none;
   }
 
   .offer-panel {
@@ -3815,6 +3847,18 @@ h1 span {
   .offer-video-cta {
     order: 4;
     width: 100%;
+    padding: 10px 12px 10px 14px;
+    gap: 10px;
+  }
+
+  .offer-video-cta span {
+    font-size: 11px;
+    gap: 8px;
+  }
+
+  .offer-video-cta svg {
+    width: 20px;
+    height: 20px;
   }
 
   .offer-heading h2 {
@@ -3858,9 +3902,9 @@ h1 span {
   }
 
   .service-item {
-    grid-template-columns: 32px minmax(0, 1fr);
-    gap: 10px;
-    padding: 14px 0;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 8px;
+    padding: 11px 0;
   }
 
   .service-item:hover,
@@ -3870,11 +3914,11 @@ h1 span {
   }
 
   .service-item__title {
-    font-size: 15px;
+    font-size: 13px;
   }
 
   .service-item__description {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .usp-section {
