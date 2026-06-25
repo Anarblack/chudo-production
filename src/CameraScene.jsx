@@ -4,7 +4,21 @@ import * as THREE from 'three';
 import { OrbitControls as OrbitControlsImpl } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import cameraModelUrl from '../assets/red_camera_web.glb?url';
+
+function SceneEnvironment() {
+  const { gl, scene } = useThree();
+  useEffect(() => {
+    const pmrem = new THREE.PMREMGenerator(gl);
+    pmrem.compileEquirectangularShader();
+    const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = env;
+    pmrem.dispose();
+    return () => { env.dispose(); scene.environment = null; };
+  }, [gl, scene]);
+  return null;
+}
 
 function CinemaCameraModel() {
   const rig = useRef(null);
@@ -32,10 +46,10 @@ function CinemaCameraModel() {
 
       if (object.material) {
         object.material = object.material.clone();
-        object.material.roughness   = Math.min(object.material.roughness  ?? 0.3,  0.28);
-        object.material.metalness   = Math.max(object.material.metalness  ?? 0.6,  0.55);
-        object.material.envMapIntensity = 1.4;
-        if (object.material.color) object.material.color.multiplyScalar(1.35);
+        object.material.roughness   = Math.min(object.material.roughness  ?? 0.3,  0.35);
+        object.material.metalness   = Math.max(object.material.metalness  ?? 0.7,  0.65);
+        object.material.envMapIntensity = 2.2;
+        if (object.material.color) object.material.color.multiplyScalar(1.6);
         object.material.needsUpdate = true;
       }
     });
@@ -127,17 +141,18 @@ export default function CameraScene({ isInteracting }) {
       }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
-        gl.toneMappingExposure = 1.65;
+        gl.toneMappingExposure = 2.1;
       }}
     >
-      <hemisphereLight args={['#ffffff', '#1a0a05', 1.4]} />
-      <ambientLight intensity={1.6} />
-      <directionalLight position={[4, 6, 6]}   intensity={5.5} color="#f5f8ff" />
-      <directionalLight position={[-3, 4, 2]}  intensity={2.8} color="#ffffff" />
-      <spotLight       position={[-4.6, 3.2, 4.2]} intensity={4.5} angle={0.45} penumbra={0.6} color="#ff6a2a" />
-      <pointLight      position={[2.6, 1.2, 3.2]}  intensity={4.0} color="#86b5ff" />
-      <pointLight      position={[-2.8, 1.5, 2.6]} intensity={3.2} color="#ffffff" />
-      <pointLight      position={[0, -1, 2]}        intensity={1.8} color="#ffcfb0" />
+      <SceneEnvironment />
+      <hemisphereLight args={['#ffffff', '#1a0a05', 1.8]} />
+      <ambientLight intensity={2.2} />
+      <directionalLight position={[4, 6, 6]}   intensity={7.0} color="#f5f8ff" />
+      <directionalLight position={[-3, 4, 2]}  intensity={4.0} color="#ffffff" />
+      <spotLight       position={[-4.6, 3.2, 4.2]} intensity={6.0} angle={0.45} penumbra={0.6} color="#ff6a2a" />
+      <pointLight      position={[2.6, 1.2, 3.2]}  intensity={5.5} color="#86b5ff" />
+      <pointLight      position={[-2.8, 1.5, 2.6]} intensity={4.5} color="#ffffff" />
+      <pointLight      position={[0, -1, 2]}        intensity={2.8} color="#ffcfb0" />
       <Suspense fallback={<CameraLoadingFallback />}>
         <CinemaCameraModel />
       </Suspense>
