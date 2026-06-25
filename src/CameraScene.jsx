@@ -3,11 +3,14 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls as OrbitControlsImpl } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import cameraModelUrl from '../assets/red_camera_web.glb?url';
 
 function CinemaCameraModel() {
   const rig = useRef(null);
-  const gltf = useLoader(GLTFLoader, cameraModelUrl);
+  const gltf = useLoader(GLTFLoader, cameraModelUrl, (loader) => {
+    loader.setMeshoptDecoder(MeshoptDecoder);
+  });
 
   const { scene, scale } = useMemo(() => {
     const clonedScene = gltf.scene.clone(true);
