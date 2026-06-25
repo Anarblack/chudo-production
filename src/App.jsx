@@ -1244,11 +1244,22 @@ function getPlayableVideo(video, fallbackPoster) {
   const fileId = source?.fileId ?? getDriveFileId(src);
   const isDrive = source?.provider === 'drive' || Boolean(fileId);
 
+  // Готовый URL для встраивания: iframe для Drive, прямой URL для нативного <video>
+  let embed = null;
+  if (isDrive && fileId) {
+    embed = driveVideo(fileId); // /preview iframe
+  } else if (isDirectVideoUrl(src)) {
+    embed = src;
+  }
+
   return {
     src,
     poster: source?.poster ?? fallbackPoster,
     provider: isDrive ? 'drive' : source?.provider,
     external: source?.external ?? (fileId ? driveView(fileId) : src),
+    embed,
+    fileId,
+    label: source?.label,
     thumbnail: source?.thumbnail ?? (fileId ? driveThumbnail(fileId) : null),
   };
 }
@@ -1288,11 +1299,104 @@ function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = fa
 }
 
 
+// SVG-иконка треугольника Drive — лёгкая, без зависимостей
+function DriveIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true">
+      <path d="M7.71 3.5L1.15 15l3.42 5.5h7.86L8.85 15l3.58-11.5H7.71zm6.43 0L19.57 15h-7.14L6.93 3.5h7.21zM12.85 15l3.58-5.5h6.42L19.43 15h-6.58z" />
+    </svg>
+  );
+}
+
+// Встроенный плеер: iframe для Drive, нативный <video> для прямых ссылок,
+// плейсхолдер если ничего нет. Управляется снаружи — родитель решает, какой клип показать.
+function InlineVideoPlayer({ video, poster, title, autoPlay = false }) {
+  const playable = getPlayableVideo(video, poster);
+
+  if (!playable) {
+    return (
+      <div className="inline-player inline-player--empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none" />
+        </svg>
+        <p>Видео скоро появится</p>
+      </div>
+    );
+  }
+
+  // Google Drive — встраиваем iframe /preview
+  if (playable.provider === 'drive' && playable.embed) {
+    return (
+      <iframe
+        src={playable.embed}
+        title={title || 'Видео'}
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="no-referrer"
+      />
+    );
+  }
+
+  // Прямой mp4/webm — нативный <video> с контролами
+  if (isDirectVideoUrl(playable.src)) {
+    return (
+      <video
+        src={playable.src}
+        poster={playable.poster}
+        controls
+        playsInline
+        preload="metadata"
+        autoPlay={autoPlay}
+      />
+    );
+  }
+
+  // Совсем экзотика — показываем постер и даём ссылку наружу как последнее средство
+  return (
+    <div className="inline-player inline-player--fallback">
+      {playable.poster && <img src={playable.poster} alt="" />}
+      <a
+        className="button button--primary"
+        href={playable.external}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Открыть видео
+      </a>
+    </div>
+  );
+}
+
+// Табы плейлиста — переключают активный клип внутри модала.
+// Если ролик один — компонент сам решает не рендериться.
+function VideoPlaylistTabs({ videos, activeIndex, onSelect, className = '' }) {
+  if (!videos || videos.length <= 1) return null;
+  return (
+    <div className={`video-playlist ${className}`.trim()} role="tablist" aria-label="Список видео">
+      {videos.map((clip, i) => (
+        <button
+          key={`${clip.full ?? clip.src ?? i}`}
+          type="button"
+          role="tab"
+          aria-selected={i === activeIndex}
+          className={`video-playlist__tab${i === activeIndex ? ' is-active' : ''}`}
+          onClick={() => onSelect(i)}
+        >
+          <span className="video-playlist__num">{String(i + 1).padStart(2, '0')}</span>
+          <span className="video-playlist__label">{clip.label ?? `Ролик ${i + 1}`}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function VideoModal({ item, onClose }) {
   const videos = getVideoList(item?.media, item?.image);
-  const primaryVideo = getPlayableVideo(videos[0] ?? item?.media, item?.image);
-  const [thumbError, setThumbError] = useState(false);
-  const thumbSrc = (!thumbError && primaryVideo?.thumbnail) ? primaryVideo.thumbnail : (item?.image ?? null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeClip = videos[activeIndex] ?? videos[0] ?? null;
+  const activePlayable = getPlayableVideo(activeClip ?? item?.media, item?.image);
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
@@ -1338,44 +1442,32 @@ function VideoModal({ item, onClose }) {
             <strong className="video-modal-title">{item.title}</strong>
           </div>
           <div className="video-modal-poster">
-            {thumbSrc ? (
-              <img src={thumbSrc} alt={item.title} onError={() => setThumbError(true)} />
-            ) : (
-              <div className="video-modal-poster__placeholder">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none" />
-                </svg>
-              </div>
-            )}
+            <InlineVideoPlayer
+              key={activeIndex}
+              video={activeClip ?? item?.media}
+              poster={item?.image}
+              title={`${item.title}${activeClip?.label ? ` — ${activeClip.label}` : ''}`}
+            />
           </div>
-          <div className="video-modal-actions">
-            {videos.length > 1 ? (
-              videos.map((clip, index) => {
-                const v = getPlayableVideo(clip, item?.image);
-                return (
-                  <a
-                    key={`${clip.full ?? clip.src ?? index}`}
-                    className="button button--ghost"
-                    href={v?.external ?? '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {clip.label ?? `Ролик ${index + 1}`}
-                  </a>
-                );
-              })
-            ) : (
+          <VideoPlaylistTabs
+            videos={videos}
+            activeIndex={activeIndex}
+            onSelect={setActiveIndex}
+            className="video-modal-playlist"
+          />
+          {activePlayable?.external && (
+            <div className="video-modal-actions">
               <a
-                className="button button--primary"
-                href={primaryVideo?.external ?? '#'}
+                className="video-modal-drive-link"
+                href={activePlayable.external}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Смотреть видео
+                <DriveIcon />
+                Открыть в Google Drive
               </a>
-            )}
-          </div>
+            </div>
+          )}
         </motion.div>
       </motion.div>
     </AnimatePresence>
@@ -1965,9 +2057,9 @@ function CaseCard({ item, index, onSelect }) {
 
 function CaseModal({ item, onClose }) {
   const videos = getVideoList(item.videos ?? item.video, item.image);
-  const primaryVideo = getPlayableVideo(videos[0] ?? item.video, item.image);
-  const [thumbError, setThumbError] = useState(false);
-  const thumbSrc = (!thumbError && primaryVideo?.thumbnail) ? primaryVideo.thumbnail : (item.image ?? null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeClip = videos[activeIndex] ?? videos[0] ?? null;
+  const activePlayable = getPlayableVideo(activeClip ?? item.video, item.image);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -2000,18 +2092,19 @@ function CaseModal({ item, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="case-modal__media">
-          {thumbSrc ? (
-            <img src={thumbSrc} alt={item.title} onError={() => setThumbError(true)} />
-          ) : (
-            <div className="case-modal__placeholder">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/>
-              </svg>
-              <p>Видео появится позже</p>
-            </div>
-          )}
+          <InlineVideoPlayer
+            key={activeIndex}
+            video={activeClip ?? item.video}
+            poster={item.image}
+            title={`${item.title}${activeClip?.label ? ` — ${activeClip.label}` : ''}`}
+          />
         </div>
+        <VideoPlaylistTabs
+          videos={videos}
+          activeIndex={activeIndex}
+          onSelect={setActiveIndex}
+          className="case-modal__playlist"
+        />
 
         <div className="case-modal__body">
           <p className="case-modal__kicker">{item.category} · {item.type}</p>
@@ -2025,34 +2118,20 @@ function CaseModal({ item, onClose }) {
             </div>
           </div>
           <div className="case-modal__ctas">
-            {videos.length > 1 ? (
-              videos.map((clip, index) => {
-                const v = getPlayableVideo(clip, item.image);
-                return (
-                  <a
-                    key={`${clip.full ?? clip.src ?? index}`}
-                    className="button button--ghost"
-                    href={v?.external ?? '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {clip.label ?? `Ролик ${index + 1}`}
-                  </a>
-                );
-              })
-            ) : primaryVideo?.external ? (
+            <a className="button button--primary" href="#contact" onClick={onClose}>
+              Обсудить похожий проект
+            </a>
+            {activePlayable?.external && (
               <a
-                className="button button--primary"
-                href={primaryVideo.external}
+                className="case-modal__drive-link"
+                href={activePlayable.external}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Смотреть видео
+                <DriveIcon />
+                Открыть в Google Drive
               </a>
-            ) : null}
-            <a className="button button--ghost" href="#contact" onClick={onClose}>
-              Обсудить похожий проект
-            </a>
+            )}
           </div>
         </div>
       </motion.article>
