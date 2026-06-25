@@ -22,6 +22,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 60px;
 }
 
 body {
@@ -3433,6 +3434,24 @@ h1 span {
 }
 .anchor-nav--compact::-webkit-scrollbar { display: none; }
 
+.sticky-nav::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  background: linear-gradient(to right, transparent, rgba(3, 4, 5, 0.9));
+  pointer-events: none;
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .sticky-nav::after {
+    display: block;
+  }
+}
+
 /* ── Sticky nav bar (appears after hero scrolls out) ── */
 .sticky-nav {
   position: fixed;
@@ -3695,11 +3714,11 @@ h1 span {
   }
 
   .hero-visual {
-    min-height: 276px;
+    min-height: 220px;
   }
 
   .camera-stage {
-    width: min(390px, 88vw);
+    width: min(280px, 74vw);
   }
 
   .viewfinder {
