@@ -2662,37 +2662,22 @@ function WorkflowSection() {
 function CameraPoster() {
   return (
     <div className="camera-poster" aria-hidden="true">
-      <svg className="camera-poster__svg" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Viewfinder corners */}
-        <path d="M10 26 L10 10 L26 10" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9" fill="none"/>
-        <path d="M214 10 L230 10 L230 26" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9" fill="none"/>
-        <path d="M10 134 L10 150 L26 150" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9" fill="none"/>
-        <path d="M214 150 L230 150 L230 134" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9" fill="none"/>
-        {/* Camera body */}
-        <rect x="28" y="42" width="140" height="76" rx="6" fill="#141a22" stroke="rgba(255,255,255,0.09)" strokeWidth="0.6"/>
-        {/* Side grip */}
-        <rect x="22" y="54" width="8" height="40" rx="4" fill="#0f141a" stroke="rgba(255,255,255,0.07)" strokeWidth="0.5"/>
-        {/* Top handle */}
-        <rect x="88" y="30" width="52" height="14" rx="4" fill="#111720" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5"/>
-        {/* Viewfinder eyepiece */}
-        <rect x="170" y="48" width="12" height="20" rx="3" fill="#0c1016" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5"/>
-        {/* Lens mount outer */}
-        <circle cx="78" cy="80" r="28" fill="#0c1016" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5"/>
-        {/* Lens barrel ring */}
-        <circle cx="78" cy="80" r="20" fill="#090c10" stroke="rgba(255,255,255,0.07)" strokeWidth="0.5"/>
-        {/* Lens inner */}
-        <circle cx="78" cy="80" r="12" fill="#050608"/>
-        {/* Lens centre highlight */}
-        <circle cx="73" cy="75" r="4" fill="rgba(130,170,255,0.07)"/>
-        <circle cx="72" cy="74" r="1.5" fill="rgba(255,255,255,0.06)"/>
-        {/* Body detail lines */}
-        <line x1="116" y1="52" x2="116" y2="108" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
-        <line x1="140" y1="52" x2="140" y2="108" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
-        {/* REC indicator */}
-        <circle cx="155" cy="38" r="4" fill="#ff4a0a"/>
-        <circle cx="155" cy="38" r="6" fill="rgba(255,74,10,0.18)"/>
-        {/* REC label */}
-        <text x="163" y="41" fontFamily="monospace" fontSize="7" fill="rgba(255,74,10,0.7)" letterSpacing="1">REC</text>
+      <img
+        className="camera-poster__img"
+        src="/camera-poster.webp"
+        alt=""
+        width="635"
+        height="520"
+        decoding="async"
+      />
+      <svg className="camera-poster__overlay" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 26 L10 10 L26 10" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9"/>
+        <path d="M214 10 L230 10 L230 26" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9"/>
+        <path d="M10 134 L10 150 L26 150" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9"/>
+        <path d="M214 150 L230 150 L230 134" stroke="rgba(244,245,242,0.32)" strokeWidth="0.9"/>
+        <circle cx="155" cy="14" r="4" fill="#ff4a0a"/>
+        <circle cx="155" cy="14" r="6" fill="rgba(255,74,10,0.18)"/>
+        <text x="163" y="17" fontFamily="monospace" fontSize="7" fill="rgba(255,74,10,0.7)" letterSpacing="1">REC</text>
       </svg>
     </div>
   );

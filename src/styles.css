@@ -341,23 +341,24 @@ h1 span {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(ellipse at 38% 54%, #0f1318 0%, #050709 100%);
+  background: #050709;
   border-radius: 8px;
   overflow: hidden;
 }
 
-.camera-poster::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 38% 62%, rgba(255,74,10,0.07) 0%, transparent 60%);
-  pointer-events: none;
+.camera-poster__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
-.camera-poster__svg {
-  width: 74%;
-  max-width: 300px;
-  position: relative;
+.camera-poster__overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .camera-tags {
