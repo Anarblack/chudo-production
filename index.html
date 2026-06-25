@@ -10,11 +10,29 @@
       content="ChuDo Production — видеопродакшн в Бишкеке. Рекламные ролики, имиджевые фильмы и контент для соцсетей, которые работают на бренд."
     />
 
-    <!-- Open Graph -->
-    <meta property="og:type"        content="website" />
-    <meta property="og:title"       content="ChuDo Production — Видеопродакшн в Бишкеке" />
-    <meta property="og:description" content="Рекламные ролики, имиджевые фильмы и контент для соцсетей. Снимаем так, чтобы клиент понял ценность продукта с первого просмотра." />
-    <meta property="og:locale"      content="ru_RU" />
+    <!-- Canonical -->
+    <link rel="canonical" href="https://chudo-production.vercel.app/" />
+
+    <!-- Open Graph (WhatsApp, Telegram, Facebook, LinkedIn, Discord, Slack) -->
+    <meta property="og:type"             content="website" />
+    <meta property="og:site_name"        content="ChuDo Production" />
+    <meta property="og:title"            content="ChuDo Production — Видеопродакшн в Бишкеке" />
+    <meta property="og:description"      content="Рекламные ролики, имиджевые фильмы и контент для соцсетей. Снимаем так, чтобы клиент понял ценность продукта с первого просмотра." />
+    <meta property="og:url"              content="https://chudo-production.vercel.app/" />
+    <meta property="og:locale"           content="ru_RU" />
+    <meta property="og:image"            content="https://chudo-production.vercel.app/og-cover.png" />
+    <meta property="og:image:secure_url" content="https://chudo-production.vercel.app/og-cover.png" />
+    <meta property="og:image:type"       content="image/png" />
+    <meta property="og:image:width"      content="1200" />
+    <meta property="og:image:height"     content="630" />
+    <meta property="og:image:alt"        content="ChuDo Production — Видеопродакшн в Бишкеке" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="ChuDo Production — Видеопродакшн в Бишкеке" />
+    <meta name="twitter:description" content="Рекламные ролики, имиджевые фильмы и контент для соцсетей." />
+    <meta name="twitter:image"       content="https://chudo-production.vercel.app/og-cover.png" />
+    <meta name="twitter:image:alt"   content="ChuDo Production — Видеопродакшн в Бишкеке" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -25,6 +43,30 @@
     <!-- Google Fonts preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Structured data: LocalBusiness for Google rich results -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "ChuDo Production",
+        "description": "Видеопродакшн в Бишкеке: рекламные ролики, имиджевые фильмы, контент для соцсетей.",
+        "url": "https://chudo-production.vercel.app/",
+        "image": "https://chudo-production.vercel.app/og-cover.png",
+        "telephone": "+996500669763",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Бишкек",
+          "addressCountry": "KG"
+        },
+        "areaServed": "KG",
+        "priceRange": "$$",
+        "sameAs": [
+          "https://wa.me/996500669763",
+          "https://t.me/+996500669763"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

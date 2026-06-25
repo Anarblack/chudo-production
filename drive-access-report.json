@@ -1,0 +1,570 @@
+{
+  "generatedAt": "2026-06-25T11:07:11.249Z",
+  "totalFiles": 70,
+  "durationSec": 7,
+  "summary": {
+    "assumed_ok": 70
+  },
+  "results": [
+    {
+      "project": "adidas",
+      "fileId": "1VHPK5R_tjqYV61yBrvn1L1Go6pLLLwW1",
+      "label": "1.mov",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "adidas",
+      "fileId": "1DfLaZxEqBkjDvxs2eldOzwjWTIkitRUJ",
+      "label": "2.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "adidas",
+      "fileId": "1IkDde365JsdioIaCFuoe8LpUcQB_jBLc",
+      "label": "3.mov",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "alatoo",
+      "fileId": "1J_1bCDrQHQPgla-EsAMPz_wslnR8W1Cu",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "alatoo",
+      "fileId": "1JcK83IHsCvLwwac8JYhHqL3eTcFWMyyn",
+      "label": "2.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "alatoo",
+      "fileId": "1a4ohYEt_bI-UIcBfJWx3pR9MV1AYHE88",
+      "label": "3.mov",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "alatoo",
+      "fileId": "1uEua-LEuB9jQ73kF2FNL_HLk_ypV4tHd",
+      "label": "4.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "asab",
+      "fileId": "17liSyYVtImTeRojjEnUOURA30gm9yJo2",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "asylsu",
+      "fileId": "16g90albOpWyllqvlOHUBru6sKe9sOcDm",
+      "label": "1.mov",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "avangard",
+      "fileId": "1ASTGu7_Q28dHthkKEsg_B21PrX49W2iU",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "avangard",
+      "fileId": "1ASwYfsCnRHpdcYwQho8hs62GU9Yxma2T",
+      "label": "2.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "avangard",
+      "fileId": "1HghZ06c22ZiKHSJcaYfg9Y4EKJklzSBt",
+      "label": "3.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "avangard",
+      "fileId": "19qootdkvuQkGaYzLSqQ5fN_pVjTAgCZu",
+      "label": "4.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "aviasales",
+      "fileId": "1pSVcpygr3FpGd9JWu6pgRuBEGI7itork",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "aviasales",
+      "fileId": "147RmNkWmHdmEnXn-dy_amcwtrNkg3A3y",
+      "label": "2.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "1izhQXJhOHNYUylhEw6gvSAh4q_2Lsild",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "1iaWus22Vv9su1yIpDWuFDvhc3FYZkKLz",
+      "label": "2.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "1b98iRV-n-wRzjkthPjeKJnpmomAfefX5",
+      "label": "3.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "1DyaJaYK2nN0WmD0bu65wJuQgcddy6C9V",
+      "label": "4.mov",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "1QKp9mrvVC80x3J_eWuNa6W3u0zvw_GLD",
+      "label": "5.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "1DO3mGYA6Zp6qlVSurher-mJJKPGVQYOT",
+      "label": "6.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "1uWBA7OHcG6Wpv_w8d9TD9p6PCLPCFCGQ",
+      "label": "7.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "1C9TmQGkuvBOE9reJaLjcms3RmEJas_je",
+      "label": "8.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "1NGyiGAZKwF1v0fjqFmukzoMAX3Jba6py",
+      "label": "AI 1",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "1UNFjAdiD-VF4hUmSVPu6AjCjfen4F0Ew",
+      "label": "AI 2",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "chevrolet",
+      "fileId": "19YBRVQ4cPy03Zzg8Tm-OhTU_5IRrUIJ2",
+      "label": "AI 3",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "contentPack",
+      "fileId": "1mBZISGnU1RpH7j1KBImQPd-JMC2rK94p",
+      "label": "Juice 1",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "contentPack",
+      "fileId": "1LX7SSZjsT4xFC3IV4MlZtHkvaYhzUNi4",
+      "label": "Juice 2",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "kia",
+      "fileId": "1b4AuFxVdcNEn9yOxKauANt1of7vuZ6gY",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "kia",
+      "fileId": "1hyzszKbngFvWVngtPB9Hg984tOMuf4Ax",
+      "label": "2.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "kia",
+      "fileId": "1aIUl5Y0rtFvb2_VZjmXAT0T11el693kQ",
+      "label": "3.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "kia",
+      "fileId": "1qXz7AyltiXHsGwd4LG_IPiNgji0itmLc",
+      "label": "4.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "kia",
+      "fileId": "1QW0b7zr9L83J5DGVCg4hPBVyLfk0JNXh",
+      "label": "5.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "letsgo",
+      "fileId": "1fW0DlF9QWwOUbzDSGn4HGdanyx6IaQKb",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "mrbbq",
+      "fileId": "1ZahuAYFgQX-aRFCBaOrXHNN6Ds5oVvwb",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "ngroup",
+      "fileId": "1l8JtkgvnBxqsIAHod1wYMBNai8LBui9e",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "ngroup",
+      "fileId": "1MIXKTTJupViDYPzcdzNDU9OZEhLStJZH",
+      "label": "2.mov",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "ngroup",
+      "fileId": "1lcc1b6Z1UdjQqE66XmrECwkbkSajHqEt",
+      "label": "3.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "ngroup",
+      "fileId": "1O5xtQ-H4OkbDh8qdPPCHqQ8m-AipdhD8",
+      "label": "AI 1",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "roxy",
+      "fileId": "1PeEoxijPSQBizFImlHV1nLNdnCGaofWv",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "roxy",
+      "fileId": "10WqjceGrWR-wAsjUKVjh1j2g9hiuydo6",
+      "label": "2.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "roxy",
+      "fileId": "1cL4yco8aIwuHqS7CT0xPa3mkczE8bVXZ",
+      "label": "3.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "vibe",
+      "fileId": "1bI4fWsdOUi65WPyGiy9mSr7EAS8GbQpY",
+      "label": "1.mov",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "vibe",
+      "fileId": "1fvYuc3dr4pIRaTBQcTZmMwDHMDPlSSgG",
+      "label": "2.mov",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "event",
+      "fileId": "1_F1jA1gR8-Y1O3sQTxLPSa6LEmM6y9ns",
+      "label": "WHITE NIGHT",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "event",
+      "fileId": "1UfBrdYyvs0FWvjkvfFEfWcMwZPmUlZWC",
+      "label": "Стервятник 2",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "event",
+      "fileId": "1tQ7l03n6itgAMrS0QvczjFxiFDfGebpq",
+      "label": "Стервятник",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "xcomp",
+      "fileId": "1AfFereLiQuP4Ja85FHW9E9rpe1kxZXdj",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "expert",
+      "fileId": "1CvBIa_mHLXesQWD0OpNV_VxppEohCtf-",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "expert",
+      "fileId": "13XV_IjQRzg5oTvMapqtwumstce6QQ1-c",
+      "label": "2.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "expert",
+      "fileId": "1LaPz_qc1uuN631QqPIDYRSQ1CDQXh57x",
+      "label": "3.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "expert",
+      "fileId": "13UVr_Qmm5O_vEPQk5pX0QcJg9q0TyA66",
+      "label": "4.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "expert",
+      "fileId": "1f_mp1D-9aopG9crZFqBmQQkR5Weq33rs",
+      "label": "5.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "expert",
+      "fileId": "1jvUDkj7F0U7tkRJbtjNI1Ch7AFjYagTA",
+      "label": "6.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "creative",
+      "fileId": "19YBRVQ4cPy03Zzg8Tm-OhTU_5IRrUIJ2",
+      "label": "AI 3",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "creative",
+      "fileId": "1NGyiGAZKwF1v0fjqFmukzoMAX3Jba6py",
+      "label": "AI 1",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "creative",
+      "fileId": "1UNFjAdiD-VF4hUmSVPu6AjCjfen4F0Ew",
+      "label": "AI 2",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "creative",
+      "fileId": "1as1kbkeIrkT83hBa7ur3NhwcqywPqo8d",
+      "label": "7gen Freeman",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "creative",
+      "fileId": "1RJEfIG_Y0TGrBp1br2PPUqAXyhwajZ9O",
+      "label": "AITU Bounce",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "creative",
+      "fileId": "1mhHUhHPz5cU-5fXX4LHmlZCZJD2BVM8n",
+      "label": "BAKR Freeman",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "creative",
+      "fileId": "1G85WxpkhhdzcNeXBHiid-0Uq0TZHLycl",
+      "label": "Freeman x Aihan",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "creative",
+      "fileId": "1xsb533RfySe--0aJXqV9jo1IkyeAZuHS",
+      "label": "ISAEW",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "creative",
+      "fileId": "1MZogED6aEM73E1hauhLkMqdaJ0XFOe25",
+      "label": "Qanysh Bayas",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "creative",
+      "fileId": "1D2s4VEH2M2KqW6aJdvxiTelj3oVRIewE",
+      "label": "Ulukmanap & BAPAY",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "shortFilm",
+      "fileId": "1CyixkwzKfaDZ__KqcPvtMYZH09wJGE-3",
+      "label": "Жылдыздын Кыялы",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "fashionBrand",
+      "fileId": "1U_FgmO8sVNV7qW0d_mPLkyUbRWL8dMAO",
+      "label": "Бренд одежды",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "upsm",
+      "fileId": "1Ryrd3NxRyyOctihArlHIcLd5vRLGwJO-",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "product",
+      "fileId": "1vgKug9XElsmd5mzmgvQcXrdsdBeY4Ird",
+      "label": "ЦУМ GOLD",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "shtuchki",
+      "fileId": "1Mg_HDqw1VGxPlQEw4Hlio-rX8tZ7ZEwE",
+      "label": "1.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    },
+    {
+      "project": "shtuchki",
+      "fileId": "1LcLy_jlcP0nOf0cGSjG8DvGaClSZ6h37",
+      "label": "2.mp4",
+      "ok": true,
+      "reason": "assumed_ok",
+      "detail": "HTTP 200, no error markers"
+    }
+  ]
+}
