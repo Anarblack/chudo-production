@@ -7,6 +7,8 @@ import CustomCursor from './components/CustomCursor.jsx';
 import BlurText from './components/BlurText.jsx';
 import PartnersSection from './components/PartnersSection.jsx';
 import ContactSection from './components/ContactSection.jsx';
+import IntroAnimation from './components/IntroAnimation.jsx';
+import { shouldShowIntro, markIntroSeen } from './lib/intro.js';
 
 // Prevents IntersectionObserver from changing accordion state during anchor-scroll,
 // which would shift the page height and cause smooth scroll to land at the wrong target.
@@ -2741,8 +2743,18 @@ function HeroVisual() {
 }
 
 function App() {
+  const [introVisible, setIntroVisible] = useState(() => shouldShowIntro());
+
+  function handleIntroComplete() {
+    markIntroSeen();
+    setIntroVisible(false);
+  }
+
   return (
     <main className="site-shell">
+      {introVisible && (
+        <IntroAnimation onComplete={handleIntroComplete} />
+      )}
       <CustomCursor />
       <StickyNav />
       <section className="hero-section" aria-labelledby="hero-title">
