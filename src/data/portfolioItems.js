@@ -1,0 +1,110 @@
+import { makeVideoSet } from '../lib/video.js';
+import { projectVideos } from './projectVideos.js';
+
+export const portfolioItems = [
+  {
+    id: 'chevrolet-model',
+    title: 'Chevrolet — модельный ролик',
+    category: 'Авто',
+    serviceType: 'Рекламные ролики для продукта и услуги',
+    image: '/portfolio/chevrolet-01.svg',
+    media: makeVideoSet(projectVideos.chevrolet, {
+      poster: '/portfolio/chevrolet-01.svg',
+    }),
+    videoUrl: '#',
+    portfolioUrl: '#',
+    description: 'Короткий промо-ролик для продвижения модели.',
+  },
+  {
+    id: 'content-pack',
+    title: 'Content Pack — серия материалов',
+    category: 'Система контента',
+    serviceType: 'Контент-пакеты для соцсетей',
+    image: '/portfolio/content-pack-01.svg',
+    media: makeVideoSet(projectVideos.contentPack, {
+      poster: '/portfolio/content-pack-01.svg',
+    }),
+    videoUrl: '#',
+    portfolioUrl: '#',
+    description: 'Главный ролик, вертикальные видео, нарезки и обложки из одной съёмки.',
+  },
+  {
+    id: 'brand-image',
+    title: 'Brand — имиджевый ролик',
+    category: 'Бренд',
+    serviceType: 'Имиджевые и бренд-ролики',
+    image: '/portfolio/brand-01.svg',
+    media: makeVideoSet(projectVideos.vibe, {
+      poster: '/portfolio/brand-01.svg',
+    }),
+    videoUrl: '#',
+    portfolioUrl: '#',
+    description: 'Визуальная история бренда, атмосфера и доверие.',
+  },
+  {
+    id: 'ngroup-object',
+    title: 'Ngroup — объект недвижимости',
+    category: 'Продажи',
+    serviceType: 'Видео для отдела продаж',
+    image: '/portfolio/ngroup-01.svg',
+    media: makeVideoSet(projectVideos.ngroup, {
+      poster: '/portfolio/ngroup-01.svg',
+    }),
+    videoUrl: '#',
+    portfolioUrl: '#',
+    description: 'Материал для сайта, КП и отправки клиентам после заявки.',
+  },
+  {
+    id: 'product-review',
+    title: 'Product — видеообзор объекта',
+    category: 'Обзор',
+    serviceType: 'Обзоры продуктов, объектов и техники',
+    image: '/portfolio/product-01.svg',
+    media: makeVideoSet(projectVideos.product, {
+      poster: '/portfolio/product-01.svg',
+    }),
+    videoUrl: '#',
+    portfolioUrl: '#',
+    description: 'Понятная демонстрация деталей, масштаба и преимуществ продукта.',
+  },
+  {
+    id: 'event-aftermovie',
+    title: 'Event — aftermovie',
+    category: 'Event',
+    serviceType: 'Event-видео',
+    image: '/portfolio/event-01.svg',
+    media: makeVideoSet(projectVideos.event, {
+      poster: '/portfolio/event-01.svg',
+    }),
+    videoUrl: '#',
+    portfolioUrl: '#',
+    description: 'Атмосферный ролик с мероприятия.',
+  },
+  {
+    id: 'expert-interview',
+    title: 'Expert — B2B-интервью',
+    category: 'Экспертность',
+    serviceType: 'Экспертный и B2B-контент',
+    image: '/portfolio/interview-01.svg',
+    media: makeVideoSet(projectVideos.expert, {
+      poster: '/portfolio/interview-01.svg',
+    }),
+    videoUrl: '#',
+    portfolioUrl: '#',
+    description: 'Контент с экспертом для доверия, объяснения и прогрева аудитории.',
+  },
+  {
+    id: 'creative-ai',
+    title: 'AI / Music — креативный формат',
+    category: 'Креатив',
+    serviceType: 'AI и креативные видеоформаты',
+    image: '/portfolio/production-01.svg',
+    media: makeVideoSet(projectVideos.creative, {
+      preview: '/videos/ai-creative.mp4',
+      poster: '/portfolio/production-01.svg',
+    }),
+    videoUrl: '#',
+    portfolioUrl: '#',
+    description: 'Смелая визуальная подача, AI-вставки и клиповая динамика.',
+  },
+];
