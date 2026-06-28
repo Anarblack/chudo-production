@@ -20,25 +20,17 @@ import { caseFilters } from './data/caseFilters.js';
 import { cases } from './data/cases.js';
 import { workflowSteps } from './data/workflowSteps.js';
 import { workflowStats } from './data/workflowStats.js';
-import { driveVideo, driveView, driveThumbnail } from './lib/video.js';
+import { driveVideo, driveView, driveThumbnail, isDirectVideoUrl, getDriveFileId, normalizeVideoSource, getPrimaryVideoSource, getVideoList, getPreviewMedia, getPlayableVideo, getProjectMedia } from './lib/video.js';
+import { startAnchorScroll, isAnchorScrollActive } from './lib/anchor.js';
+import { useIsMobile } from './lib/hooks.js';
+import { getServiceMatches, getSphericalPoint, rotatePoint, getFrontPortfolioItem } from './lib/sphere.js';
 
-// Prevents IntersectionObserver from changing accordion state during anchor-scroll,
-// which would shift the page height and cause smooth scroll to land at the wrong target.
-let _anchorScrollActive = false;
-let _anchorScrollTimer = null;
-
-function _startAnchorScroll() {
-  _anchorScrollActive = true;
-  clearTimeout(_anchorScrollTimer);
-  // 1300ms covers any smooth-scroll distance on this page; unblocks IntersectionObserver after landing
-  _anchorScrollTimer = setTimeout(() => { _anchorScrollActive = false; }, 1300);
-}
 
 function AnchorNav({ compact = false }) {
   return (
     <nav className={compact ? 'anchor-nav anchor-nav--compact' : 'anchor-nav'} aria-label="Навигация по предложению">
       {navItems.map((item) => (
-        <a key={item.href} href={item.href} onClick={_startAnchorScroll}>
+        <a key={item.href} href={item.href} onClick={startAnchorScroll}>
           {item.label}
         </a>
       ))}
@@ -196,180 +188,9 @@ function MarketPainsSection() {
   );
 }
 
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const media = window.matchMedia('(max-width: 760px)');
-    const update = () => setIsMobile(media.matches);
 
-    update();
-    media.addEventListener('change', update);
 
-    return () => {
-      media.removeEventListener('change', update);
-    };
-  }, []);
-
-  return isMobile;
-}
-
-function getServiceMatches(serviceTitle) {
-  const matches = portfolioItems.filter((item) => item.serviceType === serviceTitle);
-  return matches.length ? matches : portfolioItems;
-}
-
-function getSphericalPoint(index, total) {
-  if (total <= 1) {
-    return { x: 0, y: 0, z: 1 };
-  }
-
-  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-  const y = 1 - (index / (total - 1)) * 2;
-  const radius = Math.sqrt(Math.max(0, 1 - y * y));
-  const theta = index * goldenAngle;
-
-  return {
-    x: Math.cos(theta) * radius,
-    y,
-    z: Math.sin(theta) * radius,
-  };
-}
-
-function rotatePoint(point, rotation) {
-  const cosY = Math.cos(rotation.y);
-  const sinY = Math.sin(rotation.y);
-  const cosX = Math.cos(rotation.x);
-  const sinX = Math.sin(rotation.x);
-
-  const x1 = point.x * cosY + point.z * sinY;
-  const z1 = -point.x * sinY + point.z * cosY;
-  const y2 = point.y * cosX - z1 * sinX;
-  const z2 = point.y * sinX + z1 * cosX;
-
-  return { x: x1, y: y2, z: z2 };
-}
-
-function getFrontPortfolioItem(rotation) {
-  return portfolioItems.reduce(
-    (front, item, index) => {
-      const point = rotatePoint(getSphericalPoint(index, portfolioItems.length), rotation);
-
-      if (point.z > front.z) {
-        return { item, z: point.z };
-      }
-
-      return front;
-    },
-    { item: portfolioItems[0], z: -Infinity },
-  ).item;
-}
-
-function isDirectVideoUrl(url) {
-  return /\.(mp4|webm|ogg)(?:[?#].*)?$/i.test(url);
-}
-
-function getDriveFileId(url) {
-  return url?.match(/drive\.google\.com\/file\/d\/([^/]+)/i)?.[1] ?? null;
-}
-
-function normalizeVideoSource(video) {
-  if (!video) return null;
-
-  if (Array.isArray(video)) {
-    return { playlist: video };
-  }
-
-  if (typeof video === 'string') {
-    return {
-      full: video,
-      preview: video,
-    };
-  }
-
-  return video;
-}
-
-function getPrimaryVideoSource(source) {
-  if (!source) return null;
-
-  if (source.full || source.src || source.preview) {
-    return source;
-  }
-
-  return source.playlist?.[0] ?? source.videos?.[0] ?? null;
-}
-
-function getVideoList(video, fallbackPoster) {
-  const source = normalizeVideoSource(video);
-  const list = source?.playlist ?? source?.videos ?? (source ? [source] : []);
-
-  return list.map((clip, index) => ({
-    ...clip,
-    label: clip.label ?? `Видео ${index + 1}`,
-    poster: clip.poster ?? source?.poster ?? fallbackPoster,
-  }));
-}
-
-function getPreviewMedia(video, fallbackImage) {
-  const normalizedSource = normalizeVideoSource(video);
-  const source = getPrimaryVideoSource(normalizedSource);
-  const poster = source?.thumbnail ?? normalizedSource?.thumbnail ?? source?.poster ?? normalizedSource?.poster ?? fallbackImage;
-  const preview = source?.preview ?? (source?.provider === 'drive' ? null : source?.src ?? source?.full);
-
-  if (preview && isDirectVideoUrl(preview)) {
-    return {
-      type: 'video',
-      src: preview,
-      poster,
-    };
-  }
-
-  if (poster) {
-    return {
-      type: 'image',
-      src: poster,
-    };
-  }
-
-  return null;
-}
-
-function getPlayableVideo(video, fallbackPoster) {
-  const source = getPrimaryVideoSource(normalizeVideoSource(video));
-  const src = source?.full ?? source?.src ?? source?.preview;
-
-  if (!src) return null;
-
-  const fileId = source?.fileId ?? getDriveFileId(src);
-  const isDrive = source?.provider === 'drive' || Boolean(fileId);
-
-  // Готовый URL для встраивания: iframe для Drive, прямой URL для нативного <video>
-  let embed = null;
-  if (isDrive && fileId) {
-    embed = driveVideo(fileId); // /preview iframe
-  } else if (isDirectVideoUrl(src)) {
-    embed = src;
-  }
-
-  return {
-    src,
-    poster: source?.poster ?? fallbackPoster,
-    provider: isDrive ? 'drive' : source?.provider,
-    external: source?.external ?? (fileId ? driveView(fileId) : src),
-    embed,
-    fileId,
-    label: source?.label,
-    thumbnail: source?.thumbnail ?? (fileId ? driveThumbnail(fileId) : null),
-  };
-}
-
-function getProjectMedia(item) {
-  return getPreviewMedia(item.media, item.image) ?? {
-    type: 'image',
-    src: item.image,
-  };
-}
 
 function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = false }) {
   const [imgError, setImgError] = useState(false);
@@ -1664,7 +1485,7 @@ function WorkflowSection() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (_anchorScrollActive) return;
+        if (isAnchorScrollActive()) return;
 
         const visibleEntries = entries
           .filter((entry) => entry.isIntersecting)
@@ -1908,7 +1729,7 @@ function App() {
                 <svg className="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                 Telegram
               </a>
-              <a className="button button--ghost" href="#cases" onClick={_startAnchorScroll}>
+              <a className="button button--ghost" href="#cases" onClick={startAnchorScroll}>
                 Смотреть работы
               </a>
             </div>
