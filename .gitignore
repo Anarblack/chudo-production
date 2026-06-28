@@ -2,3 +2,16 @@ node_modules/
 dist/
 *.log
 hero-preview.png
+
+# Playwright MCP cache
+.playwright-mcp/
+
+# Test/diagnostic screenshots
+*-test.jpg
+*-test.jpeg
+*-test.png
+frame-*.jpeg
+frame-*.jpg
+intro-*.jpeg
+intro-*.jpg
+mobile-hero-check.jpeg
