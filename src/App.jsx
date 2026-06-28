@@ -2743,10 +2743,9 @@ function HeroVisual() {
 }
 
 function App() {
-  const [introVisible, setIntroVisible] = useState(() => shouldShowIntro());
+  const [introVisible, setIntroVisible] = useState(true);
 
   function handleIntroComplete() {
-    markIntroSeen();
     setIntroVisible(false);
   }
 
