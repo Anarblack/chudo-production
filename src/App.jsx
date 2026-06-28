@@ -8,6 +8,10 @@ import BlurText from './components/BlurText.jsx';
 import PartnersSection from './components/PartnersSection.jsx';
 import ContactSection from './components/ContactSection.jsx';
 import IntroAnimation from './components/IntroAnimation.jsx';
+import ProjectMedia from './components/ProjectMedia.jsx';
+import DriveIcon from './components/DriveIcon.jsx';
+import InlineVideoPlayer from './components/InlineVideoPlayer.jsx';
+import VideoPlaylistTabs from './components/VideoPlaylistTabs.jsx';
 import { shouldShowIntro, markIntroSeen } from './lib/intro.js';
 import { navItems } from './data/navItems.js';
 import { cameraTags } from './data/cameraTags.js';
@@ -20,7 +24,7 @@ import { caseFilters } from './data/caseFilters.js';
 import { cases } from './data/cases.js';
 import { workflowSteps } from './data/workflowSteps.js';
 import { workflowStats } from './data/workflowStats.js';
-import { driveVideo, driveView, driveThumbnail, isDirectVideoUrl, getDriveFileId, normalizeVideoSource, getPrimaryVideoSource, getVideoList, getPreviewMedia, getPlayableVideo, getProjectMedia } from './lib/video.js';
+import { getVideoList, getPreviewMedia, getPlayableVideo } from './lib/video.js';
 import { startAnchorScroll, isAnchorScrollActive } from './lib/anchor.js';
 import { useIsMobile } from './lib/hooks.js';
 import { getServiceMatches, getSphericalPoint, rotatePoint, getFrontPortfolioItem } from './lib/sphere.js';
@@ -192,126 +196,7 @@ function MarketPainsSection() {
 
 
 
-function ProjectMedia({ item, mode = 'preview', loading = 'lazy', draggable = false }) {
-  const [imgError, setImgError] = useState(false);
-  const media = getProjectMedia(item);
-  const isPlayer = mode === 'player';
 
-  if (!media) return null;
-
-  if (media.type === 'video') {
-    return (
-      <video
-        src={media.src}
-        poster={media.poster}
-        muted={!isPlayer}
-        loop={!isPlayer}
-        autoPlay={!isPlayer}
-        playsInline
-        controls={isPlayer}
-        preload={isPlayer ? 'auto' : 'metadata'}
-      />
-    );
-  }
-
-  if (imgError) return null;
-
-  return <img src={media.src} alt="" loading={loading} draggable={draggable} onError={() => setImgError(true)} />;
-}
-
-
-// SVG-иконка треугольника Drive — лёгкая, без зависимостей
-function DriveIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true">
-      <path d="M7.71 3.5L1.15 15l3.42 5.5h7.86L8.85 15l3.58-11.5H7.71zm6.43 0L19.57 15h-7.14L6.93 3.5h7.21zM12.85 15l3.58-5.5h6.42L19.43 15h-6.58z" />
-    </svg>
-  );
-}
-
-// Встроенный плеер: iframe для Drive, нативный <video> для прямых ссылок,
-// плейсхолдер если ничего нет. Управляется снаружи — родитель решает, какой клип показать.
-function InlineVideoPlayer({ video, poster, title, autoPlay = false }) {
-  const playable = getPlayableVideo(video, poster);
-
-  if (!playable) {
-    return (
-      <div className="inline-player inline-player--empty">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none" />
-        </svg>
-        <p>Видео скоро появится</p>
-      </div>
-    );
-  }
-
-  // Google Drive — встраиваем iframe /preview
-  if (playable.provider === 'drive' && playable.embed) {
-    return (
-      <iframe
-        src={playable.embed}
-        title={title || 'Видео'}
-        allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-        allowFullScreen
-        loading="lazy"
-        referrerPolicy="no-referrer"
-      />
-    );
-  }
-
-  // Прямой mp4/webm — нативный <video> с контролами
-  if (isDirectVideoUrl(playable.src)) {
-    return (
-      <video
-        src={playable.src}
-        poster={playable.poster}
-        controls
-        playsInline
-        preload="metadata"
-        autoPlay={autoPlay}
-      />
-    );
-  }
-
-  // Совсем экзотика — показываем постер и даём ссылку наружу как последнее средство
-  return (
-    <div className="inline-player inline-player--fallback">
-      {playable.poster && <img src={playable.poster} alt="" />}
-      <a
-        className="button button--primary"
-        href={playable.external}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Открыть видео
-      </a>
-    </div>
-  );
-}
-
-// Табы плейлиста — переключают активный клип внутри модала.
-// Если ролик один — компонент сам решает не рендериться.
-function VideoPlaylistTabs({ videos, activeIndex, onSelect, className = '' }) {
-  if (!videos || videos.length <= 1) return null;
-  return (
-    <div className={`video-playlist ${className}`.trim()} role="tablist" aria-label="Список видео">
-      {videos.map((clip, i) => (
-        <button
-          key={`${clip.full ?? clip.src ?? i}`}
-          type="button"
-          role="tab"
-          aria-selected={i === activeIndex}
-          className={`video-playlist__tab${i === activeIndex ? ' is-active' : ''}`}
-          onClick={() => onSelect(i)}
-        >
-          <span className="video-playlist__num">{String(i + 1).padStart(2, '0')}</span>
-          <span className="video-playlist__label">{clip.label ?? `Ролик ${i + 1}`}</span>
-        </button>
-      ))}
-    </div>
-  );
-}
 
 function VideoModal({ item, onClose }) {
   const videos = getVideoList(item?.media, item?.image);
