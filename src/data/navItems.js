@@ -1,9 +1,7 @@
 export const navItems = [
-  { label: 'Проблемы рынка', href: '#market-pains' },
-  { label: 'Решения',        href: '#offer' },
-  { label: 'Наш подход',     href: '#usp' },
-  { label: 'Работы',         href: '#cases' },
-  { label: 'Как работаем',   href: '#workflow' },
-  { label: 'Партнёры',       href: '#partners' },
-  { label: 'Контакты',       href: '#contact' },
+  { label: 'Решения',   href: '#offer' },
+  { label: 'Работы',    href: '#cases' },
+  { label: 'О нас',     href: '#about' },
+  { label: 'Партнёры',  href: '#partners' },
+  { label: 'Контакты',  href: '#contact' },
 ];

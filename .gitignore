@@ -10,8 +10,14 @@ hero-preview.png
 *-test.jpg
 *-test.jpeg
 *-test.png
+*-test.jpeg
+*-restructured.jpg
+*-restructured.png
+*-debug.jpg
+*-debug.png
 frame-*.jpeg
 frame-*.jpg
 intro-*.jpeg
 intro-*.jpg
 mobile-hero-check.jpeg
+case-modal-debug.jpg

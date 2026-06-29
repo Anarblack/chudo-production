@@ -4,12 +4,10 @@ import IntroAnimation from './components/IntroAnimation.jsx';
 import PartnersSection from './components/PartnersSection.jsx';
 import ContactSection from './components/ContactSection.jsx';
 import StickyNav from './sections/StickyNav.jsx';
-import HeroSection from './sections/HeroSection.jsx';
+import CasesSection from './sections/CasesSection.jsx';
 import MarketPainsSection from './sections/MarketPainsSection.jsx';
 import OfferSection from './sections/OfferSection.jsx';
-import UniqueValueSection from './sections/UniqueValueSection.jsx';
-import CasesSection from './sections/CasesSection.jsx';
-import WorkflowSection from './sections/WorkflowSection.jsx';
+import AboutSection from './sections/AboutSection.jsx';
 import { shouldShowIntro, markIntroSeen } from './lib/intro.js';
 
 function App() {
@@ -27,12 +25,10 @@ function App() {
       )}
       <CustomCursor />
       <StickyNav />
-      <HeroSection />
+      <CasesSection />
       <MarketPainsSection />
       <OfferSection />
-      <UniqueValueSection />
-      <CasesSection />
-      <WorkflowSection />
+      <AboutSection />
       <PartnersSection />
       <ContactSection />
     </main>
